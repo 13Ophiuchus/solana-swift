@@ -1,5 +1,6 @@
 import Foundation
-import secp256k1
+import P256K
+import libsecp256k1
 
 struct CKSecp256k1 {
     /*
