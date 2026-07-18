@@ -34,7 +34,7 @@ class TransactionMonitor<SolanaAPIClient: SolanaSwift.SolanaAPIClient> {
             where: { [weak self] error in
                 guard let self = self else { return false }
                 if let error = error as? TaskRetryingError,
-                   error.type == .timedOut
+                   error == .timedOut
                 {
                     self.timedOutHandler()
                     return false
