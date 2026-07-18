@@ -5,7 +5,6 @@
 //  Created by 仇弘扬 on 2017/8/14.
 //  Copyright © 2017年 askcoin. All rights reserved.
 //
-import CommonCrypto
 import Foundation
 
 let BTCKeychainMainnetPrivateVersion: UInt32 = 0x0488_ADE4
@@ -51,7 +50,6 @@ public class Keychain: NSObject {
             .decomposedStringWithCompatibilityMapping
         let salt = (salt as NSString).decomposedStringWithCompatibilityMapping
         guard let seedBytes = pbkdf2(
-            hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512),
             password: password,
             salt: Data(salt.bytes),
             keyByteCount: 64,
