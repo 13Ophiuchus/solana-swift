@@ -20,21 +20,25 @@ let package = Package(
         // Main depedencies
         .package(url: "https://github.com/21-DOT-DEV/swift-secp256k1", from: "0.21.1"),
         .package(url: "https://github.com/bitmark-inc/tweetnacl-swiftwrap.git", from: "1.0.2"),
-        .package(url: "https://github.com/bigearsenal/task-retrying-swift.git", from: "2.0.0"),
+		.package(url: "https://github.com/bigearsenal/task-retrying-swift.git", from: "1.0.1"),
 
         // Docs generator
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
     targets: [
-        .target(
-            name: "SolanaSwift",
-            dependencies: [
-                .product(name: "P256K", package: "swift-secp256k1"),
-                .product(name: "libsecp256k1", package: "swift-secp256k1"),
-                .product(name: "TweetNacl", package: "tweetnacl-swiftwrap"),
-                .product(name: "Task_retrying", package: "task-retrying-swift"),
-            ]
-        ),
+		.target(
+			name: "SolanaSwift",
+			dependencies: [
+				.product(name: "TweetNacl", package: "tweetnacl-swiftwrap"),
+				.product(name: "P256K", package: "swift-secp256k1"),
+				.product(name: "libsecp256k1", package: "swift-secp256k1"),
+				.product(name: "Task_retrying", package: "task-retrying-swift"),
+			],
+			swiftSettings: [
+				.unsafeFlags(["-suppress-warnings"])
+			]
+		),
+
         .testTarget(
             name: "SolanaSwiftUnitTests",
             dependencies: ["SolanaSwift"],
@@ -48,3 +52,4 @@ let package = Package(
         ),
     ]
 )
+
