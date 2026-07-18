@@ -1,4 +1,3 @@
-import CommonCrypto
 import Foundation
 import TweetNacl
 
@@ -67,7 +66,6 @@ public struct KeyPair: Codable, Hashable {
                 let password = (seed as NSString).decomposedStringWithCompatibilityMapping
                 let salt = (salt as NSString).decomposedStringWithCompatibilityMapping
                 guard let seedBytes = pbkdf2(
-                    hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512),
                     password: password,
                     salt: Data(salt.bytes),
                     keyByteCount: 64,

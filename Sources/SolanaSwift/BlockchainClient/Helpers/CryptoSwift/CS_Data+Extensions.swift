@@ -1,4 +1,4 @@
-import CommonCrypto
+import Crypto
 import Foundation
 
 public extension Data {
@@ -25,10 +25,7 @@ public extension Data {
     }
 
     func sha256() -> Data {
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(count), &hash)
-        }
-        return Data(hash)
+        let digest = SHA256.hash(data: self)
+        return Data(digest)
     }
 }

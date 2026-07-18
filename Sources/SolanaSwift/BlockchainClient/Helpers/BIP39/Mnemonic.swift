@@ -1,4 +1,3 @@
-import CommonCrypto
 import Foundation
 
 public class Mnemonic {
@@ -126,7 +125,6 @@ public class Mnemonic {
         let mnemonic = (phrase.joined(separator: " ") as NSString).decomposedStringWithCompatibilityMapping
         let salt = (("mnemonic" + passphrase) as NSString).decomposedStringWithCompatibilityMapping
         let pbkdf2 = pbkdf2(
-            hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512),
             password: mnemonic,
             salt: Data(salt.bytes),
             keyByteCount: 64,

@@ -1,0 +1,26 @@
+name: Linux build
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  linux-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '5.7.1'
+      - name: Show Swift version
+        run: swift --version
+      - name: Resolve dependencies
+        run: swift package resolve
+      - name: Build on Linux
+        run: swift build -v
