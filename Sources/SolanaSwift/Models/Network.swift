@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Network: String, CaseIterable, Codable {
+public enum Network: String, CaseIterable, Codable, Sendable {
     case mainnetBeta = "mainnet-beta"
     case devnet
     case testnet

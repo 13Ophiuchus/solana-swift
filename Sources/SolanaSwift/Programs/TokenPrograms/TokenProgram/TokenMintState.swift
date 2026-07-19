@@ -1,7 +1,7 @@
 import Foundation
 
 public struct TokenMintState: MintLayoutState {
-    public static var BUFFER_LENGTH: UInt64 = 82
+    public static let BUFFER_LENGTH: UInt64 = 82
 
     public let mintAuthorityOption: UInt32
     public let mintAuthority: PublicKey?

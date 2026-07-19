@@ -1,7 +1,7 @@
 import Foundation
 
-public struct FeeAmount: Equatable, Hashable {
-    public struct OtherFee: Equatable, Hashable {
+public struct FeeAmount: Equatable, Hashable, Sendable {
+    public struct OtherFee: Equatable, Hashable, Sendable {
         public init(amount: Double, unit: String) {
             self.amount = amount
             self.unit = unit

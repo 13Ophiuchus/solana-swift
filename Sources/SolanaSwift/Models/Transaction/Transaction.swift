@@ -1,7 +1,7 @@
 import Foundation
 import TweetNacl
 
-public struct Transaction: Encodable, Equatable {
+public struct Transaction: Encodable, Equatable, Sendable {
     public var signatures = [Signature]()
     public var feePayer: PublicKey?
     public var instructions = [TransactionInstruction]()
@@ -406,7 +406,7 @@ public struct Transaction: Encodable, Equatable {
     }
 }
 
-public struct Signature: Encodable, Equatable {
+public struct Signature: Encodable, Equatable, Sendable {
     public var signature: Data?
     public var publicKey: PublicKey
 

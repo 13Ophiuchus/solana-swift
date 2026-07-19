@@ -13,7 +13,7 @@ public enum KeyPairError: Error, Equatable {
     case couldNotDerivatePrivateKey
 }
 
-public struct KeyPair: Codable, Hashable {
+public struct KeyPair: Codable, Hashable, Sendable {
     public let phrase: [String]
     public let publicKey: PublicKey
     public let secretKey: Data

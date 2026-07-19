@@ -1,7 +1,7 @@
 import Foundation
 
 /// JSON RPC
-public class JSONRPCAPIClient: SolanaAPIClient {
+public final class JSONRPCAPIClient: SolanaAPIClient {
     public typealias ResponseDecoder = JSONRPCResponseDecoder
     public typealias RequestEncoder = JSONRPCRequestEncoder
 

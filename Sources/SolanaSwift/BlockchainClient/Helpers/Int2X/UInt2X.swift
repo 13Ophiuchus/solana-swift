@@ -93,7 +93,7 @@ extension UInt2X: Comparable {
 #endif
 public enum Int2XConfig {
     #if os(macOS) || os(iOS)
-        public static var useAccelerate = true
+        public static let useAccelerate = true
     #else
         public static let useAccelerate = false
     #endif

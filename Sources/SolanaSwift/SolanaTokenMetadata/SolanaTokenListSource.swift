@@ -1,10 +1,10 @@
 import Foundation
 
-public protocol SolanaTokenListSource {
+public protocol SolanaTokenListSource: Sendable {
     func download() async throws -> Set<TokenMetadata>
 }
 
-public class SolanaTokenListSourceImpl: SolanaTokenListSource {
+public final class SolanaTokenListSourceImpl: SolanaTokenListSource {
     // MARK: - Properties
 
     private let networkManager: NetworkManager

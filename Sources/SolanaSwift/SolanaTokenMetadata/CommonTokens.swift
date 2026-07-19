@@ -2,7 +2,7 @@ import Foundation
 
 @available(*, deprecated, message: "[Legacy code] Will be removed in future.")
 public extension TokenMetadata {
-    static var nativeSolana: TokenMetadata =
+    static let nativeSolana: TokenMetadata =
         .init(
             tags: [],
             chainId: 101,
@@ -15,7 +15,7 @@ public extension TokenMetadata {
             isNative: true
         )
 
-    static var renBTC: TokenMetadata =
+    static let renBTC: TokenMetadata =
         .init(
             tags: nil,
             chainId: 101,
@@ -31,7 +31,7 @@ public extension TokenMetadata {
             ]
         )
 
-    static var usdc: TokenMetadata =
+    static let usdc: TokenMetadata =
         .init(
             tags: nil,
             chainId: 101,
@@ -43,7 +43,7 @@ public extension TokenMetadata {
             extensions: ["coingeckoId": .string("usd-coin")]
         )
 
-    static var usdt: TokenMetadata =
+    static let usdt: TokenMetadata =
         .init(
             tags: nil,
             chainId: 101,
@@ -55,7 +55,7 @@ public extension TokenMetadata {
             extensions: ["coingeckoId": .string("tether")]
         )
 
-    static var eth: TokenMetadata =
+    static let eth: TokenMetadata =
         .init(
             tags: nil,
             chainId: 101,
@@ -67,7 +67,7 @@ public extension TokenMetadata {
             extensions: ["coingeckoId": .string("ethereum")]
         )
 
-    static var usdcet: TokenMetadata =
+    static let usdcet: TokenMetadata =
         .init(
             tags: nil,
             chainId: 101,

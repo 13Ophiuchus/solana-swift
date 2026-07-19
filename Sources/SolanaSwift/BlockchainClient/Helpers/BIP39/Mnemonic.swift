@@ -1,6 +1,6 @@
 import Foundation
 
-public class Mnemonic {
+public final class Mnemonic: @unchecked Sendable {
     public let phrase: [String]
     let passphrase: String
 
@@ -8,8 +8,8 @@ public class Mnemonic {
         precondition(strength % 32 == 0, "Invalid entropy")
 
         // 1.Random Bytes
-        var bytes = [UInt8](repeating: 0, count: strength / 8)
-        _ = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        var generator = SystemRandomNumberGenerator()
+        let bytes = (0 ..< strength / 8).map { _ in UInt8.random(in: .min ... .max, using: &generator) }
 
         // 2.Entropy -> Mnemonic
         let entropyBits = String(bytes.flatMap { ("00000000" + String($0, radix: 2)).suffix(8) })

@@ -2,7 +2,7 @@ import Foundation
 import Task_retrying
 
 /// BlockchainClient that prepares and serialises transaction to send to blockchain
-public protocol SolanaBlockchainClient: AnyObject {
+public protocol SolanaBlockchainClient: AnyObject, Sendable {
     /// APIClient for handling network requests
     var apiClient: SolanaAPIClient { get set }
 

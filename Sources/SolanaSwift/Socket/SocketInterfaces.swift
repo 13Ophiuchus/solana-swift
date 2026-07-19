@@ -18,7 +18,7 @@ public protocol WebSocketTask {
     func cancel()
     func send(_ message: URLSessionWebSocketTask.Message) async throws
     func receive() async throws -> URLSessionWebSocketTask.Message
-    func sendPing(pongReceiveHandler: @escaping (Error?) -> Void)
+    func sendPing(pongReceiveHandler: @escaping @Sendable (Error?) -> Void)
 }
 
 extension URLSessionWebSocketTask: WebSocketTask {}

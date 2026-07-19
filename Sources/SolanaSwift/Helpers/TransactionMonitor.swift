@@ -1,7 +1,11 @@
 import Foundation
 import Task_retrying
 
-class TransactionMonitor<SolanaAPIClient: SolanaSwift.SolanaAPIClient> {
+// @unchecked Sendable: instances are created and used within a single
+// AsyncStream closure scope (see observeSignatureStatus). The only cross-boundary
+// access is `stopMonitoring()` called once from the stream's onTermination handler,
+// which only cancels the internal task — no concurrent mutation occurs in practice.
+class TransactionMonitor<SolanaAPIClient: SolanaSwift.SolanaAPIClient>: @unchecked Sendable {
     let signature: String
     let apiClient: SolanaAPIClient
     let timeout: Int
@@ -16,8 +20,8 @@ class TransactionMonitor<SolanaAPIClient: SolanaSwift.SolanaAPIClient> {
         signature: String,
         timeout: Int,
         delay: Int,
-        responseHandler: @escaping (PendingTransactionStatus) -> Void,
-        timedOutHandler: @escaping () -> Void
+        responseHandler: @escaping @Sendable (PendingTransactionStatus) -> Void,
+        timedOutHandler: @escaping @Sendable () -> Void
     ) {
         self.apiClient = apiClient
         self.signature = signature

@@ -1,11 +1,11 @@
 import Foundation
 
-public protocol SolanaTokenListStorage {
+public protocol SolanaTokenListStorage: Sendable {
     func getTokens() async -> Set<TokenMetadata>?
     func save(tokens: Set<TokenMetadata>?) async
 }
 
-public class InMemorySolanaTokenListStorage: SolanaTokenListStorage {
+public final class InMemorySolanaTokenListStorage: SolanaTokenListStorage, @unchecked Sendable {
     var value: Set<TokenMetadata>? = []
 
     public init() {}

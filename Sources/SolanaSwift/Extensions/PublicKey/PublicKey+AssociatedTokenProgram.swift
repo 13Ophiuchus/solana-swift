@@ -4,7 +4,7 @@ import Foundation
 
 // MARK: - Constants
 
-private var maxSeedLength = 32
+private let maxSeedLength = 32
 private let gf1 = NaclLowLevel.gf([1])
 
 private extension Int {

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct TransactionInstruction: Codable, Equatable {
+public struct TransactionInstruction: Codable, Equatable, Sendable {
     public let keys: [AccountMeta]
     public let programId: PublicKey
     public let data: [UInt8]
