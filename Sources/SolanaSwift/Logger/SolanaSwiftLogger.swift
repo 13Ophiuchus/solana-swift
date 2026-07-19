@@ -14,7 +14,7 @@ public protocol SolanaSwiftLogger {
 public enum Logger {
     // MARK: -
 
-    private static var loggers: [SolanaSwiftLogger] = []
+    private static nonisolated(unsafe) var loggers: [SolanaSwiftLogger] = []
 
     public static func setLoggers(_ loggers: [SolanaSwiftLogger]) {
         self.loggers = loggers

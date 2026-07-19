@@ -1,6 +1,6 @@
 import Foundation
 
-public struct APIEndPoint: Hashable, Codable {
+public struct APIEndPoint: Hashable, Codable, Sendable {
     public init(address: String, network: Network, socketUrl: String? = nil, additionalQuery: String? = nil) {
         self.address = address
         self.network = network

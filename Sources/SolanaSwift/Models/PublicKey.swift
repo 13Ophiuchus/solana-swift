@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PublicKey: Codable, Equatable, CustomStringConvertible, Hashable {
+public struct PublicKey: Codable, Equatable, CustomStringConvertible, Hashable, Sendable {
     public static let NULL_PUBLICKEY_BYTES: [UInt8] = Array(repeating: UInt8(0), count: numberOfBytes)
     public static let numberOfBytes = 32
     public let bytes: [UInt8]
@@ -75,7 +75,7 @@ extension PublicKey: BytesEncodable {}
 
 // MARK: - Constants
 
-private var maxSeedLength = 32
+private let maxSeedLength = 32
 private let gf1 = NaclLowLevel.gf([1])
 
 private extension Int {

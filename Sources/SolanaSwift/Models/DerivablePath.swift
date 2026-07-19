@@ -1,9 +1,9 @@
 import Foundation
 
-public struct DerivablePath: Hashable, Codable {
+public struct DerivablePath: Hashable, Codable, Sendable {
     // MARK: - Nested type
 
-    public enum DerivableType: String, CaseIterable, Codable {
+    public enum DerivableType: String, CaseIterable, Codable, Sendable {
         case bip44Change
         case bip44
         case deprecated

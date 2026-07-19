@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AccountMeta: Equatable, Codable, CustomDebugStringConvertible {
+public struct AccountMeta: Equatable, Codable, CustomDebugStringConvertible, Sendable {
     public let publicKey: PublicKey
     public var isSigner: Bool
     public var isWritable: Bool

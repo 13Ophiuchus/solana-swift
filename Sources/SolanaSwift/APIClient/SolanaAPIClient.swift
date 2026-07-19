@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol SolanaAPIClient {
+public protocol SolanaAPIClient: Sendable {
     /// The endpoint that indicates the rpcpool address and network
     var endpoint: APIEndPoint { get }
 

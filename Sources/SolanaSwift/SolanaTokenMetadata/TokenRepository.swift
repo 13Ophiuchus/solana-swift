@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol TokenRepository {
+public protocol TokenRepository: Sendable {
     /// Get specific token.
     func get(address: String) async throws -> TokenMetadata?
 

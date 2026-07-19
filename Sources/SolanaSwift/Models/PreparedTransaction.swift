@@ -1,7 +1,7 @@
 import Foundation
 
 /// The prepared transaction that can be sent or simulate in SolanaBlockchainClient
-public struct PreparedTransaction: Equatable {
+public struct PreparedTransaction: Equatable, Sendable {
     public init(transaction: Transaction, signers: [KeyPair], expectedFee: FeeAmount) {
         self.transaction = transaction
         self.signers = signers

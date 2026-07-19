@@ -1,6 +1,6 @@
 import Foundation
 
-public enum PendingTransactionStatus: Equatable, Hashable {
+public enum PendingTransactionStatus: Equatable, Hashable, Sendable {
     case sending
     case confirmed(numberOfConfirmations: UInt64, slot: UInt64?)
     case finalized

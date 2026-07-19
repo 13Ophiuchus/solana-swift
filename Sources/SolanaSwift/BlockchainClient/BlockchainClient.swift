@@ -7,7 +7,7 @@ public enum BlockchainClientError: Error, Equatable {
 }
 
 /// Default implementation of SolanaBlockchainClient
-public class BlockchainClient: SolanaBlockchainClient {
+public final class BlockchainClient: SolanaBlockchainClient, @unchecked Sendable {
     public var apiClient: SolanaAPIClient
 
     public init(apiClient: SolanaAPIClient) {

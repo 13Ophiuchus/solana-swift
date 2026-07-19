@@ -1,7 +1,7 @@
 import Foundation
 
 public struct TokenSwapInfo: BufferLayout, Equatable, Hashable, Encodable {
-    public static var BUFFER_LENGTH: UInt64 = 324
+    public static let BUFFER_LENGTH: UInt64 = 324
 
     public let version: UInt8
     public let isInitialized: Bool

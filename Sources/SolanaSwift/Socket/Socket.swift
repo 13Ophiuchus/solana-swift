@@ -74,7 +74,7 @@ public extension SolanaSocket {
     }
 }
 
-public class Socket: NSObject, SolanaSocket {
+public final class Socket: NSObject, SolanaSocket {
     // MARK: - Properties
 
     /// Connection status of the socket

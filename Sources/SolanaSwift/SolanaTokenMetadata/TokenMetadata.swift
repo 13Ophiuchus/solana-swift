@@ -15,7 +15,7 @@ public extension TokenMetadata {
 // MARK: - TokenMetadata
 
 /// Common token metadata structure.
-public struct TokenMetadata: Hashable, Codable, Equatable {
+public struct TokenMetadata: Hashable, Codable, Equatable , Sendable {
     public let chainId: Int
     public let mintAddress: String
     public let symbol: String
@@ -108,12 +108,12 @@ public struct TokenMetadata: Hashable, Codable, Equatable {
     }
 }
 
-public struct TokenTag: Hashable, Codable {
+public struct TokenTag: Hashable, Codable, Sendable {
     public var name: String
     public var description: String
 }
 
-public enum TokenExtensionValue: Hashable, Codable {
+public enum TokenExtensionValue: Hashable, Codable, Sendable {
     case string(String)
     case int(Int)
     case double(Double)
