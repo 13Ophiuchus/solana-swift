@@ -44,7 +44,7 @@ class APIClientSendTransactionTests: XCTestCase {
     }
 }
 
-private var NetworkManagerMockJSON = [
+private let NetworkManagerMockJSON: [String: String] = [
     // success
     "sendTransactionSuccess": #"{"jsonrpc":"2.0","result":"296E1ou3V9rRVktzCqNpzbzcTZMxTnFJCK2pWRoxKVidRfQam1KLRv6ETbKtf2S4CW1MyRCbeVairQQ3QWTPMRmt","id":"3FF1AACE-812A-4106-8C34-6EF66237673C"}"#,
     // blockhash not found

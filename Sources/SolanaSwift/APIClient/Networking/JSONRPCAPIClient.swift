@@ -1,7 +1,7 @@
 import Foundation
 
 /// JSON RPC
-public final class JSONRPCAPIClient: SolanaAPIClient {
+open class JSONRPCAPIClient: SolanaAPIClient, @unchecked Sendable {
     public typealias ResponseDecoder = JSONRPCResponseDecoder
     public typealias RequestEncoder = JSONRPCRequestEncoder
 
@@ -330,7 +330,7 @@ public final class JSONRPCAPIClient: SolanaAPIClient {
         try await get(method: "validatorExit", params: [])
     }
 
-    public func getMultipleAccounts<T>(
+    open func getMultipleAccounts<T>(
         pubkeys: [String],
         commitment: Commitment
     ) async throws -> [BufferInfo<T>?]

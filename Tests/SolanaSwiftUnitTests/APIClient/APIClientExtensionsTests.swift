@@ -78,7 +78,7 @@ class APIClientExtensionsTests: XCTestCase {
     }
 }
 
-class NetworkManagerMock1: NetworkManager {
+final class NetworkManagerMock1: NetworkManager {
     private let json = [
         "checkAccountValidation1": "{\"jsonrpc\":\"2.0\",\"result\":{\"context\":{\"slot\":134252104},\"value\":{\"data\":[\"\",\"base64\"],\"executable\":false,\"lamports\":9984180,\"owner\":\"11111111111111111111111111111111\",\"rentEpoch\":310}},\"id\":\"943C6E03-2B44-4BDB-95EB-DEE2002D4475\"}\n",
         "checkAccountValidation2": "{\"jsonrpc\":\"2.0\",\"result\":{\"context\":{\"slot\":134252142},\"value\":null},\"id\":\"0F5D1C45-2438-4891-BCEF-3E1D0589DAD8\"}\n",
@@ -89,7 +89,7 @@ class NetworkManagerMock1: NetworkManager {
         data = json[name]!
     }
 
-    private var data: String!
+    nonisolated(unsafe) private var data: String!
 
     func requestData(request _: URLRequest) async throws -> Data {
         data.data(using: .utf8)!

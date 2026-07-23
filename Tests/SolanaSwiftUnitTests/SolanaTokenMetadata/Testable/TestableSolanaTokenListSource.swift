@@ -1,7 +1,7 @@
 import Foundation
 @testable import SolanaSwift
 
-class TestableSolanaTokenListSource: SolanaTokenListSource {
+final class TestableSolanaTokenListSource: SolanaTokenListSource, @unchecked Sendable {
     var downloadCalled: Int = 0
     var mockTokens: Set<TokenMetadata>?
     var shouldThrowError = false

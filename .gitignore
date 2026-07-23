@@ -44,3 +44,4 @@ OrcaSwapTransitiveTests-Secret.swift
 .build
 .idea
 *.log
+Package.resolved

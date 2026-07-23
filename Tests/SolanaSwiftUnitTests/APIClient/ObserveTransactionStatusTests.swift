@@ -132,7 +132,7 @@ class ObserveTransactionStatusTests: XCTestCase {
         #"{"jsonrpc":"2.0","result":{"context":{"slot":82},"value":[{"slot":72,"confirmations":\#(confirmations != nil ? "\(confirmations!)" : "null"),"err":null,"status":{"Ok":null},"confirmationStatus":"\#(confirmationStatus)"},null]},"id":1}"#
     }
 
-    class NetworkManagerMock: NetworkManager {
+    final class NetworkManagerMock: NetworkManager, @unchecked Sendable {
         fileprivate var count = 0
         private let results: [Result<String, Error>]
 

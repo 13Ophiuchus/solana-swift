@@ -1,7 +1,7 @@
 import Foundation
 import SolanaSwift
 
-class NetworkManagerMock: NetworkManager {
+final class NetworkManagerMock: NetworkManager, @unchecked Sendable {
     private let json: String
     init(_ json: String) {
         self.json = json

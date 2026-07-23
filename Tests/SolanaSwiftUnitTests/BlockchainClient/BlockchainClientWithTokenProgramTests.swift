@@ -108,7 +108,7 @@ final class BlockchainClientWithTokenProgramTests: XCTestCase {
     }
 }
 
-private class MockAPIClient: SolanaAPIClient {
+private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
     let testCase: String
 
     init(testCase: String) {

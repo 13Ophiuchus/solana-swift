@@ -20,37 +20,38 @@ class SocketTests: XCTestCase {
     func testSocketEvents() async throws {
         let expectation = XCTestExpectation()
         let delegate = MockSocketDelegate()
+        let socket = self.socket!
         delegate.onConected = {
             Task {
-                let _ = try await self.socket.accountSubscribe(publickey: "fasdfasdf") // native address
+                let _ = try await socket.accountSubscribe(publickey: "fasdfasdf") // native address
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                     Task {
-                        try await self.socket.accountSubscribe(publickey: "fasdfasdf") // token address
+                        try await socket.accountSubscribe(publickey: "fasdfasdf") // token address
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
                     Task {
-                        try await self.socket.signatureSubscribe(signature: "fasdfjisf") // signature status
+                        try await socket.signatureSubscribe(signature: "fasdfjisf") // signature status
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
                     Task {
-                        try await self.socket.logsSubscribe(mentions: [""]) // signature status
+                        try await socket.logsSubscribe(mentions: [""]) // signature status
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)) {
                     Task {
-                        try await self.socket.programSubscribe(publickey: "") // signature status
+                        try await socket.programSubscribe(publickey: "") // signature status
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
                     Task {
-                        self.socket.disconnect()
+                        socket.disconnect()
                     }
                 }
             }
@@ -79,11 +80,11 @@ class SocketTests: XCTestCase {
 
         socket.delegate = delegate
         socket.connect()
-        wait(for: [expectation], timeout: 20.0)
+        await fulfillment(of: [expectation], timeout: 20.0)
     }
 }
 
-private class MockSocketTaskProvider: WebSocketTaskProvider {
+private final class MockSocketTaskProvider: WebSocketTaskProvider, @unchecked Sendable {
     let delegate: URLSessionWebSocketDelegate?
     let mockSession = URLSession(configuration: .default)
     private lazy var mockWSTask = mockSession.webSocketTask(with: SocketTestsHelper.url)
@@ -106,7 +107,7 @@ private class MockSocketTaskProvider: WebSocketTaskProvider {
     }
 }
 
-private class MockSocketTask: WebSocketTask {
+private final class MockSocketTask: WebSocketTask, @unchecked Sendable {
     private var keySubject = PassthroughSubject<String, Never>()
     private var subscriptions = [AnyCancellable]()
     private var nativeEmitted: Bool = false

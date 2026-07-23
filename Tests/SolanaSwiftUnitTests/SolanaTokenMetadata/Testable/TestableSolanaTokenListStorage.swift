@@ -1,7 +1,7 @@
 import Foundation
 @testable import SolanaSwift
 
-class TestableSolanaTokenListStorage: SolanaTokenListStorage {
+final class TestableSolanaTokenListStorage: SolanaTokenListStorage, @unchecked Sendable {
     var mockTokens: Set<TokenMetadata>?
     var getTokensCalled: Int = 0
     var saveTokensCalled: Int = 0
