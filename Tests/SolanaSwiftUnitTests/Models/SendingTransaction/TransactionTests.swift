@@ -1,8 +1,8 @@
 import SolanaSwift
-import XCTest
+import Testing
 
-class TransactionTests: XCTestCase {
-    func test_givenSigner_whenPartialSign_thenSignerAppended() throws {
+struct TransactionTests {
+    @Test func givenSigner_whenPartialSign_thenSignerAppended() throws {
         // given
         let signer = KeyPair.StubFactory.make()
         var transaction = Self.makeTransaction(signer: signer)
@@ -11,10 +11,10 @@ class TransactionTests: XCTestCase {
         try transaction.partialSign(signers: [signer])
 
         // then
-        XCTAssertTrue(transaction.signatures.contains(where: { $0.publicKey == signer.publicKey }))
+        #expect(transaction.signatures.contains(where: { $0.publicKey == signer.publicKey }))
     }
 
-    func test_givenSignerAndInvalidTransaction_whenPartialSign_thenThrowsError() throws {
+    @Test func givenSignerAndInvalidTransaction_whenPartialSign_thenThrowsError() throws {
         // given
         let signer = KeyPair.StubFactory.make()
         var transaction = Transaction(
@@ -25,10 +25,12 @@ class TransactionTests: XCTestCase {
 
         // when
         // then
-        XCTAssertThrowsError(try transaction.partialSign(signers: [signer]))
+        #expect(throws: (any Error).self) {
+            try transaction.partialSign(signers: [signer])
+        }
     }
 
-    func test_givenPartiallySignedTransactionAndSameSigner_whenPartialSign_thenSignerNotAdded() throws {
+    @Test func givenPartiallySignedTransactionAndSameSigner_whenPartialSign_thenSignerNotAdded() throws {
         // given
         let signer = KeyPair.StubFactory.make()
         var transaction = Self.makeTransaction(signer: signer)
@@ -39,17 +41,19 @@ class TransactionTests: XCTestCase {
         try transaction.partialSign(signers: [signer])
 
         // then
-        XCTAssertEqual(numberOfSignatures, transaction.signatures.count)
+        #expect(numberOfSignatures == transaction.signatures.count)
     }
 
-    func test_givenEmptySigners_whenPartialSign_thenThrowsError() throws {
+    @Test func givenEmptySigners_whenPartialSign_thenThrowsError() throws {
         // given
         let signer = KeyPair.StubFactory.make()
         var transaction = Self.makeTransaction(signer: signer)
 
         // when
         // then
-        XCTAssertThrowsError(try transaction.partialSign(signers: []))
+        #expect(throws: (any Error).self) {
+            try transaction.partialSign(signers: [])
+        }
     }
 }
 

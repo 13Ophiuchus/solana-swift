@@ -1,10 +1,10 @@
 import SolanaSwift
-import XCTest
+import Testing
 
-class TokenSwapProgramTests: XCTestCase {
+struct TokenSwapProgramTests {
     let publicKey: PublicKey = "11111111111111111111111111111111"
 
-    func testSwapInstruction() throws {
+    @Test func swapInstruction() throws {
         let instruction = TokenSwapProgram.swapInstruction(
             tokenSwap: publicKey,
             authority: publicKey,
@@ -22,23 +22,23 @@ class TokenSwapProgramTests: XCTestCase {
             minimumAmountOut: 0
         )
 
-        XCTAssertEqual(instruction.keys.count, 11)
-        XCTAssertEqual(instruction.keys[0], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[1], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[2], .readonly(publicKey: "11111111111111111111111111111111", isSigner: true))
-        XCTAssertEqual(instruction.keys[3], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[4], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[5], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[6], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[7], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[8], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[9], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[10], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.programId, publicKey)
-        XCTAssertEqual(Base58.decode("tSBHVn49GSCW4DNB1EYv9M"), instruction.data)
+        #expect(instruction.keys.count == 11)
+        #expect(instruction.keys[0] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[1] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[2] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: true))
+        #expect(instruction.keys[3] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[4] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[5] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[6] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[7] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[8] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[9] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[10] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.programId == publicKey)
+        #expect(Base58.decode("tSBHVn49GSCW4DNB1EYv9M") == instruction.data)
     }
 
-    func testDepositInstruction() throws {
+    @Test func depositInstruction() throws {
         let instruction = TokenSwapProgram.depositInstruction(
             tokenSwap: publicKey,
             authority: publicKey,
@@ -55,21 +55,21 @@ class TokenSwapProgramTests: XCTestCase {
             maximumTokenB: 1038
         )
 
-        XCTAssertEqual(instruction.keys.count, 9)
-        XCTAssertEqual(instruction.keys[0], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[1], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[2], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[3], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[4], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[5], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[6], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[7], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[8], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.programId, publicKey)
-        XCTAssertEqual(Base58.decode("22WQQtPPUknk68tx2dUGRL1Q4Vj2mkg6Hd"), instruction.data)
+        #expect(instruction.keys.count == 9)
+        #expect(instruction.keys[0] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[1] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[2] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[3] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[4] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[5] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[6] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[7] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[8] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.programId == publicKey)
+        #expect(Base58.decode("22WQQtPPUknk68tx2dUGRL1Q4Vj2mkg6Hd") == instruction.data)
     }
 
-    func testWithdrawInstruction() throws {
+    @Test func withdrawInstruction() throws {
         let instruction = TokenSwapProgram.withdrawInstruction(
             tokenSwap: publicKey,
             authority: publicKey,
@@ -87,18 +87,18 @@ class TokenSwapProgramTests: XCTestCase {
             minimumTokenB: 979
         )
 
-        XCTAssertEqual(instruction.keys.count, 10)
-        XCTAssertEqual(instruction.keys[0], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[1], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[2], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[3], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[4], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[5], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[6], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[7], .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[8], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.keys[9], .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
-        XCTAssertEqual(instruction.programId, publicKey)
-        XCTAssertEqual(Base58.decode("2aJyv2ixHWcYWoAKJkYMzSPwTrGUfnSR9R"), instruction.data)
+        #expect(instruction.keys.count == 10)
+        #expect(instruction.keys[0] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[1] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[2] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[3] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[4] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[5] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[6] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[7] == .writable(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[8] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.keys[9] == .readonly(publicKey: "11111111111111111111111111111111", isSigner: false))
+        #expect(instruction.programId == publicKey)
+        #expect(Base58.decode("2aJyv2ixHWcYWoAKJkYMzSPwTrGUfnSR9R") == instruction.data)
     }
 }

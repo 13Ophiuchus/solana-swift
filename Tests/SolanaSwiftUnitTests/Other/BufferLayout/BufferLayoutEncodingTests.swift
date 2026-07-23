@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SolanaSwift
 
-final class BufferLayoutEncodingTests: XCTestCase {
+struct BufferLayoutEncodingTests {
     // MARK: - Mint
 
-    func testEncodingMint() throws {
+    @Test func encodingMint() throws {
         let mintLayout = TokenMintState(
             mintAuthorityOption: 1,
             mintAuthority: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo",
@@ -18,15 +19,12 @@ final class BufferLayoutEncodingTests: XCTestCase {
         var data = Data()
         try mintLayout.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
-        )
+        #expect(data.base64EncodedString() == "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==")
     }
 
     // MARK: - VecU8
 
-    func testEncodingVecU8() throws {
+    @Test func encodingVecU8() throws {
         let length: UInt16 = 25
         let data = Data([
             167, 237, 210, 172, 25, 197,
@@ -38,13 +36,13 @@ final class BufferLayoutEncodingTests: XCTestCase {
         var result = Data()
         try VecU8(length: length, data: data).serialize(to: &result)
 
-        XCTAssertEqual(result.base64EncodedString(), "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y")
+        #expect(result.base64EncodedString() == "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y")
     }
 
     // MARK: - Account info
 
-    func testEncodingAccountInfo() throws {
-        XCTAssertEqual(TokenAccountState.BUFFER_LENGTH, 165)
+    @Test func encodingAccountInfo() throws {
+        #expect(TokenAccountState.BUFFER_LENGTH == 165)
 
         let accountInfo = TokenAccountState(
             mint: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo",
@@ -67,13 +65,10 @@ final class BufferLayoutEncodingTests: XCTestCase {
         var data = Data()
         try accountInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "BhrZ0FOHFUhTft4+JhhJo9+3/QL6vHWyI8jkatuFPQwCqmOzhzy1ve5l2AqL0ottCChJZ1XSIW3k3C7TaBQn7aCGAQAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWqAQAAAAAAAAAAAAAAAGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        )
+        #expect(data.base64EncodedString() == "BhrZ0FOHFUhTft4+JhhJo9+3/QL6vHWyI8jkatuFPQwCqmOzhzy1ve5l2AqL0ottCChJZ1XSIW3k3C7TaBQn7aCGAQAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWqAQAAAAAAAAAAAAAAAGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     }
 
-    func testEncodingAccountInfo2() throws {
+    @Test func encodingAccountInfo2() throws {
         let accountInfo = TokenAccountState(
             mint: "11111111111111111111111111111111",
             owner: "11111111111111111111111111111111",
@@ -95,15 +90,12 @@ final class BufferLayoutEncodingTests: XCTestCase {
         var data = Data()
         try accountInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq"
-        )
+        #expect(data.base64EncodedString() == "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq")
     }
 
     // MARK: - TokenSwapInfo
 
-    func testEncodingTokenSwapInfo() throws {
+    @Test func encodingTokenSwapInfo() throws {
         let swapInfo = TokenSwapInfo(
             version: 1,
             isInitialized: true,
@@ -130,29 +122,23 @@ final class BufferLayoutEncodingTests: XCTestCase {
         var data = Data()
         try swapInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AQH/Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkg7XoTWySqouc9rBPiFviH2xU9/fRb+6P90QcOMKupqewjVdppkaFaD9TmikzQc7KAtp/LEF9bATPPnDdGT+7Kj7KrmDRVoZN9WTu3h9wgrrN83pVvcqGHLhOtWWeWCUjG+nrzvtutOj1l82qryXQxsbvkwtL24OR8pgIDRS9dYZqhgojuhD2D9j0JH/1UU78OyY17yIzxSctOkEdQqtVncXgwwKhJB+PCDsVtlUWWQbPgBu+MNnFskXx8qDFMwSAeAAAAAAAAABAnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        )
+        #expect(data.base64EncodedString() == "AQH/Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkg7XoTWySqouc9rBPiFviH2xU9/fRb+6P90QcOMKupqewjVdppkaFaD9TmikzQc7KAtp/LEF9bATPPnDdGT+7Kj7KrmDRVoZN9WTu3h9wgrrN83pVvcqGHLhOtWWeWCUjG+nrzvtutOj1l82qryXQxsbvkwtL24OR8pgIDRS9dYZqhgojuhD2D9j0JH/1UU78OyY17yIzxSctOkEdQqtVncXgwwKhJB+PCDsVtlUWWQbPgBu+MNnFskXx8qDFMwSAeAAAAAAAAABAnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     }
 
     // MARK: - EmptyInfo
 
-    func testEncodingEmptyInfo() throws {
+    @Test func encodingEmptyInfo() throws {
         let emptyInfo = EmptyInfo()
 
         var data = Data()
         try emptyInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            ""
-        )
+        #expect(data.base64EncodedString() == "")
     }
 
     // MARK: - Token2022
 
-    func testEncodingToken2022MintState() throws {
+    @Test func encodingToken2022MintState() throws {
         // Create an instance of Token2022MintState with the same values as in the decoding test
         var state = Token2022MintState(
             mintAuthorityOption: 0,
@@ -194,13 +180,10 @@ final class BufferLayoutEncodingTests: XCTestCase {
         try state.serialize(to: &data)
 
         // Check if the serialized data matches the expected base64-encoded string
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE="
-        )
+        #expect(data.base64EncodedString() == "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE=")
     }
 
-    func testEncodingToken2022MintState2() throws {
+    @Test func encodingToken2022MintState2() throws {
         // Mint FZYEgCWzzedxcmxYvGXSkMrj7TaA3bXoaEv6XMnwtLKh
         var state = Token2022MintState(
             mintAuthorityOption: 0,
@@ -252,13 +235,10 @@ final class BufferLayoutEncodingTests: XCTestCase {
         try state.serialize(to: &data)
 
         // Base64 encode the serialized data and compare with the expected value
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AAAAABdZNqd8UPqRoeBHXdhoEwzZNLf6UnDQ1UDsr4oXimfhquOLA1BVIXECAQAAAAAXWTanfFD6kaHgR13YaBMM2TS3+lJw0NVA7K+KF4pn4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoDKJKHBCRLpAQAAAAAAAACQI15ZrVt7LAHpAQAAAAAAAACQI15ZrVt7LAEKADQAF1k2p3xQ+pGh4Edd2GgTDNk0t/pScNDVQOyviheKZ+EN9NlkAAAAAAAADfTZZAAAAAAAAAYAAQAB"
-        )
+        #expect(data.base64EncodedString() == "AAAAABdZNqd8UPqRoeBHXdhoEwzZNLf6UnDQ1UDsr4oXimfhquOLA1BVIXECAQAAAAAXWTanfFD6kaHgR13YaBMM2TS3+lJw0NVA7K+KF4pn4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoDKJKHBCRLpAQAAAAAAAACQI15ZrVt7LAHpAQAAAAAAAACQI15ZrVt7LAEKADQAF1k2p3xQ+pGh4Edd2GgTDNk0t/pScNDVQOyviheKZ+EN9NlkAAAAAAAADfTZZAAAAAAAAAYAAQAB")
     }
 
-    func testEncodingTokenAccountState() throws {
+    @Test func encodingTokenAccountState() throws {
         let accountState = Token2022AccountState(
             mint: "8nxJnGJDyvehdEHw4PgRc7ccJ1Zi134PhM2USK3WE8mS",
             owner: "E8E6GvyCpbGu7YSFxfhTXGx6SW4VhzVmxWh3gbrgXZNd",
@@ -287,9 +267,6 @@ final class BufferLayoutEncodingTests: XCTestCase {
         try accountState.serialize(to: &data)
 
         // Base64 encode the serialized data and compare with the expected value
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA="
-        )
+        #expect(data.base64EncodedString() == "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA=")
     }
 }
