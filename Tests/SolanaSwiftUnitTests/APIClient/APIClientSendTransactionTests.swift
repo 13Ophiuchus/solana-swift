@@ -1,45 +1,43 @@
+import Foundation
 @testable import SolanaSwift
-import XCTest
+import Testing
 
-class APIClientSendTransactionTests: XCTestCase {
+final class APIClientSendTransactionTests {
     let endpoint = APIEndPoint(
         address: "https://api.mainnet-beta.solana.com",
         network: .mainnetBeta
     )
 
     /// Transaction success with returned signature
-    func testSendTransactionSuccess() async throws {
+    @Test func sendTransactionSuccess() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["sendTransactionSuccess"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.sendTransaction(transaction: "")
-        XCTAssertNotNil(result)
-        XCTAssertEqual(
-            result,
-            "296E1ou3V9rRVktzCqNpzbzcTZMxTnFJCK2pWRoxKVidRfQam1KLRv6ETbKtf2S4CW1MyRCbeVairQQ3QWTPMRmt"
-        )
+        #expect(result != nil)
+        #expect(result == "296E1ou3V9rRVktzCqNpzbzcTZMxTnFJCK2pWRoxKVidRfQam1KLRv6ETbKtf2S4CW1MyRCbeVairQQ3QWTPMRmt")
     }
 
     /// Transaction failed: Blockhash not found
-    func testSendTransactionBlockhashNotFound() async throws {
+    @Test func sendTransactionBlockhashNotFound() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["sendTransactionBlockhashNotFound"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
 
         do {
             _ = try await apiClient.sendTransaction(transaction: "")
         } catch {
-            XCTAssertTrue(error.isEqualTo(.blockhashNotFound))
+            #expect(error.isEqualTo(.blockhashNotFound))
         }
     }
 
     /// Transaction failed: whirpool InvalidTimestamp
-    func testSendTransactionWhirpoolInvalidTimestamp() async throws {
+    @Test func sendTransactionWhirpoolInvalidTimestamp() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["sendTransactionWhirpoolInvalidTimestamp"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
 
         do {
             _ = try await apiClient.sendTransaction(transaction: "")
         } catch let APIClientError.responseError(response) {
-            XCTAssertTrue(response.message!.hasSuffix("custom program error: 0x1786"))
+            #expect(response.message!.hasSuffix("custom program error: 0x1786"))
         }
     }
 }
