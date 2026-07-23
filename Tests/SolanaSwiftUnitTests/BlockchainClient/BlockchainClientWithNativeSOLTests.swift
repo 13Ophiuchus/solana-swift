@@ -1,12 +1,12 @@
 import Foundation
 
-import XCTest
+import Testing
 @testable import SolanaSwift
 
-class BlockchainClientWithNativeSOLTests: XCTestCase {
-    var account: KeyPair!
+final class BlockchainClientWithNativeSOLTests {
+    let account: KeyPair
 
-    override func setUp() async throws {
+    init() async throws {
         account = try await KeyPair(
             phrase: "miracle pizza supply useful steak border same again youth silver access hundred"
                 .components(separatedBy: " "),
@@ -14,13 +14,9 @@ class BlockchainClientWithNativeSOLTests: XCTestCase {
         )
     }
 
-    override func tearDown() async throws {
-        account = nil
-    }
-
     // MARK: - Testcases
 
-    func testPrepareSendingNativeSOL() async throws {
+    @Test func prepareSendingNativeSOL() async throws {
         let toPublicKey = "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm"
         let apiClient = MockAPIClient(testCase: #function)
         let blockchain = BlockchainClient(apiClient: apiClient)
@@ -38,14 +34,11 @@ class BlockchainClientWithNativeSOLTests: XCTestCase {
             recentBlockhash: recentBlockhash
         )
 
-        XCTAssertEqual(tx.expectedFee, .init(transaction: 5000, accountBalances: 0))
-        XCTAssertEqual(
-            serializedTransaction,
-            "AYqN18ZDaJtv61HxaIUnmtK0f+ST/HaO3YzAOBjwtG9Qf/Td58DSe5zS5nyx9InT+UyLIZbb4nFE/XYrWfHKCwQBAAEDJ/e5BFWJMqaTuN1LbmcQ3ile94QrPqzzX8y+j5kQCsVQai+mnMv4ueKX0uXJIyAIv0UeTX3PGhu9bYIRBgH+2gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuN92Q8S3ViiBKFjrCz0SjRSx6JhG5pY6fuBlpw98caYBAgIAAQwCAAAAZAAAAAAAAAA="
-        )
+        #expect(tx.expectedFee == .init(transaction: 5000, accountBalances: 0))
+        #expect(serializedTransaction == "AYqN18ZDaJtv61HxaIUnmtK0f+ST/HaO3YzAOBjwtG9Qf/Td58DSe5zS5nyx9InT+UyLIZbb4nFE/XYrWfHKCwQBAAEDJ/e5BFWJMqaTuN1LbmcQ3ile94QrPqzzX8y+j5kQCsVQai+mnMv4ueKX0uXJIyAIv0UeTX3PGhu9bYIRBgH+2gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuN92Q8S3ViiBKFjrCz0SjRSx6JhG5pY6fuBlpw98caYBAgIAAQwCAAAAZAAAAAAAAAA=")
     }
 
-    func testPrepareSendingNativeSOLToNewlyCreatedAccount() async throws {
+    @Test func prepareSendingNativeSOLToNewlyCreatedAccount() async throws {
         let toPublicKey = "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm"
         let apiClient = MockAPIClient(testCase: #function)
         let blockchain = BlockchainClient(apiClient: apiClient)
@@ -63,11 +56,8 @@ class BlockchainClientWithNativeSOLTests: XCTestCase {
             recentBlockhash: recentBlockhash
         )
 
-        XCTAssertEqual(tx.expectedFee, .init(transaction: 5000, accountBalances: 0))
-        XCTAssertEqual(
-            serializedTransaction,
-            "AYqN18ZDaJtv61HxaIUnmtK0f+ST/HaO3YzAOBjwtG9Qf/Td58DSe5zS5nyx9InT+UyLIZbb4nFE/XYrWfHKCwQBAAEDJ/e5BFWJMqaTuN1LbmcQ3ile94QrPqzzX8y+j5kQCsVQai+mnMv4ueKX0uXJIyAIv0UeTX3PGhu9bYIRBgH+2gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuN92Q8S3ViiBKFjrCz0SjRSx6JhG5pY6fuBlpw98caYBAgIAAQwCAAAAZAAAAAAAAAA="
-        )
+        #expect(tx.expectedFee == .init(transaction: 5000, accountBalances: 0))
+        #expect(serializedTransaction == "AYqN18ZDaJtv61HxaIUnmtK0f+ST/HaO3YzAOBjwtG9Qf/Td58DSe5zS5nyx9InT+UyLIZbb4nFE/XYrWfHKCwQBAAEDJ/e5BFWJMqaTuN1LbmcQ3ile94QrPqzzX8y+j5kQCsVQai+mnMv4ueKX0uXJIyAIv0UeTX3PGhu9bYIRBgH+2gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuN92Q8S3ViiBKFjrCz0SjRSx6JhG5pY6fuBlpw98caYBAgIAAQwCAAAAZAAAAAAAAAA=")
     }
 }
 
@@ -92,13 +82,13 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
         switch account {
         case "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm":
             switch testCase {
-            case "testPrepareSendingNativeSOL()":
+            case "prepareSendingNativeSOL()":
                 data = EmptyInfo() as! T
                 lamports = 0
                 owner = SystemProgram.id.base58EncodedString
                 executable = true
                 rentEpoch = 0
-            case "testPrepareSendingNativeSOLToNewlyCreatedAccount()":
+            case "prepareSendingNativeSOLToNewlyCreatedAccount()":
                 return nil
             case "testPrepareSendingSPLTokens()#1":
                 throw APIClientError.couldNotRetrieveAccountInfo
@@ -151,10 +141,10 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
         let blockhash: String
         let lastValidSlot: UInt64
         switch testCase {
-        case "testPrepareSendingNativeSOL()":
+        case "prepareSendingNativeSOL()":
             blockhash = "DSfeYUm7WDw1YnKodR361rg8sUzUCGdat9V7fSKPFgzq"
             lastValidSlot = 133_389_328
-        case "testPrepareSendingNativeSOLToNewlyCreatedAccount()":
+        case "prepareSendingNativeSOLToNewlyCreatedAccount()":
             blockhash = "7GhCDV2MK7RVhYzD3iNZAVkCd9hYCgyqkgXdFbEFj9PD"
             lastValidSlot = 133_389_328
         case "testPrepareSendingSPLTokens()#1":
@@ -190,9 +180,9 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
 
     func getRecentBlockhash(commitment _: Commitment?) async throws -> String {
         switch testCase {
-        case "testPrepareSendingNativeSOL()":
+        case "prepareSendingNativeSOL()":
             return "DSfeYUm7WDw1YnKodR361rg8sUzUCGdat9V7fSKPFgzq"
-        case "testPrepareSendingNativeSOLToNewlyCreatedAccount()":
+        case "prepareSendingNativeSOLToNewlyCreatedAccount()":
             return "DSfeYUm7WDw1YnKodR361rg8sUzUCGdat9V7fSKPFgzq"
         case "testPrepareSendingSPLTokens()#1":
             return "9VG1E6DTdjRRx2JpbXrH9QPTQQ6FRjakvStttnmSV7fR"
