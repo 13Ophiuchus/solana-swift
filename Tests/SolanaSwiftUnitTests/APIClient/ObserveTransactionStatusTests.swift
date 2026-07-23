@@ -1,7 +1,8 @@
+import Foundation
 @testable import SolanaSwift
-import XCTest
+import Testing
 
-class ObserveTransactionStatusTests: XCTestCase {
+final class ObserveTransactionStatusTests {
     enum CustomError: Error {
         case unknownNetworkError
     }
@@ -14,41 +15,36 @@ class ObserveTransactionStatusTests: XCTestCase {
     var apiClient: JSONRPCAPIClient!
     var statuses: [PendingTransactionStatus]!
 
-    override func setUpWithError() throws {
+    init() {
         resetAPIClient()
     }
 
-    override func tearDownWithError() throws {
-        apiClient = nil
-        statuses = []
-    }
-
-    func testObservingTransactionStatusExceededTimeout1() async throws {
+    @Test func observingTransactionStatusExceededTimeout1() async throws {
         // Test 1, timeout 5
         for try await status in apiClient.observeSignatureStatus(signature: "jaiojsdfoijvaij", timeout: 5, delay: 1) {
             print(status)
             statuses.append(status)
         }
-        XCTAssertEqual(statuses.last?.numberOfConfirmations, 1)
+        #expect(statuses.last?.numberOfConfirmations == 1)
     }
 
-    func testObservingTransactionStatusExceededTimeout2() async throws {
+    @Test func observingTransactionStatusExceededTimeout2() async throws {
         for try await status in apiClient.observeSignatureStatus(signature: "jijviajidsfjiaj", timeout: 7, delay: 1) {
             print(status)
             statuses.append(status)
         }
-        XCTAssertEqual(statuses.last?.numberOfConfirmations, 10)
+        #expect(statuses.last?.numberOfConfirmations == 10)
     }
 
-    func testObservingTransactionStatusFinalized() async throws {
+    @Test func observingTransactionStatusFinalized() async throws {
         for try await status in apiClient.observeSignatureStatus(signature: "jijviajidsfjiaj", delay: 1) {
             print(status)
             statuses.append(status)
         }
-        XCTAssertEqual(statuses.last, .finalized)
+        #expect(statuses.last == .finalized)
     }
 
-    func testWaitForConfirmationIgnoreStatus() async throws {
+    @Test func waitForConfirmationIgnoreStatus() async throws {
         // return anyway after time out, even when transaction is not surely confimed
         let response: [Result<String, Error>] = [
             .failure(CustomError.unknownNetworkError),
@@ -67,7 +63,7 @@ class ObserveTransactionStatusTests: XCTestCase {
         try await apiClient.waitForConfirmation(signature: "adfijidjfaisdf", ignoreStatus: true)
     }
 
-    func testWaitForConfirmationNotIgnoreStatus() async throws {
+    @Test func waitForConfirmationNotIgnoreStatus() async throws {
         // return only if transaction is confirmed or partially confirmed
         let response: [Result<String, Error>] = [
             .failure(CustomError.unknownNetworkError),
@@ -88,7 +84,7 @@ class ObserveTransactionStatusTests: XCTestCase {
                 delay: 1
             )
         } catch {
-            XCTAssertTrue(error.isEqualTo(TransactionConfirmationError.unconfirmed))
+            #expect(error.isEqualTo(TransactionConfirmationError.unconfirmed))
         }
 
         resetAPIClient(customResponse: response)
@@ -100,7 +96,7 @@ class ObserveTransactionStatusTests: XCTestCase {
                 delay: 1
             )
         } catch {
-            XCTAssertTrue(error.isEqualTo(TransactionConfirmationError.unconfirmed))
+            #expect(error.isEqualTo(TransactionConfirmationError.unconfirmed))
         }
 
         resetAPIClient(customResponse: response)
