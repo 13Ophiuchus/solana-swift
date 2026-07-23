@@ -1,13 +1,14 @@
-import XCTest
+import Foundation
+import Testing
 @testable import SolanaSwift
 
-class APIClientExtensionsTests: XCTestCase {
+final class APIClientExtensionsTests {
     let endpoint = APIEndPoint(
         address: "https://api.mainnet-beta.solana.com",
         network: .mainnetBeta
     )
 
-    func testCheckAccountValidation() async throws {
+    @Test func checkAccountValidation() async throws {
         let mock = NetworkManagerMock1()
 
         mock.prepare(name: "checkAccountValidation1")
@@ -16,22 +17,22 @@ class APIClientExtensionsTests: XCTestCase {
         // funding SOL address
         let isValid1 = try await apiClient
             .checkAccountValidation(account: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG")
-        XCTAssertEqual(isValid1, true)
+        #expect(isValid1 == true)
 
         mock.prepare(name: "checkAccountValidation2")
         // no funding SOL address
         let isValid2 = try await apiClient
             .checkAccountValidation(account: "HnXJX1Bvps8piQwDYEYC6oea9GEkvQvahvRj3c97X9xr")
-        XCTAssertEqual(isValid2, false)
+        #expect(isValid2 == false)
 
         mock.prepare(name: "checkAccountValidation3")
         // token address
         let isValid3 = try await apiClient
             .checkAccountValidation(account: "8J5wZ4Lo7QSwFWwBfWsWUgsbH4Jr44RFsEYj6qFdXYhM")
-        XCTAssertEqual(isValid3, true)
+        #expect(isValid3 == true)
     }
 
-    func testFindSPLTokenDestinationAddress() async throws {
+    @Test func findSPLTokenDestinationAddress() async throws {
         // TODO:
         // USDC
         let mintAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
@@ -43,28 +44,28 @@ class APIClientExtensionsTests: XCTestCase {
             destinationAddress: destination,
             tokenProgramId: TokenProgram.id
         )
-        XCTAssertEqual(result.destination, "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3")
-        XCTAssertEqual(result.isUnregisteredAsocciatedToken, false)
+        #expect(result.destination == "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3")
+        #expect(result.isUnregisteredAsocciatedToken == false)
     }
 
-    func testCheckIfAssociatedTokenAccountExists() async throws {
+    @Test func checkIfAssociatedTokenAccountExists() async throws {
         let apiClient = BaseAPIClientMock(endpoint: endpoint)
         let exist = try await apiClient.checkIfAssociatedTokenAccountExists(
             owner: "9sdwzJWooFrjNGVX6GkkWUG9GyeBnhgJYqh27AsPqwbM",
             mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
             tokenProgramId: TokenProgram.id
         )
-        XCTAssertTrue(exist)
+        #expect(exist)
 
         let exist2 = try await apiClient.checkIfAssociatedTokenAccountExists(
             owner: "9sdwzJWooFrjNGVX6GkkWUG9GyeBnhgJYqh27AsPqwbM",
             mint: "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk",
             tokenProgramId: TokenProgram.id
         )
-        XCTAssertFalse(exist2)
+        #expect(!exist2)
     }
 
-    func testGetAccountInfoThrowable() async throws {
+    @Test func getAccountInfoThrowable() async throws {
         let mock = NetworkManagerMock1()
         mock.prepare(name: "checkAccountValidation2")
         let apiClient = BaseAPIClientMock(endpoint: endpoint, networkManager: mock)
@@ -73,7 +74,7 @@ class APIClientExtensionsTests: XCTestCase {
             let _: BufferInfo<TokenAccountState> = try await apiClient
                 .getAccountInfoThrowable(account: "djfijijasdf")
         } catch {
-            XCTAssertTrue(error.isEqualTo(.couldNotRetrieveAccountInfo))
+            #expect(error.isEqualTo(.couldNotRetrieveAccountInfo))
         }
     }
 }
@@ -96,7 +97,7 @@ final class NetworkManagerMock1: NetworkManager {
     }
 }
 
-class BaseAPIClientMock: JSONRPCAPIClient {
+class BaseAPIClientMock: JSONRPCAPIClient, @unchecked Sendable {
     override init(endpoint: APIEndPoint, networkManager: NetworkManager = URLSession(configuration: .default)) {
         super.init(endpoint: endpoint, networkManager: networkManager)
     }
