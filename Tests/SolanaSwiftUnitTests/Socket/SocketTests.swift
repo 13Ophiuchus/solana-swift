@@ -1,88 +1,118 @@
 import Combine
 import SolanaSwift
-import XCTest
+import Testing
+import Foundation
 
-class SocketTests: XCTestCase {
+@MainActor
+final class SocketTests {
     var socket: Socket!
 
-    override func setUpWithError() throws {
+    init() {
         socket = Socket(
             url: SocketTestsHelper.url,
             socketTaskProviderType: MockSocketTaskProvider.self
         )
     }
 
-    override func tearDownWithError() throws {
+    deinit {
         socket.disconnect()
         socket = nil
     }
 
-    func testSocketEvents() async throws {
-        let expectation = XCTestExpectation()
+    @Test @MainActor func socketEvents() async throws {
         let delegate = MockSocketDelegate()
         let socket = self.socket!
-        delegate.onConected = {
-            Task {
-                let _ = try await socket.accountSubscribe(publickey: "fasdfasdf") // native address
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                    Task {
-                        try await socket.accountSubscribe(publickey: "fasdfasdf") // token address
+        final class ResumeGuard: @unchecked Sendable {
+            private let lock = NSLock()
+            private var didResume = false
+            func runOnce(_ block: () -> Void) {
+                lock.lock()
+                defer { lock.unlock() }
+                guard !didResume else { return }
+                didResume = true
+                block()
+            }
+        }
+
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            let resumeGuard = ResumeGuard()
+            func resumeOnce(_ block: () -> Void) {
+                resumeGuard.runOnce(block)
+            }
+
+            delegate.onConected = {
+                Task {
+                    let _ = try await socket.accountSubscribe(publickey: "fasdfasdf") // native address
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                        Task {
+                            try await socket.accountSubscribe(publickey: "fasdfasdf") // token address
+                        }
                     }
-                }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                    Task {
-                        try await socket.signatureSubscribe(signature: "fasdfjisf") // signature status
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                        Task {
+                            try await socket.signatureSubscribe(signature: "fasdfjisf") // signature status
+                        }
                     }
-                }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-                    Task {
-                        try await socket.logsSubscribe(mentions: [""]) // signature status
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                        Task {
+                            try await socket.logsSubscribe(mentions: [""]) // signature status
+                        }
                     }
-                }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)) {
-                    Task {
-                        try await socket.programSubscribe(publickey: "") // signature status
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)) {
+                        Task {
+                            try await socket.programSubscribe(publickey: "") // signature status
+                        }
                     }
-                }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-                    Task {
-                        socket.disconnect()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+                        Task {
+                            socket.disconnect()
+                        }
                     }
                 }
             }
-        }
-        delegate.onSubscribed = { _, id in
-            XCTAssertEqual("ADFB8971-4473-4B16-A8BC-63EFD2F1FC8E", id)
-        }
-        delegate.onNativeAccountNotification = { notification in
-            XCTAssertEqual(notification.lamports, 41_083_620)
-        }
-        delegate.onTokenAccountNotification = { notification in
-            XCTAssertEqual(notification.tokenAmount?.amount, "390000101")
-        }
-        delegate.onSignatureNotification = { notification in
-            XCTAssertEqual(notification.isConfirmed, true)
-        }
-        delegate.onLogsNotification = { notification in
-            XCTAssertEqual(notification.logs?.last, "BPF program 83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri success")
-        }
-        delegate.onProgramNotification = { notification in
-            XCTAssertEqual(notification.subscription, 24040)
-        }
-        delegate.onDisconnected = {
-            expectation.fulfill()
-        }
+            delegate.onSubscribed = { _, id in
+                #expect(id == "ADFB8971-4473-4B16-A8BC-63EFD2F1FC8E")
+            }
+            delegate.onNativeAccountNotification = { notification in
+                #expect(notification.lamports == 41_083_620)
+            }
+            delegate.onTokenAccountNotification = { notification in
+                #expect(notification.tokenAmount?.amount == "390000101")
+            }
+            delegate.onSignatureNotification = { notification in
+                #expect(notification.isConfirmed == true)
+            }
+            delegate.onLogsNotification = { notification in
+                #expect(notification.logs?.last == "BPF program 83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri success")
+            }
+            delegate.onProgramNotification = { notification in
+                #expect(notification.subscription == 24040)
+            }
+            delegate.onDisconnected = {
+                resumeOnce {
+                    continuation.resume()
+                }
+            }
 
-        socket.delegate = delegate
-        socket.connect()
-        await fulfillment(of: [expectation], timeout: 20.0)
+            socket.delegate = delegate
+            socket.connect()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20)) {
+                resumeOnce {
+                    continuation.resume(throwing: SocketTestTimeoutError())
+                }
+            }
+        }
     }
 }
+
+private struct SocketTestTimeoutError: Error {}
 
 private final class MockSocketTaskProvider: WebSocketTaskProvider, @unchecked Sendable {
     let delegate: URLSessionWebSocketDelegate?
