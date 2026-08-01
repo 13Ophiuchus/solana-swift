@@ -4,8 +4,7 @@ import FoundationNetworking
 #endif
 
 /// The abstract websocket task provider, default is URLSession
-public protocol WebSocketTaskProvider {
-    init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?)
+public protocol WebSocketTaskProvider: AnyObject {
     func createWebSocketTask(with url: URL) -> WebSocketTask
 }
 
@@ -18,16 +17,37 @@ extension URLSession: WebSocketTaskProvider {
 #endif
 
 /// Abstract websocket task, default is URLSessionWebSocketTask
+public enum WebSocketMessage {
+    case string(String)
+    case data(Data)
+}
+
 public protocol WebSocketTask {
     func resume()
     func cancel()
-    func send(_ message: URLSessionWebSocketTask.Message) async throws
-    func receive() async throws -> URLSessionWebSocketTask.Message
+    func send(_ message: WebSocketMessage) async throws
+    func receive() async throws -> WebSocketMessage
     func sendPing(pongReceiveHandler: @escaping @Sendable (Error?) -> Void)
 }
 
 #if canImport(FoundationNetworking) || canImport(Darwin)
-extension URLSessionWebSocketTask: WebSocketTask {}
+extension URLSessionWebSocketTask: WebSocketTask {
+    public func send(_ message: WebSocketMessage) async throws {
+        switch message {
+        case .string(let text): try await send(.string(text))
+        case .data(let data):   try await send(.data(data))
+        }
+    }
+
+    public func receive() async throws -> WebSocketMessage {
+        let raw = try await receive()
+        switch raw {
+        case .string(let text): return .string(text)
+        case .data(let data):   return .data(data)
+        @unknown default:       throw URLError(.badServerResponse)
+        }
+    }
+}
 #endif
 
 /// Delegate for listening socket's events
