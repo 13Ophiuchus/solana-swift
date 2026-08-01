@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// The abstract websocket task provider, default is URLSession
 public protocol WebSocketTaskProvider {

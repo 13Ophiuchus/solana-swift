@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public protocol SolanaTokenListSource: Sendable {
     func download() async throws -> Set<TokenMetadata>

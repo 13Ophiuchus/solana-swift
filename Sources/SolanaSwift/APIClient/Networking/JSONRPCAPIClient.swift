@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// JSON RPC
 public final class JSONRPCAPIClient: SolanaAPIClient {
