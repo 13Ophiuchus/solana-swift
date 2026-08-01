@@ -97,28 +97,20 @@ public final class Socket: NSObject, SolanaSocket {
 
     // MARK: - Initializers
 
-    /// Initializer for Socket
-    /// - Parameters:
-    ///   - url: url of the socket
-    ///   - enableDebugLogs: enable/disable logging
-    ///   - socketTaskProviderType: type of task provider, default is `URLSession.self`
-    public init<T: WebSocketTaskProvider>(
-        url: URL,
-        socketTaskProviderType _: T.Type
-    ) {
+    /// Primary initializer — builds URLSession with `self` as delegate so
+    /// `didOpen`/`didClose` fire correctly. For tests, use `init(url:taskProvider:)`.
+    #if canImport(Darwin) || canImport(FoundationNetworking)
+    public init(url: URL) {
         super.init()
-        let urlSession = T(configuration: .default, delegate: self, delegateQueue: .current!)
-        task = urlSession.createWebSocketTask(with: url)
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+        task = session.createWebSocketTask(with: url)
     }
+    #endif
 
-    /// Convenience initializer for socket using `URLSession` as `WebSocketTaskProvider`
-    /// - Parameters:
-    ///   - url: url of the socket
-    ///   - enableDebugLogs: enable/disable logging
-    public convenience init(
-        url: URL
-    ) {
-        self.init(url: url, socketTaskProviderType: URLSession.self)
+    /// Testability initializer — inject a mock `WebSocketTaskProvider`.
+    public init(url: URL, taskProvider: WebSocketTaskProvider) {
+        super.init()
+        task = taskProvider.createWebSocketTask(with: url)
     }
 
     deinit {
@@ -236,7 +228,7 @@ public final class Socket: NSObject, SolanaSocket {
                     }
                 }
             } catch {
-                delegate?.error(error: error)
+                delegate?.error(error: WebSocketError.receiveDecodingFailed(underlying: error))
             }
         case let .data(data):
             print("Received binary message: \(data)")
@@ -246,15 +238,23 @@ public final class Socket: NSObject, SolanaSocket {
     }
 
     private func ping() {
-        Logger.log(event: "request", message: "Ping socket", logLevel: .debug)
-        task.sendPing { error in
-            if let error = error {
-                print("Ping failed: \(error)")
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await self.task.sendPingWithTimeout(.seconds(10))
+                Logger.log(event: "request", message: "Ping socket", logLevel: .debug)
+            } catch WebSocketError.pingTimeout {
+                Logger.log(event: "error", message: "Ping timed out", logLevel: .error)
+                self.delegate?.error(error: WebSocketError.pingTimeout)
+            } catch {
+                Logger.log(event: "error", message: "Ping failed: \(error)", logLevel: .error)
+                self.delegate?.error(error: WebSocketError.connectionFailed(underlying: error))
             }
         }
     }
 }
 
+#if canImport(Darwin) || canImport(FoundationNetworking)
 extension Socket: URLSessionWebSocketDelegate {
     public func urlSession(_: URLSession, webSocketTask _: URLSessionWebSocketTask, didOpenWithProtocol _: String?) {
         isConnected = true
@@ -268,9 +268,28 @@ extension Socket: URLSessionWebSocketDelegate {
         Logger.log(event: "urlSession", message: "Socket disconnected", logLevel: .debug)
 
         asyncTask = Task.detached { [weak self] in
-            while true {
-                guard let self = self else { break }
-                try await self.readMessage()
+            guard let self else { return }
+            do {
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    group.addTask {
+                        while true {
+                            try await self.readMessage()
+                        }
+                    }
+                    do {
+                        try await group.next()
+                    } catch let error as WebSocketError {
+                        group.cancelAll()
+                        throw error
+                    } catch {
+                        group.cancelAll()
+                        throw WebSocketError.connectionFailed(underlying: error)
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    self.delegate?.error(error: error)
+                }
             }
         }
     }
@@ -291,3 +310,4 @@ extension Socket: URLSessionWebSocketDelegate {
         asyncTask?.cancel()
     }
 }
+#endif
