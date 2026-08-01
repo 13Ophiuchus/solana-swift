@@ -9,11 +9,13 @@ public protocol WebSocketTaskProvider {
     func createWebSocketTask(with url: URL) -> WebSocketTask
 }
 
+#if canImport(FoundationNetworking) || canImport(Darwin)
 extension URLSession: WebSocketTaskProvider {
     public func createWebSocketTask(with url: URL) -> WebSocketTask {
         webSocketTask(with: url)
     }
 }
+#endif
 
 /// Abstract websocket task, default is URLSessionWebSocketTask
 public protocol WebSocketTask {
@@ -24,7 +26,9 @@ public protocol WebSocketTask {
     func sendPing(pongReceiveHandler: @escaping @Sendable (Error?) -> Void)
 }
 
+#if canImport(FoundationNetworking) || canImport(Darwin)
 extension URLSessionWebSocketTask: WebSocketTask {}
+#endif
 
 /// Delegate for listening socket's events
 public protocol SolanaSocketEventsDelegate: AnyObject {
