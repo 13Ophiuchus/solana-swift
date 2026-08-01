@@ -266,6 +266,7 @@ public final class Socket: NSObject, SolanaSocket {
 extension Socket: URLSessionWebSocketDelegate {
     public func urlSession(_: URLSession, webSocketTask _: URLSessionWebSocketTask, didOpenWithProtocol _: String?) {
         isConnected = true
+        Task { await self.reconnection.reset() }
         wsHeartBeat?.invalidate()
         wsHeartBeat = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
             // Ping server every 5s to prevent idle timeouts
