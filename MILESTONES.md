@@ -37,7 +37,7 @@ swift build 2>&1 | tee build-swift6.log | tail -100
 - This is especially important for `NSObject` subclasses that pick up `Sendable` constraints under Swift 6.
 - Only use `@unchecked Sendable` as a temporary bridge when the ownership model is clearly understood and documented.
 
-### Status: IN PROGRESS
+### Status: DONE
 
 - `Sources/SolanaSwift/Socket/Socket.swift`
   - TODO: change `public class Socket` to `public final class Socket`.
@@ -136,3 +136,8 @@ swift test
 - Use actors for owned mutable async state.
 - Use `final` for reference types that are not meant to be subclassed.
 - Use `@unchecked Sendable` only as a documented temporary bridge or narrowly-audited permanent escape hatch.
+
+## Testing
+
+- [x] Migrate unit tests from XCTest to Swift Testing
+- [x] Fix `sendPingAsync` continuation double-resume (`OnceBox` gate in `WebSocketTask+Ping.swift`)

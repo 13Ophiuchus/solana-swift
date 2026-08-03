@@ -319,9 +319,9 @@ public final class JSONRPCAPIClient: SolanaAPIClient {
                 }
             )
             continuation.onTermination = { @Sendable _ in
-                monitor.stopMonitoring()
+                Task { await monitor.stopMonitoring() }
             }
-            monitor.startMonitoring()
+            Task { await monitor.startMonitoring() }
         }
     }
 
