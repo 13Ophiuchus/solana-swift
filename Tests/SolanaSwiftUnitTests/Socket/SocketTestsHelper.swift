@@ -1,7 +1,7 @@
 import Foundation
 
 struct SocketTestsHelper {
-    static var url: URL = .init(string: "wss://api.mainnet-beta.solana.com")!
+    static let url: URL = .init(string: "wss://api.mainnet-beta.solana.com")!
 
     static var emittingEvents: [String: String] {
         [

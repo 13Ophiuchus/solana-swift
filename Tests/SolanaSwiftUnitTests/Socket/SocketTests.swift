@@ -2,13 +2,12 @@ import Combine
 import SolanaSwift
 import XCTest
 
-class SocketTests: XCTestCase {
+class SocketTests: XCTestCase, @unchecked Sendable {
     var socket: Socket!
 
     override func setUpWithError() throws {
         socket = Socket(
-            url: SocketTestsHelper.url,
-            socketTaskProviderType: MockSocketTaskProvider.self
+            url: SocketTestsHelper.url
         )
     }
 
@@ -21,35 +20,35 @@ class SocketTests: XCTestCase {
         let expectation = XCTestExpectation()
         let delegate = MockSocketDelegate()
         delegate.onConected = {
-            Task {
+            Task { [self] in
                 let _ = try await self.socket.accountSubscribe(publickey: "fasdfasdf") // native address
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                    Task {
+                    Task { [self] in
                         try await self.socket.accountSubscribe(publickey: "fasdfasdf") // token address
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                    Task {
+                    Task { [self] in
                         try await self.socket.signatureSubscribe(signature: "fasdfjisf") // signature status
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-                    Task {
+                    Task { [self] in
                         try await self.socket.logsSubscribe(mentions: [""]) // signature status
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)) {
-                    Task {
+                    Task { [self] in
                         try await self.socket.programSubscribe(publickey: "") // signature status
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-                    Task {
+                    Task { [self] in
                         self.socket.disconnect()
                     }
                 }
@@ -79,11 +78,11 @@ class SocketTests: XCTestCase {
 
         socket.delegate = delegate
         socket.connect()
-        wait(for: [expectation], timeout: 20.0)
+        await fulfillment(of: [expectation], timeout: 20.0)
     }
 }
 
-private class MockSocketTaskProvider: WebSocketTaskProvider {
+private final class MockSocketTaskProvider: WebSocketTaskProvider, @unchecked Sendable {
     let delegate: URLSessionWebSocketDelegate?
     let mockSession = URLSession(configuration: .default)
     private lazy var mockWSTask = mockSession.webSocketTask(with: SocketTestsHelper.url)
@@ -101,12 +100,12 @@ private class MockSocketTaskProvider: WebSocketTaskProvider {
         }
     }
 
-    func createWebSocketTask(with _: URL) -> WebSocketTask {
+    func makeTask(with _: URL) -> WebSocketTask {
         MockSocketTask()
     }
 }
 
-private class MockSocketTask: WebSocketTask {
+private final class MockSocketTask: WebSocketTask, @unchecked Sendable {
     private var keySubject = PassthroughSubject<String, Never>()
     private var subscriptions = [AnyCancellable]()
     private var nativeEmitted: Bool = false
@@ -115,11 +114,11 @@ private class MockSocketTask: WebSocketTask {
         // do nothing
     }
 
-    func cancel() {
+    func cancel(with _: URLSessionWebSocketTask.CloseCode, reason _: Data?) {
         // do nothing
     }
 
-    func send(_ message: URLSessionWebSocketTask.Message) async throws {
+    func send(_ message: WebSocketMessage) async throws {
         struct RequestAPI: Decodable {
             let id: String
             let method: String
@@ -129,7 +128,7 @@ private class MockSocketTask: WebSocketTask {
         switch message {
         case .string:
             break
-        case let .data(data):
+        case .data(let data):
             let requestAPI = try JSONDecoder().decode(RequestAPI.self, from: data)
             let method = SocketMethod(rawValue: requestAPI.method)!
             switch method {
@@ -174,13 +173,12 @@ private class MockSocketTask: WebSocketTask {
             default:
                 break
             }
-            break
         @unknown default:
             fatalError()
         }
     }
 
-    func receive() async throws -> URLSessionWebSocketTask.Message {
+    func receive() async throws -> WebSocketMessage {
         let key = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
             self.keySubject.first().sink { key in
                 continuation.resume(returning: key)
@@ -189,12 +187,12 @@ private class MockSocketTask: WebSocketTask {
         return .string(SocketTestsHelper.emittingEvents[key]!)
     }
 
-    func sendPing(pongReceiveHandler _: @escaping (Error?) -> Void) {
+    func sendPing(pongReceiveHandler _: @escaping @Sendable (Error?) -> Void) {
         debugPrint("Pong!!!")
     }
 }
 
-class MockSocketDelegate: SolanaSocketEventsDelegate {
+class MockSocketDelegate: SolanaSocketEventsDelegate, @unchecked Sendable {
     var onConected: (() -> Void)?
     var onDisconnected: (() -> Void)?
     var onNativeAccountNotification: ((SocketNativeAccountNotification) -> Void)?

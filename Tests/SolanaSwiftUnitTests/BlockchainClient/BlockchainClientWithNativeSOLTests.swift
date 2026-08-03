@@ -1,12 +1,13 @@
-import Foundation
-
 import XCTest
+import Testing
+import Foundation
+import Foundation
 @testable import SolanaSwift
 
-class BlockchainClientWithNativeSOLTests: XCTestCase {
-    var account: KeyPair!
+@Suite struct BlockchainClientWithNativeSOLTests {
+    let account: KeyPair
 
-    override func setUp() async throws {
+    init() async throws {
         account = try await KeyPair(
             phrase: "miracle pizza supply useful steak border same again youth silver access hundred"
                 .components(separatedBy: " "),
@@ -14,13 +15,9 @@ class BlockchainClientWithNativeSOLTests: XCTestCase {
         )
     }
 
-    override func tearDown() async throws {
-        account = nil
-    }
-
     // MARK: - Testcases
 
-    func testPrepareSendingNativeSOL() async throws {
+    @Test func testPrepareSendingNativeSOL() async throws {
         let toPublicKey = "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm"
         let apiClient = MockAPIClient(testCase: #function)
         let blockchain = BlockchainClient(apiClient: apiClient)
@@ -45,7 +42,7 @@ class BlockchainClientWithNativeSOLTests: XCTestCase {
         )
     }
 
-    func testPrepareSendingNativeSOLToNewlyCreatedAccount() async throws {
+    @Test func testPrepareSendingNativeSOLToNewlyCreatedAccount() async throws {
         let toPublicKey = "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm"
         let apiClient = MockAPIClient(testCase: #function)
         let blockchain = BlockchainClient(apiClient: apiClient)
@@ -71,7 +68,7 @@ class BlockchainClientWithNativeSOLTests: XCTestCase {
     }
 }
 
-private class MockAPIClient: SolanaAPIClient {
+private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
     let testCase: String
 
     init(testCase: String) {

@@ -1,22 +1,15 @@
 import Foundation
 @testable import SolanaSwift
 
-class TestableSolanaTokenListSource: SolanaTokenListSource {
+final class TestableSolanaTokenListSource: SolanaTokenListSource, @unchecked Sendable {
     var downloadCalled: Int = 0
     var mockTokens: Set<TokenMetadata>?
     var shouldThrowError = false
 
     func download() async throws -> Set<TokenMetadata> {
         downloadCalled += 1
-
-        if shouldThrowError {
-            throw Error.mockError
-        }
-
-        guard let tokens = mockTokens else {
-            throw Error.tokensNotSet
-        }
-
+        if shouldThrowError { throw Error.mockError }
+        guard let tokens = mockTokens else { throw Error.tokensNotSet }
         return tokens
     }
 }

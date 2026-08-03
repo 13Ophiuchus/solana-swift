@@ -1,12 +1,13 @@
-import Foundation
-
 import XCTest
+import Testing
+import Foundation
+import Foundation
 @testable import SolanaSwift
 
-final class BlockchainClientWithTokenProgramTests: XCTestCase {
-    var account: KeyPair!
+@Suite struct BlockchainClientWithTokenProgramTests {
+    let account: KeyPair
 
-    override func setUp() async throws {
+    init() async throws {
         account = try await KeyPair(
             phrase: "miracle pizza supply useful steak border same again youth silver access hundred"
                 .components(separatedBy: " "),
@@ -14,11 +15,7 @@ final class BlockchainClientWithTokenProgramTests: XCTestCase {
         )
     }
 
-    override func tearDown() async throws {
-        account = nil
-    }
-
-    func testPrepareSendingSPLTokens() async throws {
+    @Test func testPrepareSendingSPLTokens() async throws {
         // TESTS: SEND TO NATIVE SOL ACCOUNT (AUTO FIND AND CHECK SPL TOKEN ACCOUNT FROM OWNER NATIVE SOL ACCOUNT)
 
         // Test1: for address that has no funds no usdc account
@@ -108,7 +105,7 @@ final class BlockchainClientWithTokenProgramTests: XCTestCase {
     }
 }
 
-private class MockAPIClient: SolanaAPIClient {
+private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
     let testCase: String
 
     init(testCase: String) {
