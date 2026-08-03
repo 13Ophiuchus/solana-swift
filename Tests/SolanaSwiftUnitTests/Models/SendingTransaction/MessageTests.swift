@@ -1,6 +1,8 @@
 @testable import SolanaSwift
 
-class MessageTests: XCTestCase {
+
+struct MessageTests {
+    @Test
     func test_givenRawMessage_whenFrom_thenReturnsExpectedMessage() throws {
         // given
         let expectedMessge = Message.StubFactory.makeSignedWithInstructions()

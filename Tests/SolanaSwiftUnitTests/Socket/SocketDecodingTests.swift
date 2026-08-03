@@ -1,7 +1,10 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class SocketDecodingTests: XCTestCase {
+
+struct SocketDecodingTests {
+    @Test
     func testDecodingSocketSubscription() throws {
         let string = SocketTestsHelper.emittingEvents["subscriptionNotification"]!
         let result = try JSONDecoder().decode(SocketSubscriptionResponse.self, from: string.data(using: .utf8)!)
@@ -10,6 +13,7 @@ class SocketDecodingTests: XCTestCase {
         XCTAssertEqual(result.result, 22_529_999)
     }
 
+    @Test
     func testDecodingSocketUnsubscription() throws {
         let string = SocketTestsHelper.emittingEvents["unsubscriptionNotification"]!
         let result = try JSONDecoder().decode(SocketUnsubscriptionResponse.self, from: string.data(using: .utf8)!)
@@ -18,6 +22,7 @@ class SocketDecodingTests: XCTestCase {
         XCTAssertEqual(result.result, true)
     }
 
+    @Test
     func testDecodingSOLAccountNotification() throws {
         let string = SocketTestsHelper.emittingEvents["accountNotification#Native"]!
         let result = try JSONDecoder().decode(SocketNativeAccountNotification.self, from: string.data(using: .utf8)!)
@@ -26,6 +31,7 @@ class SocketDecodingTests: XCTestCase {
         XCTAssertEqual(result.lamports, 41_083_620)
     }
 
+    @Test
     func testDecodingProgramNotification() throws {
         let string = SocketTestsHelper.emittingEvents["programNotification"]!
         let result = try JSONDecoder().decode(SocketProgramAccountNotification.self, from: string.data(using: .utf8)!)
@@ -34,6 +40,7 @@ class SocketDecodingTests: XCTestCase {
         XCTAssertEqual(result.subscription, 24040)
     }
 
+    @Test
     func testDecodingTokenAccountNotification() throws {
         let string = SocketTestsHelper.emittingEvents["accountNotification#Token"]!
         let result = try JSONDecoder().decode(SocketTokenAccountNotification.self, from: string.data(using: .utf8)!)
@@ -42,6 +49,7 @@ class SocketDecodingTests: XCTestCase {
         XCTAssertEqual(result.tokenAmount?.amount, "390000101")
     }
 
+    @Test
     func testDecodingSignatureNotification() throws {
         let string = SocketTestsHelper.emittingEvents["signatureNotification"]!
         let result = try JSONDecoder().decode(SocketSignatureNotification.self, from: string.data(using: .utf8)!)
@@ -50,6 +58,7 @@ class SocketDecodingTests: XCTestCase {
         XCTAssertEqual(result.isConfirmed, true)
     }
 
+    @Test
     func testDecodingLogsNotification() throws {
         let string = SocketTestsHelper.emittingEvents["logsNotification"]!
         let result = try JSONDecoder().decode(SocketLogsNotification.self, from: string.data(using: .utf8)!)

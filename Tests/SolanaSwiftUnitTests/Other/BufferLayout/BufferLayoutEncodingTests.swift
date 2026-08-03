@@ -1,9 +1,12 @@
 import XCTest
+import Testing
 @testable import SolanaSwift
 
-final class BufferLayoutEncodingTests: XCTestCase {
+
+struct BufferLayoutEncodingTests {
     // MARK: - Mint
 
+    @Test
     func testEncodingMint() throws {
         let mintLayout = TokenMintState(
             mintAuthorityOption: 1,
@@ -26,6 +29,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
 
     // MARK: - VecU8
 
+    @Test
     func testEncodingVecU8() throws {
         let length: UInt16 = 25
         let data = Data([
@@ -43,6 +47,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
 
     // MARK: - Account info
 
+    @Test
     func testEncodingAccountInfo() throws {
         XCTAssertEqual(TokenAccountState.BUFFER_LENGTH, 165)
 
@@ -73,6 +78,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
         )
     }
 
+    @Test
     func testEncodingAccountInfo2() throws {
         let accountInfo = TokenAccountState(
             mint: "11111111111111111111111111111111",
@@ -103,6 +109,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
 
     // MARK: - TokenSwapInfo
 
+    @Test
     func testEncodingTokenSwapInfo() throws {
         let swapInfo = TokenSwapInfo(
             version: 1,
@@ -138,6 +145,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
 
     // MARK: - EmptyInfo
 
+    @Test
     func testEncodingEmptyInfo() throws {
         let emptyInfo = EmptyInfo()
 
@@ -152,6 +160,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
 
     // MARK: - Token2022
 
+    @Test
     func testEncodingToken2022MintState() throws {
         // Create an instance of Token2022MintState with the same values as in the decoding test
         var state = Token2022MintState(
@@ -200,6 +209,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
         )
     }
 
+    @Test
     func testEncodingToken2022MintState2() throws {
         // Mint FZYEgCWzzedxcmxYvGXSkMrj7TaA3bXoaEv6XMnwtLKh
         var state = Token2022MintState(
@@ -258,6 +268,7 @@ final class BufferLayoutEncodingTests: XCTestCase {
         )
     }
 
+    @Test
     func testEncodingTokenAccountState() throws {
         let accountState = Token2022AccountState(
             mint: "8nxJnGJDyvehdEHw4PgRc7ccJ1Zi134PhM2USK3WE8mS",

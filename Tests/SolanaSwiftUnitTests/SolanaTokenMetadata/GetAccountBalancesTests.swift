@@ -1,8 +1,10 @@
 import OSLog
 import SolanaSwift
 import XCTest
+import Testing
 
-final class GetAccountBalancesTests: XCTestCase {
+
+struct GetAccountBalancesTests {
     var rpcClient: SolanaAPIClient!
     var tokensRepository: TokenRepository!
 
@@ -22,6 +24,7 @@ final class GetAccountBalancesTests: XCTestCase {
         )
     }
 
+    @Test
     func testGetAccountBalances() async throws {
         let result = try await rpcClient.getAccountBalances(
             for: "abctest",
@@ -62,6 +65,7 @@ final class GetAccountBalancesTests: XCTestCase {
         XCTAssertEqual(resolved[1].minimumBalanceForRentExemption, 2_039_280)
     }
 
+    @Test
     func testGetAccountBalancesWithToken2022() async throws {
         let result = try await rpcClient.getAccountBalances(
             for: "abctest",

@@ -1,9 +1,12 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class BufferLayoutDecodingTests: XCTestCase {
+
+struct BufferLayoutDecodingTests {
     // MARK: - Raw data
 
+    @Test
     func testDecodingRawData() throws {
         let string =
             "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
@@ -26,6 +29,7 @@ class BufferLayoutDecodingTests: XCTestCase {
 
     // MARK: - VecU8
 
+    @Test
     func testDecodingVecU8() throws {
         let string = "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y"
         let data = Data(base64Encoded: string)!
@@ -43,6 +47,7 @@ class BufferLayoutDecodingTests: XCTestCase {
 
     // MARK: - Mint
 
+    @Test
     func testDecodingMint() throws {
         XCTAssertEqual(TokenMintState.BUFFER_LENGTH, 82)
 
@@ -65,6 +70,7 @@ class BufferLayoutDecodingTests: XCTestCase {
 
     // MARK: - Account info
 
+    @Test
     func testDecodingAccountInfo() throws {
         XCTAssertEqual(TokenAccountState.BUFFER_LENGTH, 165)
 
@@ -93,6 +99,7 @@ class BufferLayoutDecodingTests: XCTestCase {
         XCTAssertEqual(accountInfo.closeAuthority?.base58EncodedString, nil)
     }
 
+    @Test
     func testDecodingAccountInfo2() throws {
         let string =
             "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq"
@@ -144,6 +151,7 @@ class BufferLayoutDecodingTests: XCTestCase {
 
     // MARK: - TokenSwapInfo
 
+    @Test
     func testDecodingTokenSwapInfo() throws {
         XCTAssertEqual(TokenSwapInfo.BUFFER_LENGTH, 324)
 
@@ -177,6 +185,7 @@ class BufferLayoutDecodingTests: XCTestCase {
 
     // MARK: - EmptyInfo
 
+    @Test
     func testDecodingEmptyInfo() throws {
         let string =
             "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
@@ -187,6 +196,7 @@ class BufferLayoutDecodingTests: XCTestCase {
 
     // MARK: - Token2022
 
+    @Test
     func testDecodingToken2022MintState() throws {
         let string =
             "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE="
@@ -221,6 +231,7 @@ class BufferLayoutDecodingTests: XCTestCase {
         XCTAssertEqual(extensionState.newerTransferFee.epoch, 530)
     }
 
+    @Test
     func testDecodingToken2022MintState2() throws {
         // Mint FZYEgCWzzedxcmxYvGXSkMrj7TaA3bXoaEv6XMnwtLKh
         let string =
@@ -258,6 +269,7 @@ class BufferLayoutDecodingTests: XCTestCase {
         XCTAssertEqual(interestBearingConfig?.currentRate, 0)
     }
 
+    @Test
     func testDecodingToken2022AccountState() throws {
         let string =
             "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA="

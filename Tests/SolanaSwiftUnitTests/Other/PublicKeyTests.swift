@@ -1,7 +1,10 @@
 @testable import SolanaSwift
 import XCTest
+import Testing
 
-class PublicKeyTests: XCTestCase {
+
+struct PublicKeyTests {
+    @Test
     func testPublicKeyFromString() throws {
         let fromPublicKey = try PublicKey(string: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo")
         XCTAssertEqual(
@@ -24,6 +27,7 @@ class PublicKeyTests: XCTestCase {
         )
     }
 
+    @Test
     func testPublicKeyToString() throws {
         let key =
             try PublicKey(
@@ -49,6 +53,7 @@ class PublicKeyTests: XCTestCase {
         )
     }
 
+    @Test
     func testCreateWithSeeds() throws {
         let defaultPublicKey: PublicKey = "11111111111111111111111111111111"
         let derivedKey = try PublicKey.createWithSeed(

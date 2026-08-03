@@ -1,7 +1,10 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class OwnerValidationProgramTests: XCTestCase {
+
+struct OwnerValidationProgramTests {
+    @Test
     func testAssertOwnerInstruction() throws {
         let instruction = OwnerValidationProgram.assertOwnerInstruction(
             account: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5",

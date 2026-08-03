@@ -1,8 +1,11 @@
 import SolanaSwift
 import TweetNacl
 import XCTest
+import Testing
 
-class KeyPairTests: XCTestCase {
+
+struct KeyPairTests {
+    @Test
     func testRestoreKeyPairFromSecretKey() throws {
         let secretKey = Base58
             .decode("4Z7cXSyeFR8wNGMVXUE1TwtKn5D5Vu7FzEv69dokLv7KrQk7h6pu4LF8ZRR9yQBhc7uSM6RTTZtU1fmaxiNrxXrs")
@@ -14,6 +17,7 @@ class KeyPairTests: XCTestCase {
         XCTAssertEqual(64, account.secretKey.count)
     }
 
+    @Test
     func testRestoreKeyPairFromSeedPhrase() async throws {
         let phrase12 = "miracle pizza supply useful steak border same again youth silver access hundred"
             .components(separatedBy: " ")
@@ -27,6 +31,7 @@ class KeyPairTests: XCTestCase {
         XCTAssertEqual(account24.publicKey.base58EncodedString, "9avcmC97zLPwHKXiDz6GpXyjvPn9VcN3ggqM5gsRnjvv")
     }
 
+    @Test
     func testRestoreKeyPairFromMnemonic() async throws {
         let mnemonic12 = try Mnemonic(phrase: "miracle pizza supply useful steak border same again youth silver access hundred"
             .components(separatedBy: " "))
@@ -39,6 +44,7 @@ class KeyPairTests: XCTestCase {
         XCTAssertEqual(account24.publicKey, "9avcmC97zLPwHKXiDz6GpXyjvPn9VcN3ggqM5gsRnjvv")
     }
 
+    @Test
     func testRestoreKeyPairFromNonMnemonicSeedPhrase() async throws {
         let account = try await KeyPair(seed: "y 5 H M p D ^ G 6 3 9 x a b ^ 8", salt: "mnemonic", passphrase: "", network: .mainnetBeta, derivablePath: .default)
         XCTAssertEqual(account.publicKey, "7TJ2AEYmkUYJ3ESQv5B7Z1HwrTG9hUdj3PpqZn7DCxfo")
@@ -58,6 +64,7 @@ class KeyPairTests: XCTestCase {
 
     // MARK: - Deprecated derivable path
 
+    @Test
     func testDerivedKeychain() throws {
         var keychain = try Keychain(
             seedString: "miracle pizza supply useful steak border same again youth silver access hundred",

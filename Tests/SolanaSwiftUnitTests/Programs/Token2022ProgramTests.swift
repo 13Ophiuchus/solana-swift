@@ -1,7 +1,10 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class Token2022ProgramTests: XCTestCase {
+
+struct Token2022ProgramTests {
+    @Test
     func testInitializeMintInstruction() throws {
         let instruction = Token2022Program.initializeMintInstruction(
             mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
@@ -23,6 +26,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual(Base58.encode(instruction.data), "195AHs4ykNczn89ynGjJ5v7rSfaK9giG1eL2bNrmUqn1oNw")
     }
 
+    @Test
     func testInitializeAccountInstruction() throws {
         let instruction = Token2022Program.initializeAccountInstruction(
             account: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5",
@@ -51,6 +55,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual(Base58.encode(instruction.data), "2")
     }
 
+    @Test
     func testTransferInstruction() throws {
         let instruction = Token2022Program.transferInstruction(
             source: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5",
@@ -76,6 +81,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual("3WBgs5fm8oDy", Base58.encode(instruction.data))
     }
 
+    @Test
     func testTransferCheckedInstruction() throws {
         let instruction = Token2022Program.transferCheckedInstruction(
             source: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5",
@@ -108,6 +114,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual("hNmtbNYibdzwf", Base58.encode(instruction.data))
     }
 
+    @Test
     func testBurnCheckedInstruction() throws {
         let instruction = Token2022Program.burnCheckedInstruction(
             mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
@@ -134,6 +141,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual("s9m8UUrvs3fBT", Base58.encode(instruction.data))
     }
 
+    @Test
     func testApproveInstruction() throws {
         let instruction = Token2022Program.approveInstruction(
             account: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5",
@@ -160,6 +168,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual("4d5tSvUuzUVM", Base58.encode(instruction.data))
     }
 
+    @Test
     func testMintToInstruction() throws {
         let instruction = Token2022Program.mintToInstruction(
             mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
@@ -185,6 +194,7 @@ class Token2022ProgramTests: XCTestCase {
         XCTAssertEqual("6AsKhot84V8s", Base58.encode(instruction.data))
     }
 
+    @Test
     func testCloseAccountInstruction() throws {
         let instruction = Token2022Program.closeAccountInstruction(
             account: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3",

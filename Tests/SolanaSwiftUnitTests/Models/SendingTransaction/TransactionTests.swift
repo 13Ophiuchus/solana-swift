@@ -1,6 +1,9 @@
 import SolanaSwift
+import Testing
 
-class TransactionTests: XCTestCase {
+
+struct TransactionTests {
+    @Test
     func test_givenSigner_whenPartialSign_thenSignerAppended() throws {
         // given
         let signer = KeyPair.StubFactory.make()
@@ -13,6 +16,7 @@ class TransactionTests: XCTestCase {
         XCTAssertTrue(transaction.signatures.contains(where: { $0.publicKey == signer.publicKey }))
     }
 
+    @Test
     func test_givenSignerAndInvalidTransaction_whenPartialSign_thenThrowsError() throws {
         // given
         let signer = KeyPair.StubFactory.make()
@@ -27,6 +31,7 @@ class TransactionTests: XCTestCase {
         XCTAssertThrowsError(try transaction.partialSign(signers: [signer]))
     }
 
+    @Test
     func test_givenPartiallySignedTransactionAndSameSigner_whenPartialSign_thenSignerNotAdded() throws {
         // given
         let signer = KeyPair.StubFactory.make()
@@ -41,6 +46,7 @@ class TransactionTests: XCTestCase {
         XCTAssertEqual(numberOfSignatures, transaction.signatures.count)
     }
 
+    @Test
     func test_givenEmptySigners_whenPartialSign_thenThrowsError() throws {
         // given
         let signer = KeyPair.StubFactory.make()

@@ -1,7 +1,10 @@
 @testable import SolanaSwift
 import XCTest
+import Testing
 
-class TokensRepositoryTests: XCTestCase {
+
+struct TokensRepositoryTests {
+    @Test
     func testFill_WithStorageData_ShouldLoadFromStorage() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
@@ -30,6 +33,7 @@ class TokensRepositoryTests: XCTestCase {
         XCTAssertNil(records[TokenMetadata.usdt.mintAddress])
     }
 
+    @Test
     func testFill_WithoutStorageData_ShouldLoadFromSource() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
@@ -57,6 +61,7 @@ class TokensRepositoryTests: XCTestCase {
         XCTAssertNil(records[TokenMetadata.usdt.mintAddress])
     }
 
+    @Test
     func testReset_ShouldRecordBeEmpty() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
@@ -79,6 +84,7 @@ class TokensRepositoryTests: XCTestCase {
         XCTAssertTrue(records.isEmpty)
     }
 
+    @Test
     func testGet_RecordsIsEmpty_ShouldFill() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 

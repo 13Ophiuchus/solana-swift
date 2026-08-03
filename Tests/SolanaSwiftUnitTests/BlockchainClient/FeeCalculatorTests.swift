@@ -1,7 +1,9 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class FeeCalculatorTests: XCTestCase {
+
+struct FeeCalculatorTests {
     var lamportsPerSignature: UInt64 { 5000 }
     var minRentExemption: UInt64 { 2_039_280 }
 
@@ -16,6 +18,7 @@ class FeeCalculatorTests: XCTestCase {
 
     // MARK: - Testcases
 
+    @Test
     func testTransactionFee() throws {
         // owner is the fee payer
         let transaction = createTransaction(instructions: [
@@ -49,6 +52,7 @@ class FeeCalculatorTests: XCTestCase {
         XCTAssertEqual(fee2, lamportsPerSignature * 2)
     }
 
+    @Test
     func testAccountCreationFee() throws {
         // create and initialize
         let transaction = createTransaction(instructions: [

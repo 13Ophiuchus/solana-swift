@@ -1,7 +1,10 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class EncodingTests: XCTestCase {
+
+struct EncodingTests {
+    @Test
     func testEncodingBytesLength() throws {
         XCTAssertEqual(Data([0]), Data.encodeLength(0))
         XCTAssertEqual(Data([1]), Data.encodeLength(1))
@@ -14,6 +17,7 @@ class EncodingTests: XCTestCase {
         XCTAssertEqual(Data([0x80, 0x80, 0x80, 0x01]), Data.encodeLength(2_097_152))
     }
 
+    @Test
     func test_givenBytes_whenDecodeLength_thenReturnsExpectedLength() throws {
         // given
         var bytes = Data([5, 3, 1, 2, 3, 7, 8, 5, 4])
@@ -25,6 +29,7 @@ class EncodingTests: XCTestCase {
         XCTAssertEqual(result, 5)
     }
 
+    @Test
     func test_givenBytes_whenDecodeLengthTwice_thenReturnsExpectedLengths() throws {
         // given
         var bytes = Data([5, 0xF3, 1, 2, 3, 7, 8, 5, 4])
@@ -38,6 +43,7 @@ class EncodingTests: XCTestCase {
         XCTAssertEqual(result2, 0xF3)
     }
 
+    @Test
     func test_givenBytes_whenDecodeLength_thenRemovesFirstByte() throws {
         // given
         var bytes = Data([5, 1, 2, 3, 7, 8, 3, 4])
@@ -51,6 +57,7 @@ class EncodingTests: XCTestCase {
         XCTAssertEqual(bytes.count, numberOfBytes - 1)
     }
 
+    @Test
     func test_givenZeroBytes_whenDecodeLength_thenReturnsZero() throws {
         // given
         var bytes = Data()

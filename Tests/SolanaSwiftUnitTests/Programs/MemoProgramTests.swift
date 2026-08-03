@@ -1,7 +1,10 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class MemoProgramTests: XCTestCase {
+
+struct MemoProgramTests {
+    @Test
     func testCreateMemoInstruction() throws {
         let instruction = try MemoProgram.createMemoInstruction(memo: "HelloWorld")
         XCTAssertEqual(instruction.keys.count, 0)

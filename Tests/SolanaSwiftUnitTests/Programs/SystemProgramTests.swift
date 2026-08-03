@@ -1,7 +1,10 @@
 import SolanaSwift
 import XCTest
+import Testing
 
-class SystemProgramTests: XCTestCase {
+
+struct SystemProgramTests {
+    @Test
     func testCreateAccountInstruction() throws {
         let instruction = SystemProgram.createAccountInstruction(
             from: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo",
@@ -27,6 +30,7 @@ class SystemProgramTests: XCTestCase {
         )
     }
 
+    @Test
     func testTransferInstruction() throws {
         let fromPublicKey = try PublicKey(string: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo")
         let toPublicKey = try PublicKey(string: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5")

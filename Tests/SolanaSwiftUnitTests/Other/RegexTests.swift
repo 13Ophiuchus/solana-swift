@@ -1,6 +1,9 @@
 import XCTest
+import Testing
 
-class RegexTests: XCTestCase {
+
+struct RegexTests {
+    @Test
     func testPubkeyRegex() throws {
         let regex = NSRegularExpression.publicKey
         XCTAssertTrue(regex.matches("3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG"))
