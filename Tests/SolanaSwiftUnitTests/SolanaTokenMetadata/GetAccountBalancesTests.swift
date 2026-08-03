@@ -6,7 +6,7 @@ final class GetAccountBalancesTests: XCTestCase {
     var rpcClient: SolanaAPIClient!
     var tokensRepository: TokenRepository!
 
-    override func setUp() async throws {
+    init() async throws {
         rpcClient = JSONRPCAPIClient(
             endpoint: .init(
                 address: "https://example.com",

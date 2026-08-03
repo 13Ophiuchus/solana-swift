@@ -31,7 +31,8 @@ class TokensRepositoryPerformanceTests: XCTestCase {
         await service.updateRecords(records)
 
         measure {
-            let exp = expectation(description: "Finished")
+            #warning("MIGRATE: convert to await confirmation { }") 
+        let exp = expectation(description: "Finished")
 
             Task { [records] in
                 _ = try await service.get(address: Array(records.values)[10000].mintAddress)
