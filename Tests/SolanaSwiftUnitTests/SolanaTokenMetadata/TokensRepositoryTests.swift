@@ -1,5 +1,4 @@
 @testable import SolanaSwift
-import XCTest
 import Testing
 
 
@@ -21,16 +20,16 @@ struct TokensRepositoryTests {
 
         try await service.fill()
 
-        XCTAssertEqual(storage.getTokensCalled, 1)
-        XCTAssertEqual(storage.saveTokensCalled, 0)
-        XCTAssertEqual(source.downloadCalled, 0)
+        #expect(storage.getTokensCalled == 1)
+        #expect(storage.saveTokensCalled == 0)
+        #expect(source.downloadCalled == 0)
 
         let records = await service.records
-        XCTAssertEqual(records[TokenMetadata.usdc.mintAddress]?.generalTokenExtensions.coingeckoId, "usd-coin")
-        XCTAssertEqual(records.count, 2)
-        XCTAssertNotNil(records[TokenMetadata.usdc.mintAddress])
-        XCTAssertNotNil(records[TokenMetadata.nativeSolana.mintAddress])
-        XCTAssertNil(records[TokenMetadata.usdt.mintAddress])
+        #expect(records[TokenMetadata.usdc.mintAddress]?.generalTokenExtensions.coingeckoId == "usd-coin")
+        #expect(records.count == 2)
+        #expect(records[TokenMetadata.usdc.mintAddress] != nil)
+        #expect(records[TokenMetadata.nativeSolana.mintAddress] != nil)
+        #expect(records[TokenMetadata.usdt.mintAddress] == nil)
     }
 
     @Test
@@ -50,15 +49,15 @@ struct TokensRepositoryTests {
 
         try await service.fill()
 
-        XCTAssertEqual(storage.getTokensCalled, 1)
-        XCTAssertEqual(storage.saveTokensCalled, 1)
-        XCTAssertEqual(source.downloadCalled, 1)
+        #expect(storage.getTokensCalled == 1)
+        #expect(storage.saveTokensCalled == 1)
+        #expect(source.downloadCalled == 1)
 
         let records = await service.records
-        XCTAssertEqual(records.count, 2)
-        XCTAssertNotNil(records[TokenMetadata.usdc.mintAddress])
-        XCTAssertNotNil(records[TokenMetadata.nativeSolana.mintAddress])
-        XCTAssertNil(records[TokenMetadata.usdt.mintAddress])
+        #expect(records.count == 2)
+        #expect(records[TokenMetadata.usdc.mintAddress] != nil)
+        #expect(records[TokenMetadata.nativeSolana.mintAddress] != nil)
+        #expect(records[TokenMetadata.usdt.mintAddress] == nil)
     }
 
     @Test
@@ -81,7 +80,7 @@ struct TokensRepositoryTests {
         try await service.reset()
 
         let records = await service.records
-        XCTAssertTrue(records.isEmpty)
+        #expect(records.isEmpty)
     }
 
     @Test
@@ -101,11 +100,11 @@ struct TokensRepositoryTests {
 
         let token = try await service.get(address: TokenMetadata.usdc.mintAddress)
 
-        XCTAssertEqual(storage.getTokensCalled, 1)
-        XCTAssertEqual(storage.saveTokensCalled, 1)
-        XCTAssertEqual(source.downloadCalled, 1)
+        #expect(storage.getTokensCalled == 1)
+        #expect(storage.saveTokensCalled == 1)
+        #expect(source.downloadCalled == 1)
 
-        XCTAssertEqual(token?.name, "USDC")
+        #expect(token?.name == "USDC")
     }
 }
 

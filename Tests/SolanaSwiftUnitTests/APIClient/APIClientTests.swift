@@ -12,7 +12,7 @@ import Foundation
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBlockHeight"]!)
         let apiClient = SolanaSwift.JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getBlockHeight()
-        XCTAssertEqual(result, 119_396_901)
+        #expect(result == 119_396_901)
     }
 
     @Test func testGetAccountInfo() async throws {
@@ -20,9 +20,9 @@ import Foundation
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: BufferInfo<TokenAccountState>? = try await apiClient
             .getAccountInfo(account: "HWbsF542VSCxdGKcHrXuvJJnpwCEewmzdsG6KTxXMRRk")
-        XCTAssert(result?.owner == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
-        XCTAssert(result?.lamports == 2_039_280)
-        XCTAssert(result?.rentEpoch == 304)
+        #expect(result?.owner == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+        #expect(result?.lamports == 2_039_280)
+        #expect(result?.rentEpoch == 304)
     }
 
     @Test func testGetAccountInfoError() async throws {
@@ -32,7 +32,7 @@ import Foundation
             let _: BufferInfo<TokenAccountState>? = try await apiClient
                 .getAccountInfo(account: "HWbsF542VSCxdGKcHrXuvJJnpwCEewmzdsG6KTxXMRRk")
         } catch let error as APIClientError {
-            XCTAssertTrue(error == .couldNotRetrieveAccountInfo)
+            #expect(error == .couldNotRetrieveAccountInfo)
         } catch {
             Issue.record("Unexpected code path reached")
         }
@@ -42,10 +42,10 @@ import Foundation
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getConfirmedBlocksWithLimit"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: [UInt64] = try await apiClient.getConfirmedBlocksWithLimit(startSlot: 131_421_172, limit: 10)
-        XCTAssert(result.count == 10)
-        XCTAssert(result[0] == 131_421_172)
-        XCTAssert(result[1] == 131_421_173)
-        XCTAssert(result[9] == 131_421_181)
+        #expect(result.count == 10)
+        #expect(result[0] == 131_421_172)
+        #expect(result[1] == 131_421_173)
+        #expect(result[9] == 131_421_181)
     }
 
     @Test func testBatchRequest() async throws {
@@ -55,9 +55,9 @@ import Foundation
         let req2: JSONRPCAPIClientRequest<AnyDecodable> = JSONRPCAPIClientRequest(method: "getConfirmedBlocksWithLimit",
                                                                                   params: [10])
         let response = try await apiClient.batchRequest(with: [req1, req2])
-        XCTAssert(response.count == 2)
-        XCTAssert(response[0].result != nil)
-        XCTAssert(response[1].result != nil)
+        #expect(response.count == 2)
+        #expect(response[0].result != nil)
+        #expect(response[1].result != nil)
     }
 
     @Test func testBatch2Request() async throws {
@@ -66,88 +66,88 @@ import Foundation
         let req1: JSONRPCAPIClientRequest<AnyDecodable> = JSONRPCAPIClientRequest(method: "getAccountInfo", params: [])
         let req2: JSONRPCAPIClientRequest<AnyDecodable> = JSONRPCAPIClientRequest(method: "getBalance", params: [])
         let response = try await apiClient.batchRequest(with: [req1, req2])
-        XCTAssert(response.count == 2)
-        XCTAssert(response[0].result != nil)
-        XCTAssert(response[1].result != nil)
+        #expect(response.count == 2)
+        #expect(response[0].result != nil)
+        #expect(response[1].result != nil)
     }
 
     @Test func testBatch3Request() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["batch3"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [[], [], []])
-        XCTAssert(response.count == 3)
-        XCTAssertEqual(response[0]?.value, 1)
-        XCTAssertEqual(response[1]?.value, 2)
-        XCTAssertEqual(response[2]?.value, 3)
+        #expect(response.count == 3)
+        #expect(response[0]?.value == 1)
+        #expect(response[1]?.value == 2)
+        #expect(response[2]?.value == 3)
     }
 
     @Test func testBatch4Request() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["batch4"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [[], [], []])
-        XCTAssert(response.count == 3)
-        XCTAssertEqual(response[0]?.value, 1)
-        XCTAssertEqual(response[1]?.value, nil)
-        XCTAssertEqual(response[2]?.value, nil)
+        #expect(response.count == 3)
+        #expect(response[0]?.value == 1)
+        #expect(response[1]?.value == nil)
+        #expect(response[2]?.value == nil)
     }
 
     @Test func testSingleBatchRequest() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["singleBatch"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [[]])
-        XCTAssert(response.count == 1)
-        XCTAssertEqual(response[0]?.value, 1)
+        #expect(response.count == 1)
+        #expect(response[0]?.value == 1)
     }
 
     @Test func testEmptyBatchRequest() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["emptySingleBatch"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [])
-        XCTAssert(response.isEmpty)
+        #expect(response.isEmpty)
     }
 
     @Test func testGetBalance() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBalance"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: UInt64 = try await apiClient.getBalance(account: "", commitment: "recent")
-        XCTAssert(result == 123_456)
+        #expect(result == 123_456)
     }
 
     @Test func testGetBalanceSingle() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBalance_1"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: UInt64 = try await apiClient.getBalance(account: "", commitment: "recent")
-        XCTAssert(result == 123_456)
+        #expect(result == 123_456)
     }
 
     @Test func testGetBlockCommitment() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBlockCommitment"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: BlockCommitment = try await apiClient.getBlockCommitment(block: 119_396_901)
-        XCTAssert(result.totalStake == 394_545_529_101_613_343)
+        #expect(result.totalStake == 394_545_529_101_613_343)
     }
 
     @Test func testGetBlockTime() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBlockTime"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: Date = try await apiClient.getBlockTime(block: 119_396_901)
-        XCTAssert(result == Date(timeIntervalSince1970: TimeInterval(1_644_034_719)))
+        #expect(result == Date(timeIntervalSince1970: TimeInterval(1_644_034_719)))
     }
 
     @Test func testGetClusterNodes() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getClusterNodes"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: [ClusterNodes] = try await apiClient.getClusterNodes()
-        XCTAssert(result.count == 1)
-        XCTAssert(result[0].pubkey == "57UtuDwoCurTTWySMeV5MiopvDWvK2QeLWu47biQjjLJ")
+        #expect(result.count == 1)
+        #expect(result[0].pubkey == "57UtuDwoCurTTWySMeV5MiopvDWvK2QeLWu47biQjjLJ")
     }
 
     @Test func testGetConfirmedBlock() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getConfirmedBlock"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
 //        let result: ConfirmedBlock = try await apiClient.getConfirmedBlock(slot: 131647712, encoding: "json")
-//        XCTAssert(result.count == 1)
-//        XCTAssert(result[0].pubkey == "57UtuDwoCurTTWySMeV5MiopvDWvK2QeLWu47biQjjLJ")
+//        #expect(result.count == 1)
+//        #expect(result[0].pubkey == "57UtuDwoCurTTWySMeV5MiopvDWvK2QeLWu47biQjjLJ")
     }
 
     @Test func testGetConfirmedSignaturesForAddress() async throws {
@@ -158,10 +158,10 @@ import Foundation
             startSlot: 131_647_712,
             endSlot: 131_647_713
         )
-        XCTAssertEqual(result.count, 3)
-        XCTAssertEqual(result[0], "1")
-        XCTAssertEqual(result[1], "2")
-        XCTAssertEqual(result[2], "3")
+        #expect(result.count == 3)
+        #expect(result[0] == "1")
+        #expect(result[1] == "2")
+        #expect(result[2] == "3")
     }
 
     @Test func testGetTransaction() async throws {
@@ -171,26 +171,26 @@ import Foundation
             .getTransaction(
                 transactionSignature: "3kNdBJeLhLQX8FsyHjAKrtfnq5L6NwjQ3Nm96Wyx1pk5GFicbE47mpu2CtiU8krZDVDk7Di5ELAoKtw91Yj89bQ"
             )
-        XCTAssertNotNil(result)
+        #expect(result != nil)
     }
 
     @Test func testGetEpochInfo() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getEpochInfo"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getEpochInfo()
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result.absoluteSlot, 131_686_768)
-        XCTAssertEqual(result.epoch, 304)
+        #expect(result != nil)
+        #expect(result.absoluteSlot == 131_686_768)
+        #expect(result.epoch == 304)
     }
 
     @Test func testGetFees() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getFees"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getFees(commitment: nil)
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result.lastValidSlot, 131_770_381)
-        XCTAssertEqual(result.feeCalculator?.lamportsPerSignature, 5000)
-        XCTAssertEqual(result.blockhash, "7jvToPQ4ASj3xohjM117tMqmtppQDaWVADZyaLFnytFr")
+        #expect(result != nil)
+        #expect(result.lastValidSlot == 131_770_381)
+        #expect(result.feeCalculator?.lamportsPerSignature == 5000)
+        #expect(result.blockhash == "7jvToPQ4ASj3xohjM117tMqmtppQDaWVADZyaLFnytFr")
     }
     
     @Test func testGetFeeForMessage() async throws {
@@ -200,42 +200,42 @@ import Foundation
             message: Data([0x01]).base64EncodedString(),
             commitment: nil
         )
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result, 1337)
+        #expect(result != nil)
+        #expect(result == 1337)
     }
 
     @Test func testGetMinimumBalanceForRentExemption() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getMinimumBalanceForRentExemption"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getMinimumBalanceForRentExemption(span: 0)
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result, 890_880)
+        #expect(result != nil)
+        #expect(result == 890_880)
     }
 
     @Test func testGetRecentBlockhash() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getRecentBlockhash"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getRecentBlockhash(commitment: nil)
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result, "63ionHTAM94KaSujUCg23hfg7TLharchq5BYXdLGqia1")
+        #expect(result != nil)
+        #expect(result == "63ionHTAM94KaSujUCg23hfg7TLharchq5BYXdLGqia1")
     }
     
     @Test func testGetLatestBlockhash() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getLatestBlockhash"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getLatestBlockhash(commitment: nil)
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result, "63ionHTAM94KaSujUCg23hfg7TLharchq5BYXdLGqia1")
+        #expect(result != nil)
+        #expect(result == "63ionHTAM94KaSujUCg23hfg7TLharchq5BYXdLGqia1")
     }
 
     @Test func testGetSignatureStatusses() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getSignatureStatuses"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getSignatureStatuses(signatures: [])
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result.count, 2)
-        XCTAssertEqual(result[0]?.confirmations, 10)
-        XCTAssertTrue(result[1] == nil)
+        #expect(result != nil)
+        #expect(result.count == 2)
+        #expect(result[0]?.confirmations == 10)
+        #expect(result[1] == nil)
     }
 
     @Test func testGetMultipleAccounts() async throws {
@@ -243,7 +243,7 @@ import Foundation
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: [BufferInfo<TokenMintState>?] = try await apiClient
             .getMultipleAccounts(pubkeys: ["DkZzno16JLXYda4eHZzM9J8Vxet9StJJ5mimrtjbK5V3"], commitment: "confirm")
-        XCTAssertNotNil(result)
+        #expect(result != nil)
     }
 
     @Test func testGetMultipleMintDatas() async throws {
@@ -258,19 +258,19 @@ import Foundation
                 commitment: "confirm",
                 mintType: TokenMintState.self
             )
-        XCTAssertNotNil(result)
+        #expect(result != nil)
 
         // usdc
         let usdc = result["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]!
-        XCTAssertEqual(usdc.mintAuthority?.base58EncodedString, "2wmVCSfPxGPjrnMMn7rchp4uaeoTqN39mXFC2zhPdri9")
-        XCTAssertEqual(usdc.decimals, 6)
-        XCTAssertEqual(usdc.freezeAuthority?.base58EncodedString, "3sNBr7kMccME5D55xNgsmYpZnzPgP2g12CixAajXypn6")
+        #expect(usdc.mintAuthority?.base58EncodedString == "2wmVCSfPxGPjrnMMn7rchp4uaeoTqN39mXFC2zhPdri9")
+        #expect(usdc.decimals == 6)
+        #expect(usdc.freezeAuthority?.base58EncodedString == "3sNBr7kMccME5D55xNgsmYpZnzPgP2g12CixAajXypn6")
 
         // usdt
         let usdt = result["Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"]!
-        XCTAssertEqual(usdt.mintAuthority?.base58EncodedString, "Q6XprfkF8RQQKoQVG33xT88H7wi8Uk1B1CC7YAs69Gi")
-        XCTAssertEqual(usdt.decimals, 6)
-        XCTAssertEqual(usdt.freezeAuthority?.base58EncodedString, "Q6XprfkF8RQQKoQVG33xT88H7wi8Uk1B1CC7YAs69Gi")
+        #expect(usdt.mintAuthority?.base58EncodedString == "Q6XprfkF8RQQKoQVG33xT88H7wi8Uk1B1CC7YAs69Gi")
+        #expect(usdt.decimals == 6)
+        #expect(usdt.freezeAuthority?.base58EncodedString == "Q6XprfkF8RQQKoQVG33xT88H7wi8Uk1B1CC7YAs69Gi")
     }
 
     @Test func testGetSignaturesForAddress() async throws {
@@ -278,10 +278,9 @@ import Foundation
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient
             .getSignaturesForAddress(address: "HWbsF542VSCxdGKcHrXuvJJnpwCEewmzdsG6KTxXMRRk")
-        XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(
-            result.first?.signature,
-            "31vx5MqPX1cxzfwGEWjaHuHnmSo9vwrtwBNXyTJjxtfbzkzqWr4sY8JE5Mq5ZZK7aokps9UjhHcNuJTF82FP2ekM"
+        #expect(result.count == 1)
+        #expect(
+            result.first?.signature == "31vx5MqPX1cxzfwGEWjaHuHnmSo9vwrtwBNXyTJjxtfbzkzqWr4sY8JE5Mq5ZZK7aokps9UjhHcNuJTF82FP2ekM"
         )
     }
 
@@ -291,7 +290,7 @@ import Foundation
         do {
             let _ = try await apiClient.simulateTransaction(transaction: "")
         } catch {
-            XCTAssertEqual(error as? APIClientError, APIClientError.transactionSimulationError(logs: []))
+            #expect(error as? APIClientError == APIClientError.transactionSimulationError(logs: []))
         }
     }
 
@@ -304,7 +303,7 @@ import Foundation
             configs: .init(encoding: "base64"),
             decodingTo: Token2022AccountState.self
         )
-        XCTAssertEqual(result.first?.account.owner, TokenProgram.id.base58EncodedString)
+        #expect(result.first?.account.owner == TokenProgram.id.base58EncodedString)
     }
 
     @Test func testGetToken2022AccountsByOwner() async throws {
@@ -316,8 +315,8 @@ import Foundation
             configs: .init(encoding: "base64"),
             decodingTo: Token2022AccountState.self
         )
-        XCTAssertEqual(result.first?.account.owner, Token2022Program.id.base58EncodedString)
-        XCTAssertEqual(result.first?.pubkey, "43W7QvyKr5hJhFRhvteb7VbsLdwGQG3VZ2fRYVcw5yFN")
+        #expect(result.first?.account.owner == Token2022Program.id.base58EncodedString)
+        #expect(result.first?.pubkey == "43W7QvyKr5hJhFRhvteb7VbsLdwGQG3VZ2fRYVcw5yFN")
     }
     
     @Test func testGetTokenLargestAccounts() async throws {
@@ -326,10 +325,10 @@ import Foundation
         let result = try await apiClient.getTokenLargestAccounts(
             pubkey: "3wyAj7Rt1TWVPZVteFJPLa26JmLvdb1CAKEFZm3NY75E"
         )
-        XCTAssertEqual(result.first?.address, "FYjHNoFtSQ5uijKrZFyYAxvEr87hsKXkXcxkcmkBAf4r")
-        XCTAssertEqual(result.first?.amount, "771")
-        XCTAssertEqual(result.first?.decimals, 2)
-        XCTAssertEqual(result.first?.uiAmount, 7.71)
+        #expect(result.first?.address == "FYjHNoFtSQ5uijKrZFyYAxvEr87hsKXkXcxkcmkBAf4r")
+        #expect(result.first?.amount == "771")
+        #expect(result.first?.decimals == 2)
+        #expect(result.first?.uiAmount == 7.71)
 
     }
 
@@ -339,9 +338,8 @@ import Foundation
         do {
             _ = try await apiClient.sendTransaction(transaction: "ijaisjdfi")
         } catch let APIClientError.responseError(errorDetail) {
-            XCTAssertEqual(
-                errorDetail,
-                .init(code: -32003, message: "Transaction precompile verification failure InvalidAccountIndex",
+            #expect(
+                errorDetail == .init(code: -32003, message: "Transaction precompile verification failure InvalidAccountIndex",
                       data: nil)
             )
         } catch {
@@ -356,17 +354,17 @@ import Foundation
             pubkey: "FdiTt7XQ94fGkgorywN1GuXqQzmURHCDgYtUutWRcy4q",
             commitment: nil
         )
-        XCTAssertEqual(result.amount, "491717631607")
-        XCTAssertEqual(result.decimals, 9)
-        XCTAssertEqual(result.uiAmount, 491.717631607)
-        XCTAssertEqual(result.uiAmountString, "491.717631607")
+        #expect(result.amount == "491717631607")
+        #expect(result.decimals == 9)
+        #expect(result.uiAmount == 491.717631607)
+        #expect(result.uiAmountString == "491.717631607")
     }
 
     @Test func testGenericRequest1() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getHealth"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: String = try await apiClient.request(method: "getHealth")
-        XCTAssertEqual(result, "ok")
+        #expect(result == "ok")
     }
 
     @Test func testGenericRequest2() async throws {
@@ -375,9 +373,8 @@ import Foundation
         do {
             let _: String = try await apiClient.request(method: "getHealth")
         } catch {
-            XCTAssertEqual(
-                error as! APIClientError,
-                .responseError(.init(code: -32005, message: "Node is unhealthy",
+            #expect(
+                error as! APIClientError == .responseError(.init(code: -32005, message: "Node is unhealthy",
                                      data: .init(logs: nil, numSlotsBehind: nil)))
             )
         }

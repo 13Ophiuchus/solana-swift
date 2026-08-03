@@ -1,4 +1,3 @@
-import XCTest
 import Testing
 @testable import SolanaSwift
 
@@ -21,9 +20,8 @@ struct BufferLayoutEncodingTests {
         var data = Data()
         try mintLayout.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        #expect(
+            data.base64EncodedString() == "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
         )
     }
 
@@ -42,14 +40,14 @@ struct BufferLayoutEncodingTests {
         var result = Data()
         try VecU8(length: length, data: data).serialize(to: &result)
 
-        XCTAssertEqual(result.base64EncodedString(), "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y")
+        #expect(result.base64EncodedString() == "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y")
     }
 
     // MARK: - Account info
 
     @Test
     func testEncodingAccountInfo() throws {
-        XCTAssertEqual(TokenAccountState.BUFFER_LENGTH, 165)
+        #expect(TokenAccountState.BUFFER_LENGTH == 165)
 
         let accountInfo = TokenAccountState(
             mint: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo",
@@ -72,9 +70,8 @@ struct BufferLayoutEncodingTests {
         var data = Data()
         try accountInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "BhrZ0FOHFUhTft4+JhhJo9+3/QL6vHWyI8jkatuFPQwCqmOzhzy1ve5l2AqL0ottCChJZ1XSIW3k3C7TaBQn7aCGAQAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWqAQAAAAAAAAAAAAAAAGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        #expect(
+            data.base64EncodedString() == "BhrZ0FOHFUhTft4+JhhJo9+3/QL6vHWyI8jkatuFPQwCqmOzhzy1ve5l2AqL0ottCChJZ1XSIW3k3C7TaBQn7aCGAQAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWqAQAAAAAAAAAAAAAAAGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         )
     }
 
@@ -101,9 +98,8 @@ struct BufferLayoutEncodingTests {
         var data = Data()
         try accountInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq"
+        #expect(
+            data.base64EncodedString() == "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq"
         )
     }
 
@@ -137,9 +133,8 @@ struct BufferLayoutEncodingTests {
         var data = Data()
         try swapInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AQH/Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkg7XoTWySqouc9rBPiFviH2xU9/fRb+6P90QcOMKupqewjVdppkaFaD9TmikzQc7KAtp/LEF9bATPPnDdGT+7Kj7KrmDRVoZN9WTu3h9wgrrN83pVvcqGHLhOtWWeWCUjG+nrzvtutOj1l82qryXQxsbvkwtL24OR8pgIDRS9dYZqhgojuhD2D9j0JH/1UU78OyY17yIzxSctOkEdQqtVncXgwwKhJB+PCDsVtlUWWQbPgBu+MNnFskXx8qDFMwSAeAAAAAAAAABAnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        #expect(
+            data.base64EncodedString() == "AQH/Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkg7XoTWySqouc9rBPiFviH2xU9/fRb+6P90QcOMKupqewjVdppkaFaD9TmikzQc7KAtp/LEF9bATPPnDdGT+7Kj7KrmDRVoZN9WTu3h9wgrrN83pVvcqGHLhOtWWeWCUjG+nrzvtutOj1l82qryXQxsbvkwtL24OR8pgIDRS9dYZqhgojuhD2D9j0JH/1UU78OyY17yIzxSctOkEdQqtVncXgwwKhJB+PCDsVtlUWWQbPgBu+MNnFskXx8qDFMwSAeAAAAAAAAABAnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         )
     }
 
@@ -152,9 +147,8 @@ struct BufferLayoutEncodingTests {
         var data = Data()
         try emptyInfo.serialize(to: &data)
 
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            ""
+        #expect(
+            data.base64EncodedString() == ""
         )
     }
 
@@ -203,9 +197,8 @@ struct BufferLayoutEncodingTests {
         try state.serialize(to: &data)
 
         // Check if the serialized data matches the expected base64-encoded string
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE="
+        #expect(
+            data.base64EncodedString() == "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE="
         )
     }
 
@@ -262,9 +255,8 @@ struct BufferLayoutEncodingTests {
         try state.serialize(to: &data)
 
         // Base64 encode the serialized data and compare with the expected value
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "AAAAABdZNqd8UPqRoeBHXdhoEwzZNLf6UnDQ1UDsr4oXimfhquOLA1BVIXECAQAAAAAXWTanfFD6kaHgR13YaBMM2TS3+lJw0NVA7K+KF4pn4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoDKJKHBCRLpAQAAAAAAAACQI15ZrVt7LAHpAQAAAAAAAACQI15ZrVt7LAEKADQAF1k2p3xQ+pGh4Edd2GgTDNk0t/pScNDVQOyviheKZ+EN9NlkAAAAAAAADfTZZAAAAAAAAAYAAQAB"
+        #expect(
+            data.base64EncodedString() == "AAAAABdZNqd8UPqRoeBHXdhoEwzZNLf6UnDQ1UDsr4oXimfhquOLA1BVIXECAQAAAAAXWTanfFD6kaHgR13YaBMM2TS3+lJw0NVA7K+KF4pn4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoDKJKHBCRLpAQAAAAAAAACQI15ZrVt7LAHpAQAAAAAAAACQI15ZrVt7LAEKADQAF1k2p3xQ+pGh4Edd2GgTDNk0t/pScNDVQOyviheKZ+EN9NlkAAAAAAAADfTZZAAAAAAAAAYAAQAB"
         )
     }
 
@@ -298,9 +290,8 @@ struct BufferLayoutEncodingTests {
         try accountState.serialize(to: &data)
 
         // Base64 encode the serialized data and compare with the expected value
-        XCTAssertEqual(
-            data.base64EncodedString(),
-            "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA="
+        #expect(
+            data.base64EncodedString() == "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA="
         )
     }
 }

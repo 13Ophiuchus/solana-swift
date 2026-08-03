@@ -1,4 +1,5 @@
 import Foundation
+import Testing
 @testable import SolanaSwift
 
 extension Message {

@@ -1,5 +1,4 @@
 import SolanaSwift
-import XCTest
 import Testing
 
 
@@ -13,17 +12,15 @@ struct TokenProgramTests {
             freezeAuthority: nil
         )
 
-        XCTAssertEqual(instruction.keys.count, 2)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
+        #expect(instruction.keys.count == 2)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .readonly(publicKey: "SysvarRent111111111111111111111111111111111", isSigner: false)
+        #expect(
+            instruction.keys[1] == .readonly(publicKey: "SysvarRent111111111111111111111111111111111", isSigner: false)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual(Base58.encode(instruction.data), "195AHs4ykNczn89ynGjJ5v7rSfaK9giG1eL2bNrmUqn1oNw")
+        #expect(instruction.programId == TokenProgram.id)
+        #expect(Base58.encode(instruction.data) == "195AHs4ykNczn89ynGjJ5v7rSfaK9giG1eL2bNrmUqn1oNw")
     }
 
     @Test
@@ -34,25 +31,21 @@ struct TokenProgramTests {
             owner: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG"
         )
 
-        XCTAssertEqual(instruction.keys.count, 4)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
+        #expect(instruction.keys.count == 4)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .readonly(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
+        #expect(
+            instruction.keys[1] == .readonly(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: false)
+        #expect(
+            instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[3],
-            .readonly(publicKey: "SysvarRent111111111111111111111111111111111", isSigner: false)
+        #expect(
+            instruction.keys[3] == .readonly(publicKey: "SysvarRent111111111111111111111111111111111", isSigner: false)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual(Base58.encode(instruction.data), "2")
+        #expect(instruction.programId == TokenProgram.id)
+        #expect(Base58.encode(instruction.data) == "2")
     }
 
     @Test
@@ -64,21 +57,18 @@ struct TokenProgramTests {
             amount: 100
         )
 
-        XCTAssertEqual(instruction.keys.count, 3)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
+        #expect(instruction.keys.count == 3)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
+        #expect(
+            instruction.keys[1] == .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .writable(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
+        #expect(
+            instruction.keys[2] == .writable(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual("3WBgs5fm8oDy", Base58.encode(instruction.data))
+        #expect(instruction.programId == TokenProgram.id)
+        #expect("3WBgs5fm8oDy" == Base58.encode(instruction.data))
     }
 
     @Test
@@ -93,25 +83,21 @@ struct TokenProgramTests {
             decimals: 6
         )
 
-        XCTAssertEqual(instruction.keys.count, 4)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
+        #expect(instruction.keys.count == 4)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .readonly(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
+        #expect(
+            instruction.keys[1] == .readonly(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
+        #expect(
+            instruction.keys[2] == .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[3],
-            .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
+        #expect(
+            instruction.keys[3] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual("hNmtbNYibdzwf", Base58.encode(instruction.data))
+        #expect(instruction.programId == TokenProgram.id)
+        #expect("hNmtbNYibdzwf" == Base58.encode(instruction.data))
     }
 
     @Test
@@ -124,21 +110,18 @@ struct TokenProgramTests {
             decimals: 6
         )
 
-        XCTAssertEqual(instruction.keys.count, 3)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
+        #expect(instruction.keys.count == 3)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .writable(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
+        #expect(
+            instruction.keys[1] == .writable(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
+        #expect(
+            instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual("s9m8UUrvs3fBT", Base58.encode(instruction.data))
+        #expect(instruction.programId == TokenProgram.id)
+        #expect("s9m8UUrvs3fBT" == Base58.encode(instruction.data))
     }
 
     @Test
@@ -151,21 +134,18 @@ struct TokenProgramTests {
             amount: 1000
         )
 
-        XCTAssertEqual(instruction.keys.count, 3)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
+        #expect(instruction.keys.count == 3)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .readonly(publicKey: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo", isSigner: false)
+        #expect(
+            instruction.keys[1] == .readonly(publicKey: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
+        #expect(
+            instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual("4d5tSvUuzUVM", Base58.encode(instruction.data))
+        #expect(instruction.programId == TokenProgram.id)
+        #expect("4d5tSvUuzUVM" == Base58.encode(instruction.data))
     }
 
     @Test
@@ -177,21 +157,18 @@ struct TokenProgramTests {
             amount: 1_000_000_000
         )
 
-        XCTAssertEqual(instruction.keys.count, 3)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
+        #expect(instruction.keys.count == 3)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
+        #expect(
+            instruction.keys[1] == .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .writable(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
+        #expect(
+            instruction.keys[2] == .writable(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual("6AsKhot84V8s", Base58.encode(instruction.data))
+        #expect(instruction.programId == TokenProgram.id)
+        #expect("6AsKhot84V8s" == Base58.encode(instruction.data))
     }
 
     @Test
@@ -202,20 +179,17 @@ struct TokenProgramTests {
             owner: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG"
         )
 
-        XCTAssertEqual(instruction.keys.count, 3)
-        XCTAssertEqual(
-            instruction.keys[0],
-            .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
+        #expect(instruction.keys.count == 3)
+        #expect(
+            instruction.keys[0] == .writable(publicKey: "3uetDDizgTtadDHZzyy9BqxrjQcozMEkxzbKhfZF4tG3", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[1],
-            .writable(publicKey: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo", isSigner: false)
+        #expect(
+            instruction.keys[1] == .writable(publicKey: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo", isSigner: false)
         )
-        XCTAssertEqual(
-            instruction.keys[2],
-            .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: false)
+        #expect(
+            instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: false)
         )
-        XCTAssertEqual(instruction.programId, TokenProgram.id)
-        XCTAssertEqual("A", Base58.encode(instruction.data))
+        #expect(instruction.programId == TokenProgram.id)
+        #expect("A" == Base58.encode(instruction.data))
     }
 }

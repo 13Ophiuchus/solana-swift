@@ -1,6 +1,5 @@
 import OSLog
 import SolanaSwift
-import XCTest
 import Testing
 
 
@@ -32,37 +31,36 @@ struct GetAccountBalancesTests {
             tokensRepository: tokensRepository
         )
 
-        XCTAssertEqual(result.unresolved.count, 0)
+        #expect(result.unresolved.count == 0)
 
         let resolved = result.resolved
 
-        XCTAssertEqual(resolved.count, 2)
+        #expect(resolved.count == 2)
 
         // Token
-        XCTAssertEqual(resolved[0].pubkey, "BNUGJRjzQYeGTSLPkCp4xNSH4oBDMCevpsHEfWvWMYeq")
-        XCTAssertEqual(resolved[0].lamports, 153_269_049_492)
-        XCTAssertEqual(resolved[0].token.chainId, 101)
-        XCTAssertEqual(resolved[0].token.symbol, "$DEDE")
-        XCTAssertEqual(resolved[0].token.name, "$DEDE")
-        XCTAssertEqual(resolved[0].token.decimals, 6)
-        XCTAssertEqual(
-            resolved[0].token.logoURI,
-            "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link"
+        #expect(resolved[0].pubkey == "BNUGJRjzQYeGTSLPkCp4xNSH4oBDMCevpsHEfWvWMYeq")
+        #expect(resolved[0].lamports == 153_269_049_492)
+        #expect(resolved[0].token.chainId == 101)
+        #expect(resolved[0].token.symbol == "$DEDE")
+        #expect(resolved[0].token.name == "$DEDE")
+        #expect(resolved[0].token.decimals == 6)
+        #expect(
+            resolved[0].token.logoURI == "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link"
         )
-        XCTAssertEqual(resolved[0].token.mintAddress, "CzXyy265vDCXRysRd5nvpy9oieq2KUtx51Sz1jUMUWyE")
-        XCTAssertEqual(resolved[0].tokenProgramId, TokenProgram.id.base58EncodedString)
-        XCTAssertEqual(resolved[0].minimumBalanceForRentExemption, 2_039_280)
+        #expect(resolved[0].token.mintAddress == "CzXyy265vDCXRysRd5nvpy9oieq2KUtx51Sz1jUMUWyE")
+        #expect(resolved[0].tokenProgramId == TokenProgram.id.base58EncodedString)
+        #expect(resolved[0].minimumBalanceForRentExemption == 2_039_280)
 
-        XCTAssertEqual(resolved[1].pubkey, "6uJPNjuLnoT6rvwj2wFLHnvbFtJqkbdvKhtdw16EabNx")
-        XCTAssertEqual(resolved[1].lamports, 4_030_896)
-        XCTAssertEqual(resolved[1].token.chainId, 101)
-        XCTAssertEqual(resolved[1].token.symbol, "BONK")
-        XCTAssertEqual(resolved[1].token.name, "Bonk")
-        XCTAssertEqual(resolved[1].token.decimals, 5)
-        XCTAssertEqual(resolved[1].token.logoURI, "https://arweave.net/hQiPZOsRZXGXBJd_82PhVdlM_hACsT_q6wqwf5cSY7I")
-        XCTAssertEqual(resolved[1].token.mintAddress, "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263")
-        XCTAssertEqual(resolved[1].tokenProgramId, TokenProgram.id.base58EncodedString)
-        XCTAssertEqual(resolved[1].minimumBalanceForRentExemption, 2_039_280)
+        #expect(resolved[1].pubkey == "6uJPNjuLnoT6rvwj2wFLHnvbFtJqkbdvKhtdw16EabNx")
+        #expect(resolved[1].lamports == 4_030_896)
+        #expect(resolved[1].token.chainId == 101)
+        #expect(resolved[1].token.symbol == "BONK")
+        #expect(resolved[1].token.name == "Bonk")
+        #expect(resolved[1].token.decimals == 5)
+        #expect(resolved[1].token.logoURI == "https://arweave.net/hQiPZOsRZXGXBJd_82PhVdlM_hACsT_q6wqwf5cSY7I")
+        #expect(resolved[1].token.mintAddress == "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263")
+        #expect(resolved[1].tokenProgramId == TokenProgram.id.base58EncodedString)
+        #expect(resolved[1].minimumBalanceForRentExemption == 2_039_280)
     }
 
     @Test
@@ -73,49 +71,48 @@ struct GetAccountBalancesTests {
             tokensRepository: tokensRepository
         )
 
-        XCTAssertEqual(result.unresolved.count, 0)
+        #expect(result.unresolved.count == 0)
 
         let resolved = result.resolved
 
-        XCTAssertEqual(resolved.count, 3)
+        #expect(resolved.count == 3)
 
         // Token
-        XCTAssertEqual(resolved[0].pubkey, "BNUGJRjzQYeGTSLPkCp4xNSH4oBDMCevpsHEfWvWMYeq")
-        XCTAssertEqual(resolved[0].lamports, 153_269_049_492)
-        XCTAssertEqual(resolved[0].token.chainId, 101)
-        XCTAssertEqual(resolved[0].token.symbol, "$DEDE")
-        XCTAssertEqual(resolved[0].token.name, "$DEDE")
-        XCTAssertEqual(resolved[0].token.decimals, 6)
-        XCTAssertEqual(
-            resolved[0].token.logoURI,
-            "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link"
+        #expect(resolved[0].pubkey == "BNUGJRjzQYeGTSLPkCp4xNSH4oBDMCevpsHEfWvWMYeq")
+        #expect(resolved[0].lamports == 153_269_049_492)
+        #expect(resolved[0].token.chainId == 101)
+        #expect(resolved[0].token.symbol == "$DEDE")
+        #expect(resolved[0].token.name == "$DEDE")
+        #expect(resolved[0].token.decimals == 6)
+        #expect(
+            resolved[0].token.logoURI == "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link"
         )
-        XCTAssertEqual(resolved[0].token.mintAddress, "CzXyy265vDCXRysRd5nvpy9oieq2KUtx51Sz1jUMUWyE")
-        XCTAssertEqual(resolved[0].tokenProgramId, TokenProgram.id.base58EncodedString)
-        XCTAssertEqual(resolved[0].minimumBalanceForRentExemption, 2_039_280)
+        #expect(resolved[0].token.mintAddress == "CzXyy265vDCXRysRd5nvpy9oieq2KUtx51Sz1jUMUWyE")
+        #expect(resolved[0].tokenProgramId == TokenProgram.id.base58EncodedString)
+        #expect(resolved[0].minimumBalanceForRentExemption == 2_039_280)
 
-        XCTAssertEqual(resolved[1].pubkey, "6uJPNjuLnoT6rvwj2wFLHnvbFtJqkbdvKhtdw16EabNx")
-        XCTAssertEqual(resolved[1].lamports, 4_030_896)
-        XCTAssertEqual(resolved[1].token.chainId, 101)
-        XCTAssertEqual(resolved[1].token.symbol, "BONK")
-        XCTAssertEqual(resolved[1].token.name, "Bonk")
-        XCTAssertEqual(resolved[1].token.decimals, 5)
-        XCTAssertEqual(resolved[1].token.logoURI, "https://arweave.net/hQiPZOsRZXGXBJd_82PhVdlM_hACsT_q6wqwf5cSY7I")
-        XCTAssertEqual(resolved[1].token.mintAddress, "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263")
-        XCTAssertEqual(resolved[1].tokenProgramId, TokenProgram.id.base58EncodedString)
-        XCTAssertEqual(resolved[1].minimumBalanceForRentExemption, 2_039_280)
+        #expect(resolved[1].pubkey == "6uJPNjuLnoT6rvwj2wFLHnvbFtJqkbdvKhtdw16EabNx")
+        #expect(resolved[1].lamports == 4_030_896)
+        #expect(resolved[1].token.chainId == 101)
+        #expect(resolved[1].token.symbol == "BONK")
+        #expect(resolved[1].token.name == "Bonk")
+        #expect(resolved[1].token.decimals == 5)
+        #expect(resolved[1].token.logoURI == "https://arweave.net/hQiPZOsRZXGXBJd_82PhVdlM_hACsT_q6wqwf5cSY7I")
+        #expect(resolved[1].token.mintAddress == "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263")
+        #expect(resolved[1].tokenProgramId == TokenProgram.id.base58EncodedString)
+        #expect(resolved[1].minimumBalanceForRentExemption == 2_039_280)
 
         // Token 2022
-        XCTAssertEqual(resolved[2].pubkey, "43W7QvyKr5hJhFRhvteb7VbsLdwGQG3VZ2fRYVcw5yFN")
-        XCTAssertEqual(resolved[2].lamports, 6_363_367)
-        XCTAssertEqual(resolved[2].token.chainId, 101)
-        XCTAssertEqual(resolved[2].token.symbol, "BERN")
-        XCTAssertEqual(resolved[2].token.name, "BonkEarn")
-        XCTAssertEqual(resolved[2].token.decimals, 5)
-        XCTAssertEqual(resolved[2].token.logoURI, "https://i.imgur.com/nd9AVZ4.jpeg")
-        XCTAssertEqual(resolved[2].token.mintAddress, "CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo")
-        XCTAssertEqual(resolved[2].tokenProgramId, Token2022Program.id.base58EncodedString)
-        XCTAssertEqual(resolved[2].minimumBalanceForRentExemption, 2_157_600)
+        #expect(resolved[2].pubkey == "43W7QvyKr5hJhFRhvteb7VbsLdwGQG3VZ2fRYVcw5yFN")
+        #expect(resolved[2].lamports == 6_363_367)
+        #expect(resolved[2].token.chainId == 101)
+        #expect(resolved[2].token.symbol == "BERN")
+        #expect(resolved[2].token.name == "BonkEarn")
+        #expect(resolved[2].token.decimals == 5)
+        #expect(resolved[2].token.logoURI == "https://i.imgur.com/nd9AVZ4.jpeg")
+        #expect(resolved[2].token.mintAddress == "CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo")
+        #expect(resolved[2].tokenProgramId == Token2022Program.id.base58EncodedString)
+        #expect(resolved[2].minimumBalanceForRentExemption == 2_157_600)
     }
 }
 

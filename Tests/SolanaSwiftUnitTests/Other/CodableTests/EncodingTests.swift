@@ -1,20 +1,19 @@
 import SolanaSwift
-import XCTest
 import Testing
 
 
 struct EncodingTests {
     @Test
     func testEncodingBytesLength() throws {
-        XCTAssertEqual(Data([0]), Data.encodeLength(0))
-        XCTAssertEqual(Data([1]), Data.encodeLength(1))
-        XCTAssertEqual(Data([5]), Data.encodeLength(5))
-        XCTAssertEqual(Data([0x7F]), Data.encodeLength(127))
-        XCTAssertEqual(Data([128, 1]), Data.encodeLength(128))
-        XCTAssertEqual(Data([0xFF, 0x01]), Data.encodeLength(255))
-        XCTAssertEqual(Data([0x80, 0x02]), Data.encodeLength(256))
-        XCTAssertEqual(Data([0xFF, 0xFF, 0x01]), Data.encodeLength(32767))
-        XCTAssertEqual(Data([0x80, 0x80, 0x80, 0x01]), Data.encodeLength(2_097_152))
+        #expect(Data([0]) == Data.encodeLength(0))
+        #expect(Data([1]) == Data.encodeLength(1))
+        #expect(Data([5]) == Data.encodeLength(5))
+        #expect(Data([0x7F]) == Data.encodeLength(127))
+        #expect(Data([128 == 1]), Data.encodeLength(128))
+        #expect(Data([0xFF == 0x01]), Data.encodeLength(255))
+        #expect(Data([0x80 == 0x02]), Data.encodeLength(256))
+        #expect(Data([0xFF == 0xFF, 0x01]), Data.encodeLength(32767))
+        #expect(Data([0x80 == 0x80, 0x80, 0x01]), Data.encodeLength(2_097_152))
     }
 
     @Test
@@ -26,7 +25,7 @@ struct EncodingTests {
         let result = bytes.decodeLength()
 
         // then
-        XCTAssertEqual(result, 5)
+        #expect(result == 5)
     }
 
     @Test
@@ -39,8 +38,8 @@ struct EncodingTests {
         let result2 = bytes.decodeLength()
 
         // then
-        XCTAssertEqual(result1, 5)
-        XCTAssertEqual(result2, 0xF3)
+        #expect(result1 == 5)
+        #expect(result2 == 0xF3)
     }
 
     @Test
@@ -53,8 +52,8 @@ struct EncodingTests {
         _ = bytes.decodeLength()
 
         // then
-        XCTAssertFalse(bytes.contains(5))
-        XCTAssertEqual(bytes.count, numberOfBytes - 1)
+        #expect(!(bytes.contains(5)))
+        #expect(bytes.count == numberOfBytes - 1)
     }
 
     @Test
@@ -66,6 +65,6 @@ struct EncodingTests {
         let result = bytes.decodeLength()
 
         // then
-        XCTAssertEqual(result, 0)
+        #expect(result == 0)
     }
 }

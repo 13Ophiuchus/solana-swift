@@ -13,7 +13,7 @@ struct TransactionTests {
         try transaction.partialSign(signers: [signer])
 
         // then
-        XCTAssertTrue(transaction.signatures.contains(where: { $0.publicKey == signer.publicKey }))
+        #expect(transaction.signatures.contains(where: { $0.publicKey == signer.publicKey }))
     }
 
     @Test
@@ -28,7 +28,7 @@ struct TransactionTests {
 
         // when
         // then
-        XCTAssertThrowsError(try transaction.partialSign(signers: [signer]))
+        #expect(throws: (any Error).self) { try transaction.partialSign(signers: [signer] })
     }
 
     @Test
@@ -43,7 +43,7 @@ struct TransactionTests {
         try transaction.partialSign(signers: [signer])
 
         // then
-        XCTAssertEqual(numberOfSignatures, transaction.signatures.count)
+        #expect(numberOfSignatures == transaction.signatures.count)
     }
 
     @Test
@@ -54,7 +54,7 @@ struct TransactionTests {
 
         // when
         // then
-        XCTAssertThrowsError(try transaction.partialSign(signers: []))
+        #expect(throws: (any Error).self) { try transaction.partialSign(signers: [] })
     }
 }
 

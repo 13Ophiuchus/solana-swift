@@ -1,4 +1,5 @@
 import Foundation
+import Testing
 import SolanaSwift
 
 final class NetworkManagerMock: NetworkManager, @unchecked Sendable {

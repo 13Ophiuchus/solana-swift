@@ -92,14 +92,14 @@ import Foundation
         )
         .preparedTransaction
 
-        XCTAssertEqual(tx.expectedFee, expectedFee)
+        #expect(tx.expectedFee == expectedFee)
 
         let recentBlockhash = try await apiClient.getRecentBlockhash()
         let serializedTransaction = try blockchainClient.signAndSerialize(
             preparedTransaction: tx,
             recentBlockhash: recentBlockhash
         )
-        XCTAssertEqual(serializedTransaction, expectedSerializedTransaction)
+        #expect(serializedTransaction == expectedSerializedTransaction)
     }
 }
 

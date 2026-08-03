@@ -1,5 +1,4 @@
 import SolanaSwift
-import XCTest
 import Testing
 
 
@@ -30,7 +29,7 @@ struct FeeCalculatorTests {
         ])
 
         let fee = try feeCalculator.calculateNetworkFee(transaction: transaction).total
-        XCTAssertEqual(fee, lamportsPerSignature)
+        #expect(fee == lamportsPerSignature)
 
         // owner is not the fee payer
         let transaction2 = createTransaction(
@@ -49,7 +48,7 @@ struct FeeCalculatorTests {
         )
 
         let fee2 = try feeCalculator.calculateNetworkFee(transaction: transaction2).total
-        XCTAssertEqual(fee2, lamportsPerSignature * 2)
+        #expect(fee2 == lamportsPerSignature * 2)
     }
 
     @Test
@@ -71,9 +70,9 @@ struct FeeCalculatorTests {
         ])
 
         let fee = try feeCalculator.calculateNetworkFee(transaction: transaction)
-        XCTAssertEqual(fee.transaction, lamportsPerSignature * 2)
-        XCTAssertEqual(fee.accountBalances, minRentExemption)
-        XCTAssertEqual(fee.deposit, 0)
+        #expect(fee.transaction == lamportsPerSignature * 2)
+        #expect(fee.accountBalances == minRentExemption)
+        #expect(fee.deposit == 0)
 
         // create, initialize and close
         let transaction2 = createTransaction(
@@ -100,10 +99,9 @@ struct FeeCalculatorTests {
         )
 
         let fee2 = try feeCalculator.calculateNetworkFee(transaction: transaction2)
-        XCTAssertEqual(fee2.transaction,
-                       lamportsPerSignature * 3) // owner's signature, fee payer's signature, new account signature
-        XCTAssertEqual(fee2.accountBalances, 0)
-        XCTAssertEqual(fee2.deposit, minRentExemption)
+        #expect(fee2.transaction == lamportsPerSignature * 3) // owner's signature, fee payer's signature, new account signature
+        #expect(fee2.accountBalances == 0)
+        #expect(fee2.deposit == minRentExemption)
 
         // create associated token
         let transaction3 = try createTransaction(
@@ -118,9 +116,9 @@ struct FeeCalculatorTests {
         )
 
         let fee3 = try feeCalculator.calculateNetworkFee(transaction: transaction3)
-        XCTAssertEqual(fee3.transaction, lamportsPerSignature * 2) // owner's signature, fee payer's signature
-        XCTAssertEqual(fee3.accountBalances, minRentExemption)
-        XCTAssertEqual(fee3.deposit, 0)
+        #expect(fee3.transaction == lamportsPerSignature * 2) // owner's signature, fee payer's signature
+        #expect(fee3.accountBalances == minRentExemption)
+        #expect(fee3.deposit == 0)
 
         // create associated token and close
         let transaction4 = try createTransaction(
@@ -144,9 +142,9 @@ struct FeeCalculatorTests {
         )
 
         let fee4 = try feeCalculator.calculateNetworkFee(transaction: transaction4)
-        XCTAssertEqual(fee4.transaction, lamportsPerSignature * 2) // owner's signature, fee payer's signature
-        XCTAssertEqual(fee4.accountBalances, 0)
-        XCTAssertEqual(fee4.deposit, minRentExemption)
+        #expect(fee4.transaction == lamportsPerSignature * 2) // owner's signature, fee payer's signature
+        #expect(fee4.accountBalances == 0)
+        #expect(fee4.deposit == minRentExemption)
     }
 
     // MARK: - Helpers
