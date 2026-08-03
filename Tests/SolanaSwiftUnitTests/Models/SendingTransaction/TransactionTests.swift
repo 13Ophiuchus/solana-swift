@@ -1,5 +1,4 @@
 import SolanaSwift
-import XCTest
 
 class TransactionTests: XCTestCase {
     func test_givenSigner_whenPartialSign_thenSignerAppended() throws {

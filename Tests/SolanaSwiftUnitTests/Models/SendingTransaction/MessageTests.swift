@@ -1,5 +1,4 @@
 @testable import SolanaSwift
-import XCTest
 
 class MessageTests: XCTestCase {
     func test_givenRawMessage_whenFrom_thenReturnsExpectedMessage() throws {

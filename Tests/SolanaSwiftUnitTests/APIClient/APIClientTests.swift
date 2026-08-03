@@ -1,6 +1,4 @@
-import XCTest
 import Testing
-import Foundation
 import Foundation
 @testable import SolanaSwift
 
@@ -36,7 +34,7 @@ import Foundation
         } catch let error as APIClientError {
             XCTAssertTrue(error == .couldNotRetrieveAccountInfo)
         } catch {
-            XCTAssertTrue(false)
+            Issue.record("Unexpected code path reached")
         }
     }
 
@@ -347,7 +345,7 @@ import Foundation
                       data: nil)
             )
         } catch {
-            XCTAssertFalse(true)
+            Issue.record("Unexpected code path reached")
         }
     }
 
