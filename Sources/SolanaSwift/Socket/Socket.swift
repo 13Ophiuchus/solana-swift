@@ -249,7 +249,7 @@ public final class Socket: NSObject, SolanaSocket {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await self.task.sendPingWithTimeout(.seconds(10))
+                try await self.task.sendPingWithTimeout(10)
                 Logger.log(event: "request", message: "Ping socket", logLevel: .debug)
             } catch WebSocketError.pingTimeout {
                 Logger.log(event: "error", message: "Ping timed out", logLevel: .error)

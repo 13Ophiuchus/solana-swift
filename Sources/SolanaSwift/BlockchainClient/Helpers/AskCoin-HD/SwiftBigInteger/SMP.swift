@@ -104,6 +104,15 @@
 
 import Foundation
 
+#if canImport(Glibc)
+import Glibc
+
+func arc4random_uniform(_ upperBound: UInt32) -> UInt32 {
+    if upperBound == 0 { return 0 }
+    return UInt32.random(in: 0..<upperBound)
+}
+#endif
+
 //	MARK: - Typealiases
 
 //	————————————————————————————————————————————————————————————————————————————————————————————

@@ -22,7 +22,7 @@ public enum WebSocketMessage {
     case data(Data)
 }
 
-public protocol WebSocketTask {
+public protocol WebSocketTask: AnyObject {
     func resume()
     func cancel()
     func send(_ message: WebSocketMessage) async throws
@@ -34,13 +34,18 @@ public protocol WebSocketTask {
 extension URLSessionWebSocketTask: WebSocketTask {
     public func send(_ message: WebSocketMessage) async throws {
         switch message {
-        case .string(let text): try await send(.string(text))
-        case .data(let data):   try await send(.data(data))
+        case .string(let text):
+            let msg = URLSessionWebSocketTask.Message.string(text)
+            try await (self as URLSessionWebSocketTask).send(msg)
+        case .data(let data):
+            let msg = URLSessionWebSocketTask.Message.data(data)
+            try await (self as URLSessionWebSocketTask).send(msg)
         }
     }
 
     public func receive() async throws -> WebSocketMessage {
-        let raw = try await receive()
+        let task = self as URLSessionWebSocketTask
+        let raw: URLSessionWebSocketTask.Message = try await task.receive()
         switch raw {
         case .string(let text): return .string(text)
         case .data(let data):   return .data(data)

@@ -2,7 +2,7 @@
 
 ## Goal
 
-Migrate `solana-swift-patched` to Swift 6 concurrency semantics while keeping Linux CI green and minimizing risky behavior changes.
+Migrate `solana-swift-concurrency` to Swift 6 concurrency semantics while keeping Linux CI green and minimizing risky behavior changes.
 
 ## Phase 0 — Baseline and guardrails
 
@@ -14,7 +14,7 @@ Migrate `solana-swift-patched` to Swift 6 concurrency semantics while keeping Li
 ### Commands
 
 ```bash
-cd /Users/nicreich/AetherAG-mono/solana-swift-patched
+cd /Users/nicreich/AetherAG-mono/solana-swift-concurrency
 head -3 Package.swift
 grep -n "swift-version" .github/workflows/*.yml
 swift build 2>&1 | tee build-swift6.log | tail -100
