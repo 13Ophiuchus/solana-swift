@@ -1,3 +1,6 @@
+#if canImport(CommonCrypto)
+import CommonCrypto
+#endif
 //
 //  ASKKeychain.swift
 //  AskCoin-HD
