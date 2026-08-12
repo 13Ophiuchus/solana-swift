@@ -1,11 +1,12 @@
 import SolanaSwift
-import Foundation
 import Testing
+
 
 struct BufferLayoutDecodingTests {
     // MARK: - Raw data
 
-    @Test func decodingRawData() throws {
+    @Test
+    func testDecodingRawData() throws {
         let string =
             "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 
@@ -27,7 +28,8 @@ struct BufferLayoutDecodingTests {
 
     // MARK: - VecU8
 
-    @Test func decodingVecU8() throws {
+    @Test
+    func testDecodingVecU8() throws {
         let string = "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y"
         let data = Data(base64Encoded: string)!
         var binaryReader = BinaryReader(bytes: data.bytes)
@@ -44,7 +46,8 @@ struct BufferLayoutDecodingTests {
 
     // MARK: - Mint
 
-    @Test func decodingMint() throws {
+    @Test
+    func testDecodingMint() throws {
         #expect(TokenMintState.BUFFER_LENGTH == 82)
 
         let string =
@@ -66,7 +69,8 @@ struct BufferLayoutDecodingTests {
 
     // MARK: - Account info
 
-    @Test func decodingAccountInfo() throws {
+    @Test
+    func testDecodingAccountInfo() throws {
         #expect(TokenAccountState.BUFFER_LENGTH == 165)
 
         let string =
@@ -94,7 +98,8 @@ struct BufferLayoutDecodingTests {
         #expect(accountInfo.closeAuthority?.base58EncodedString == nil)
     }
 
-    @Test func decodingAccountInfo2() throws {
+    @Test
+    func testDecodingAccountInfo2() throws {
         let string =
             "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq"
 
@@ -145,7 +150,8 @@ struct BufferLayoutDecodingTests {
 
     // MARK: - TokenSwapInfo
 
-    @Test func decodingTokenSwapInfo() throws {
+    @Test
+    func testDecodingTokenSwapInfo() throws {
         #expect(TokenSwapInfo.BUFFER_LENGTH == 324)
 
         let string =
@@ -178,7 +184,8 @@ struct BufferLayoutDecodingTests {
 
     // MARK: - EmptyInfo
 
-    @Test func decodingEmptyInfo() throws {
+    @Test
+    func testDecodingEmptyInfo() throws {
         let string =
             "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
         let data = Data(base64Encoded: string)!
@@ -188,7 +195,8 @@ struct BufferLayoutDecodingTests {
 
     // MARK: - Token2022
 
-    @Test func decodingToken2022MintState() throws {
+    @Test
+    func testDecodingToken2022MintState() throws {
         let string =
             "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE="
         let data = Data(base64Encoded: string)!
@@ -206,8 +214,12 @@ struct BufferLayoutDecodingTests {
         // Assertions for the extension state
         let extensionState = state.getParsedExtension(ofType: TransferFeeConfigExtensionState.self)!
         #expect(extensionState.withheldAmount == 2_531_431_991)
-        #expect(extensionState.transferFeeConfigAuthority.base58EncodedString == "11111111111111111111111111111111")
-        #expect(extensionState.withdrawWithHeldAuthority.base58EncodedString == "LPF354oHyPWL7BoMRySPQLwfvUyqPBWpwC4R7atptrD")
+        #expect(
+            extensionState.transferFeeConfigAuthority.base58EncodedString == "11111111111111111111111111111111"
+        )
+        #expect(
+            extensionState.withdrawWithHeldAuthority.base58EncodedString == "LPF354oHyPWL7BoMRySPQLwfvUyqPBWpwC4R7atptrD"
+        )
         #expect(extensionState.olderTransferFee.maximumFee == 50_000_000_000_000)
         #expect(extensionState.olderTransferFee.epoch == 530)
         #expect(extensionState.olderTransferFee.transferFeeBasisPoints == 300)
@@ -216,7 +228,8 @@ struct BufferLayoutDecodingTests {
         #expect(extensionState.newerTransferFee.epoch == 530)
     }
 
-    @Test func decodingToken2022MintState2() throws {
+    @Test
+    func testDecodingToken2022MintState2() throws {
         // Mint FZYEgCWzzedxcmxYvGXSkMrj7TaA3bXoaEv6XMnwtLKh
         let string =
             "AAAAABdZNqd8UPqRoeBHXdhoEwzZNLf6UnDQ1UDsr4oXimfhquOLA1BVIXECAQAAAAAXWTanfFD6kaHgR13YaBMM2TS3+lJw0NVA7K+KF4pn4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoDKJKHBCRLpAQAAAAAAAACQI15ZrVt7LAHpAQAAAAAAAACQI15ZrVt7LAEKADQAF1k2p3xQ+pGh4Edd2GgTDNk0t/pScNDVQOyviheKZ+EN9NlkAAAAAAAADfTZZAAAAAAAAAYAAQAB"
@@ -253,7 +266,8 @@ struct BufferLayoutDecodingTests {
         #expect(interestBearingConfig?.currentRate == 0)
     }
 
-    @Test func decodingToken2022AccountState() throws {
+    @Test
+    func testDecodingToken2022AccountState() throws {
         let string =
             "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA="
         let data = Data(base64Encoded: string)!
@@ -278,7 +292,7 @@ struct BufferLayoutDecodingTests {
 
         // Assertions for the extension state
         let firstExtension = state.extensions[0]
-        #expect(firstExtension.type == Token2022ExtensionType.immutableOwner)
+        #expect(firstExtension.type == .immutableOwner)
 
         let extensionState = firstExtension.state as! VecU8<UInt16>
         #expect(extensionState.length == 0)

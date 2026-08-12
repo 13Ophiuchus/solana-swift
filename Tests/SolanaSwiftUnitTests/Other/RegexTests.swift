@@ -1,8 +1,9 @@
-import Foundation
 import Testing
 
+
 struct RegexTests {
-    @Test func pubkeyRegex() throws {
+    @Test
+    func testPubkeyRegex() throws {
         let regex = NSRegularExpression.publicKey
         #expect(regex.matches("3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG"))
         #expect(regex.matches("5iqF9UNh6AB7hPkJiGFLixJuPeMqp9VVq7iJ9t8c3ZF"))

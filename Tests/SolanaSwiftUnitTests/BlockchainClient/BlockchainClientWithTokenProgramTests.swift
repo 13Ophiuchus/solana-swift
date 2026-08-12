@@ -1,9 +1,8 @@
-import Foundation
-
 import Testing
+import Foundation
 @testable import SolanaSwift
 
-final class BlockchainClientWithTokenProgramTests {
+@Suite struct BlockchainClientWithTokenProgramTests {
     let account: KeyPair
 
     init() async throws {
@@ -14,7 +13,7 @@ final class BlockchainClientWithTokenProgramTests {
         )
     }
 
-    @Test func prepareSendingSPLTokens() async throws {
+    @Test func testPrepareSendingSPLTokens() async throws {
         // TESTS: SEND TO NATIVE SOL ACCOUNT (AUTO FIND AND CHECK SPL TOKEN ACCOUNT FROM OWNER NATIVE SOL ACCOUNT)
 
         // Test1: for address that has no funds no usdc account
@@ -133,19 +132,19 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
                 rentEpoch = 0
             case "testPrepareSendingNativeSOLToNewlyCreatedAccount()":
                 return nil
-            case "prepareSendingSPLTokens()#1":
+            case "testPrepareSendingSPLTokens()#1":
                 throw APIClientError.couldNotRetrieveAccountInfo
-            case "prepareSendingSPLTokens()#2":
+            case "testPrepareSendingSPLTokens()#2":
                 throw APIClientError.couldNotRetrieveAccountInfo
-            case "prepareSendingSPLTokens()#4":
+            case "testPrepareSendingSPLTokens()#4":
                 throw APIClientError.couldNotRetrieveAccountInfo
             default:
                 fatalError()
             }
         case "9GQV3bQP9tv7m6XgGMaixxEeEdxtFhwgABw2cxCFZoch":
             switch testCase {
-            case "prepareSendingSPLTokens()#2", "prepareSendingSPLTokens()#4",
-                 "prepareSendingSPLTokens()#5":
+            case "testPrepareSendingSPLTokens()#2", "testPrepareSendingSPLTokens()#4",
+                 "testPrepareSendingSPLTokens()#5":
                 data = TokenAccountState(
                     mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                     owner: "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm",
@@ -190,19 +189,19 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
         case "testPrepareSendingNativeSOLToNewlyCreatedAccount()":
             blockhash = "7GhCDV2MK7RVhYzD3iNZAVkCd9hYCgyqkgXdFbEFj9PD"
             lastValidSlot = 133_389_328
-        case "prepareSendingSPLTokens()#1":
+        case "testPrepareSendingSPLTokens()#1":
             blockhash = "9VG1E6DTdjRRx2JpbXrH9QPTQQ6FRjakvStttnmSV7fR"
             lastValidSlot = 133_389_328
-        case "prepareSendingSPLTokens()#2":
+        case "testPrepareSendingSPLTokens()#2":
             blockhash = "3uRa2bbJgTKVEKmZqKRtfWfhZF5YMn4D9xE64NYvTh4v"
             lastValidSlot = 133_389_328
-        case "prepareSendingSPLTokens()#3":
+        case "testPrepareSendingSPLTokens()#3":
             blockhash = "4VXrgGDjah4rCo2bvqSWXJTLbaDkmn4NTXknLn9GzacN"
             lastValidSlot = 133_458_521
-        case "prepareSendingSPLTokens()#4":
+        case "testPrepareSendingSPLTokens()#4":
             blockhash = "Bc11qGhSE3Vham6cBWEUxhRVVSNtzkyisdGGXwh6hvnT"
             lastValidSlot = 133_461_545
-        case "prepareSendingSPLTokens()#5":
+        case "testPrepareSendingSPLTokens()#5":
             blockhash = "7GhCDV2MK7RVhYzD3iNZAVkCd9hYCgyqkgXdFbEFj9PD"
             lastValidSlot = 133_461_991
 
@@ -227,15 +226,15 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
             return "DSfeYUm7WDw1YnKodR361rg8sUzUCGdat9V7fSKPFgzq"
         case "testPrepareSendingNativeSOLToNewlyCreatedAccount()":
             return "DSfeYUm7WDw1YnKodR361rg8sUzUCGdat9V7fSKPFgzq"
-        case "prepareSendingSPLTokens()#1":
+        case "testPrepareSendingSPLTokens()#1":
             return "9VG1E6DTdjRRx2JpbXrH9QPTQQ6FRjakvStttnmSV7fR"
-        case "prepareSendingSPLTokens()#2":
+        case "testPrepareSendingSPLTokens()#2":
             return "3uRa2bbJgTKVEKmZqKRtfWfhZF5YMn4D9xE64NYvTh4v"
-        case "prepareSendingSPLTokens()#3":
+        case "testPrepareSendingSPLTokens()#3":
             return "4VXrgGDjah4rCo2bvqSWXJTLbaDkmn4NTXknLn9GzacN"
-        case "prepareSendingSPLTokens()#4":
+        case "testPrepareSendingSPLTokens()#4":
             return "Bc11qGhSE3Vham6cBWEUxhRVVSNtzkyisdGGXwh6hvnT"
-        case "prepareSendingSPLTokens()#5":
+        case "testPrepareSendingSPLTokens()#5":
             return "7GhCDV2MK7RVhYzD3iNZAVkCd9hYCgyqkgXdFbEFj9PD"
         default:
             fatalError()

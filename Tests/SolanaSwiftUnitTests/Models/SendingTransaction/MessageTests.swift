@@ -1,9 +1,9 @@
 @testable import SolanaSwift
-import Foundation
-import Testing
+
 
 struct MessageTests {
-    @Test func givenRawMessage_whenFrom_thenReturnsExpectedMessage() throws {
+    @Test
+    func test_givenRawMessage_whenFrom_thenReturnsExpectedMessage() throws {
         // given
         let expectedMessge = Message.StubFactory.makeSignedWithInstructions()
         // Base64-encoded message containing two instructions some accounts and signers.

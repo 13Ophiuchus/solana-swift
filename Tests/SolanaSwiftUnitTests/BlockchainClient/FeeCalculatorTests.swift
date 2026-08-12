@@ -1,22 +1,24 @@
 import SolanaSwift
 import Testing
 
-final class FeeCalculatorTests {
+
+struct FeeCalculatorTests {
     var lamportsPerSignature: UInt64 { 5000 }
     var minRentExemption: UInt64 { 2_039_280 }
 
-    let feeCalculator: DefaultFeeCalculator
+    var feeCalculator: DefaultFeeCalculator!
 
-    init() {
+    override func setUpWithError() throws {
         feeCalculator = DefaultFeeCalculator(
-            lamportsPerSignature: 5000,
-            minRentExemption: 2_039_280
+            lamportsPerSignature: lamportsPerSignature,
+            minRentExemption: minRentExemption
         )
     }
 
     // MARK: - Testcases
 
-    @Test func transactionFee() throws {
+    @Test
+    func testTransactionFee() throws {
         // owner is the fee payer
         let transaction = createTransaction(instructions: [
             SystemProgram.transferInstruction(
@@ -49,7 +51,8 @@ final class FeeCalculatorTests {
         #expect(fee2 == lamportsPerSignature * 2)
     }
 
-    @Test func accountCreationFee() throws {
+    @Test
+    func testAccountCreationFee() throws {
         // create and initialize
         let transaction = createTransaction(instructions: [
             SystemProgram.createAccountInstruction(

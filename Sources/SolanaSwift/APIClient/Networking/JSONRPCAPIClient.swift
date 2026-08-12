@@ -1,7 +1,10 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// JSON RPC
-open class JSONRPCAPIClient: SolanaAPIClient, @unchecked Sendable {
+public final class JSONRPCAPIClient: SolanaAPIClient {
     public typealias ResponseDecoder = JSONRPCResponseDecoder
     public typealias RequestEncoder = JSONRPCRequestEncoder
 
@@ -316,9 +319,9 @@ open class JSONRPCAPIClient: SolanaAPIClient, @unchecked Sendable {
                 }
             )
             continuation.onTermination = { @Sendable _ in
-                monitor.stopMonitoring()
+                Task { await monitor.stopMonitoring() }
             }
-            monitor.startMonitoring()
+            Task { await monitor.startMonitoring() }
         }
     }
 
@@ -330,7 +333,7 @@ open class JSONRPCAPIClient: SolanaAPIClient, @unchecked Sendable {
         try await get(method: "validatorExit", params: [])
     }
 
-    open func getMultipleAccounts<T>(
+    public func getMultipleAccounts<T>(
         pubkeys: [String],
         commitment: Commitment
     ) async throws -> [BufferInfo<T>?]

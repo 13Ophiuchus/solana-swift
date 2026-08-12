@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public protocol SolanaSocket {
     /// Connection status of the socket
@@ -89,33 +92,33 @@ public final class Socket: NSObject, SolanaSocket {
     /// Async task to keep track of asynchronous receiving task
     private var asyncTask: Task<Void, Error>?
 
+    /// URL used to recreate the task on reconnect
+    private let url: URL
+
+    /// Reconnection backoff policy
+    private let reconnection = ReconnectionPolicy()
+
     /// Delegation
     public weak var delegate: SolanaSocketEventsDelegate?
 
     // MARK: - Initializers
 
-    /// Initializer for Socket
-    /// - Parameters:
-    ///   - url: url of the socket
-    ///   - enableDebugLogs: enable/disable logging
-    ///   - socketTaskProviderType: type of task provider, default is `URLSession.self`
-    public init<T: WebSocketTaskProvider>(
-        url: URL,
-        socketTaskProviderType _: T.Type
-    ) {
+    /// Primary initializer — builds URLSession with `self` as delegate so
+    /// `didOpen`/`didClose` fire correctly. For tests, use `init(url:taskProvider:)`.
+    #if canImport(Darwin) || canImport(FoundationNetworking)
+    public init(url: URL) {
+        self.url = url
         super.init()
-        let urlSession = T(configuration: .default, delegate: self, delegateQueue: .current!)
-        task = urlSession.createWebSocketTask(with: url)
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+        task = session.createWebSocketTask(with: url)
     }
+    #endif
 
-    /// Convenience initializer for socket using `URLSession` as `WebSocketTaskProvider`
-    /// - Parameters:
-    ///   - url: url of the socket
-    ///   - enableDebugLogs: enable/disable logging
-    public convenience init(
-        url: URL
-    ) {
-        self.init(url: url, socketTaskProviderType: URLSession.self)
+    /// Testability initializer — inject a mock `WebSocketTaskProvider`.
+    public init(url: URL, taskProvider: WebSocketTaskProvider) {
+        self.url = url
+        super.init()
+        task = taskProvider.createWebSocketTask(with: url)
     }
 
     deinit {
@@ -233,7 +236,7 @@ public final class Socket: NSObject, SolanaSocket {
                     }
                 }
             } catch {
-                delegate?.error(error: error)
+                delegate?.error(error: WebSocketError.receiveDecodingFailed(underlying: error))
             }
         case let .data(data):
             print("Received binary message: \(data)")
@@ -243,18 +246,27 @@ public final class Socket: NSObject, SolanaSocket {
     }
 
     private func ping() {
-        Logger.log(event: "request", message: "Ping socket", logLevel: .debug)
-        task.sendPing { error in
-            if let error = error {
-                print("Ping failed: \(error)")
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await self.task.sendPingWithTimeout(10)
+                Logger.log(event: "request", message: "Ping socket", logLevel: .debug)
+            } catch WebSocketError.pingTimeout {
+                Logger.log(event: "error", message: "Ping timed out", logLevel: .error)
+                self.delegate?.error(error: WebSocketError.pingTimeout)
+            } catch {
+                Logger.log(event: "error", message: "Ping failed: \(error)", logLevel: .error)
+                self.delegate?.error(error: WebSocketError.connectionFailed(underlying: error))
             }
         }
     }
 }
 
+#if canImport(Darwin) || canImport(FoundationNetworking)
 extension Socket: URLSessionWebSocketDelegate {
     public func urlSession(_: URLSession, webSocketTask _: URLSessionWebSocketTask, didOpenWithProtocol _: String?) {
         isConnected = true
+        Task { await self.reconnection.reset() }
         wsHeartBeat?.invalidate()
         wsHeartBeat = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
             // Ping server every 5s to prevent idle timeouts
@@ -262,12 +274,31 @@ extension Socket: URLSessionWebSocketDelegate {
         }
         delegate?.connected()
 
-        Logger.log(event: "urlSession", message: "Socket disconnected", logLevel: .debug)
+        Logger.log(event: "urlSession", message: "Socket connected", logLevel: .debug)
 
         asyncTask = Task.detached { [weak self] in
-            while true {
-                guard let self = self else { break }
-                try await self.readMessage()
+            guard let self else { return }
+            do {
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    group.addTask {
+                        while true {
+                            try await self.readMessage()
+                        }
+                    }
+                    do {
+                        try await group.next()
+                    } catch let error as WebSocketError {
+                        group.cancelAll()
+                        throw error
+                    } catch {
+                        group.cancelAll()
+                        throw WebSocketError.connectionFailed(underlying: error)
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    self.delegate?.error(error: error)
+                }
             }
         }
     }
@@ -280,11 +311,39 @@ extension Socket: URLSessionWebSocketDelegate {
     ) {
         isConnected = false
         wsHeartBeat?.invalidate()
-        task.resume()
-        delegate?.disconnected(reason: reason?.jsonString ?? "", code: closeCode.rawValue)
-
-        Logger.log(event: "urlSession", message: "Socket disconnected", logLevel: .debug)
-
         asyncTask?.cancel()
+        delegate?.disconnected(reason: reason?.jsonString ?? "", code: closeCode.rawValue)
+        Logger.log(event: "urlSession", message: "Socket disconnected (code: \(closeCode.rawValue))", logLevel: .debug)
+
+        // Attempt reconnect with exponential backoff unless cleanly closed (1000/1001)
+        let clean = closeCode == .normalClosure || closeCode == .goingAway
+        guard !clean else { return }
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let delay = try await self.reconnection.nextDelay()
+                Logger.log(event: "urlSession", message: "Reconnecting in \(delay)", logLevel: .info)
+                try await Task.sleep(for: delay)
+                let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+                self.task = session.createWebSocketTask(with: self.url)
+                self.connect()
+            } catch WebSocketError.cancelled {
+                Logger.log(event: "urlSession", message: "Max reconnect attempts reached", logLevel: .error)
+                await MainActor.run { self.delegate?.error(error: WebSocketError.cancelled) }
+            } catch {
+                await MainActor.run { self.delegate?.error(error: WebSocketError.connectionFailed(underlying: error)) }
+            }
+        }
+    }
+
+    public func urlSession(
+        _: URLSession,
+        didBecomeInvalidWithError error: Error?
+    ) {
+        if let error {
+            delegate?.error(error: WebSocketError.connectionFailed(underlying: error))
+        }
     }
 }
+#endif

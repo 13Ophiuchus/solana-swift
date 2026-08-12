@@ -1,4 +1,5 @@
 import Foundation
+import Testing
 
 extension Array where Element: FixedWidthInteger {
     enum StubFactory {

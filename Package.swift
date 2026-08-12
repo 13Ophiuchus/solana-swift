@@ -1,14 +1,11 @@
-// swift-tools-version: 6.0
-
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
-    name: "SolanaSwift",
+    name: "solana-swift-concurrency",
     platforms: [
-        .macOS(.v10_15),
-        .iOS(.v15),
-        .tvOS(.v12),
-        .watchOS(.v4),
+        .iOS(.v16),
+        .macOS(.v13),
     ],
     products: [
         .library(
@@ -17,40 +14,39 @@ let package = Package(
         ),
     ],
     dependencies: [
-        // Main depedencies
-        .package(url: "https://github.com/21-DOT-DEV/swift-secp256k1", from: "0.21.1"),
-        .package(url: "https://github.com/bitmark-inc/tweetnacl-swiftwrap.git", from: "1.0.2"),
-		.package(url: "https://github.com/bigearsenal/task-retrying-swift.git", from: "1.0.1"),
-        .package(url: "https://github.com/apple/swift-crypto.git", from: "3.0.0"),
-
-        // Docs generator
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
+        .package(
+            url: "https://github.com/apple/swift-crypto",
+            "1.0.0"..<"5.0.0"
+        ),
+        .package(
+            url: "https://github.com/21-DOT-DEV/swift-secp256k1",
+            from: "0.21.1"
+        ),
+        .package(
+            url: "https://github.com/bitmark-inc/tweetnacl-swiftwrap",
+            .upToNextMajor(from: "1.0.0")
+        ),
+        .package(
+            url: "https://github.com/bigearsenal/task-retrying-swift",
+            .upToNextMajor(from: "1.0.0")
+        ),
     ],
     targets: [
         .target(
             name: "SolanaSwift",
             dependencies: [
-                .product(name: "TweetNacl", package: "tweetnacl-swiftwrap"),
-                .product(name: "P256K", package: "swift-secp256k1"),
-                .product(name: "libsecp256k1", package: "swift-secp256k1"),
-                .product(name: "Task_retrying", package: "task-retrying-swift"),
-                .product(name: "Crypto", package: "swift-crypto"),
+                .product(name: "Crypto",          package: "swift-crypto"),
+                .product(name: "P256K",           package: "swift-secp256k1"),
+                .product(name: "libsecp256k1",    package: "swift-secp256k1"),
+                .product(name: "TweetNacl",       package: "tweetnacl-swiftwrap"),
+                .product(name: "Task_retrying",   package: "task-retrying-swift"),
             ],
-            swiftSettings: [
-                .unsafeFlags(["-suppress-warnings"])
-            ]
+            path: "Sources/SolanaSwift"
         ),
         .testTarget(
-            name: "SolanaSwiftUnitTests",
+            name: "SolanaSwiftTests",
             dependencies: ["SolanaSwift"],
-            resources: [
-                .process("Resources/get_all_tokens_info.json"),
-            ]
-        ),
-        .testTarget(
-            name: "SolanaSwiftIntegrationTests",
-            dependencies: ["SolanaSwift"]
+            path: "Tests"
         ),
     ]
 )
-

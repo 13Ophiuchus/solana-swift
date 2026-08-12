@@ -1,9 +1,10 @@
-import Foundation
 @testable import SolanaSwift
 import Testing
 
-final class TokensRepositoryTests {
-    @Test func fill_WithStorageData_ShouldLoadFromStorage() async throws {
+
+struct TokensRepositoryTests {
+    @Test
+    func testFill_WithStorageData_ShouldLoadFromStorage() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
         let source = TestableSolanaTokenListSource()
@@ -31,7 +32,8 @@ final class TokensRepositoryTests {
         #expect(records[TokenMetadata.usdt.mintAddress] == nil)
     }
 
-    @Test func fill_WithoutStorageData_ShouldLoadFromSource() async throws {
+    @Test
+    func testFill_WithoutStorageData_ShouldLoadFromSource() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
         let source = TestableSolanaTokenListSource()
@@ -58,7 +60,8 @@ final class TokensRepositoryTests {
         #expect(records[TokenMetadata.usdt.mintAddress] == nil)
     }
 
-    @Test func reset_ShouldRecordBeEmpty() async throws {
+    @Test
+    func testReset_ShouldRecordBeEmpty() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
         let source = TestableSolanaTokenListSource()
@@ -80,7 +83,8 @@ final class TokensRepositoryTests {
         #expect(records.isEmpty)
     }
 
-    @Test func get_RecordsIsEmpty_ShouldFill() async throws {
+    @Test
+    func testGet_RecordsIsEmpty_ShouldFill() async throws {
         let tokens = Set([TokenMetadata.usdc, TokenMetadata.nativeSolana])
 
         let source = TestableSolanaTokenListSource()

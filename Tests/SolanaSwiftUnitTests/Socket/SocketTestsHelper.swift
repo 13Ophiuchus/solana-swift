@@ -1,4 +1,5 @@
 import Foundation
+import Testing
 
 struct SocketTestsHelper {
     static let url: URL = .init(string: "wss://api.mainnet-beta.solana.com")!

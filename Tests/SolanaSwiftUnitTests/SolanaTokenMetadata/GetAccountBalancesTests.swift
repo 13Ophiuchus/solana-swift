@@ -2,9 +2,10 @@ import OSLog
 import SolanaSwift
 import Testing
 
-final class GetAccountBalancesTests {
-    let rpcClient: SolanaAPIClient
-    let tokensRepository: TokenRepository
+
+struct GetAccountBalancesTests {
+    var rpcClient: SolanaAPIClient!
+    var tokensRepository: TokenRepository!
 
     init() async throws {
         rpcClient = JSONRPCAPIClient(
@@ -22,7 +23,8 @@ final class GetAccountBalancesTests {
         )
     }
 
-    @Test func getAccountBalances() async throws {
+    @Test
+    func testGetAccountBalances() async throws {
         let result = try await rpcClient.getAccountBalances(
             for: "abctest",
             withToken2022: false,
@@ -42,7 +44,9 @@ final class GetAccountBalancesTests {
         #expect(resolved[0].token.symbol == "$DEDE")
         #expect(resolved[0].token.name == "$DEDE")
         #expect(resolved[0].token.decimals == 6)
-        #expect(resolved[0].token.logoURI == "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link")
+        #expect(
+            resolved[0].token.logoURI == "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link"
+        )
         #expect(resolved[0].token.mintAddress == "CzXyy265vDCXRysRd5nvpy9oieq2KUtx51Sz1jUMUWyE")
         #expect(resolved[0].tokenProgramId == TokenProgram.id.base58EncodedString)
         #expect(resolved[0].minimumBalanceForRentExemption == 2_039_280)
@@ -59,7 +63,8 @@ final class GetAccountBalancesTests {
         #expect(resolved[1].minimumBalanceForRentExemption == 2_039_280)
     }
 
-    @Test func getAccountBalancesWithToken2022() async throws {
+    @Test
+    func testGetAccountBalancesWithToken2022() async throws {
         let result = try await rpcClient.getAccountBalances(
             for: "abctest",
             withToken2022: true,
@@ -79,7 +84,9 @@ final class GetAccountBalancesTests {
         #expect(resolved[0].token.symbol == "$DEDE")
         #expect(resolved[0].token.name == "$DEDE")
         #expect(resolved[0].token.decimals == 6)
-        #expect(resolved[0].token.logoURI == "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link")
+        #expect(
+            resolved[0].token.logoURI == "https://bafkreic2m54r4fvg4a6jfuxe2pnxzkuwx75gzu2jbxw4magd2eraqhccua.ipfs.nftstorage.link"
+        )
         #expect(resolved[0].token.mintAddress == "CzXyy265vDCXRysRd5nvpy9oieq2KUtx51Sz1jUMUWyE")
         #expect(resolved[0].tokenProgramId == TokenProgram.id.base58EncodedString)
         #expect(resolved[0].minimumBalanceForRentExemption == 2_039_280)
@@ -109,7 +116,7 @@ final class GetAccountBalancesTests {
     }
 }
 
-final class MockSolanaAPINetworkManager: NetworkManager, @unchecked Sendable {
+final class MockSolanaAPINetworkManager: NetworkManager {
     func requestData(request: URLRequest) async throws -> Data {
         let bodyString = String(data: request.httpBody ?? Data(), encoding: .utf8)!
 
@@ -131,7 +138,7 @@ final class MockSolanaAPINetworkManager: NetworkManager, @unchecked Sendable {
     }
 }
 
-final class MockTokensRepositoryNetworkManager: NetworkManager, @unchecked Sendable {
+final class MockTokensRepositoryNetworkManager: NetworkManager {
     func requestData(request _: URLRequest) async throws -> Data {
         try Data(contentsOf: Bundle.module.url(forResource: "get_all_tokens_info", withExtension: "json")!)
     }

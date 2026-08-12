@@ -1,10 +1,11 @@
 import SolanaSwift
 import TweetNacl
-import Foundation
 import Testing
 
+
 struct KeyPairTests {
-    @Test func restoreKeyPairFromSecretKey() throws {
+    @Test
+    func testRestoreKeyPairFromSecretKey() throws {
         let secretKey = Base58
             .decode("4Z7cXSyeFR8wNGMVXUE1TwtKn5D5Vu7FzEv69dokLv7KrQk7h6pu4LF8ZRR9yQBhc7uSM6RTTZtU1fmaxiNrxXrs")
         #expect(secretKey != nil)
@@ -15,7 +16,8 @@ struct KeyPairTests {
         #expect(64 == account.secretKey.count)
     }
 
-    @Test func restoreKeyPairFromSeedPhrase() async throws {
+    @Test
+    func testRestoreKeyPairFromSeedPhrase() async throws {
         let phrase12 = "miracle pizza supply useful steak border same again youth silver access hundred"
             .components(separatedBy: " ")
         let account12 = try await KeyPair(phrase: phrase12, network: .mainnetBeta)
@@ -28,7 +30,8 @@ struct KeyPairTests {
         #expect(account24.publicKey.base58EncodedString == "9avcmC97zLPwHKXiDz6GpXyjvPn9VcN3ggqM5gsRnjvv")
     }
 
-    @Test func restoreKeyPairFromMnemonic() async throws {
+    @Test
+    func testRestoreKeyPairFromMnemonic() async throws {
         let mnemonic12 = try Mnemonic(phrase: "miracle pizza supply useful steak border same again youth silver access hundred"
             .components(separatedBy: " "))
         let account12 = try await KeyPair(mnemonic: mnemonic12, network: .mainnetBeta, derivablePath: .init(type: .deprecated, walletIndex: 0))
@@ -40,7 +43,8 @@ struct KeyPairTests {
         #expect(account24.publicKey == "9avcmC97zLPwHKXiDz6GpXyjvPn9VcN3ggqM5gsRnjvv")
     }
 
-    @Test func restoreKeyPairFromNonMnemonicSeedPhrase() async throws {
+    @Test
+    func testRestoreKeyPairFromNonMnemonicSeedPhrase() async throws {
         let account = try await KeyPair(seed: "y 5 H M p D ^ G 6 3 9 x a b ^ 8", salt: "mnemonic", passphrase: "", network: .mainnetBeta, derivablePath: .default)
         #expect(account.publicKey == "7TJ2AEYmkUYJ3ESQv5B7Z1HwrTG9hUdj3PpqZn7DCxfo")
 
@@ -59,7 +63,8 @@ struct KeyPairTests {
 
     // MARK: - Deprecated derivable path
 
-    @Test func derivedKeychain() throws {
+    @Test
+    func testDerivedKeychain() throws {
         var keychain = try Keychain(
             seedString: "miracle pizza supply useful steak border same again youth silver access hundred",
             network: "mainnet-beta"
@@ -69,6 +74,8 @@ struct KeyPairTests {
 
         let keys = try NaclSign.KeyPair.keyPair(fromSeed: keychain.privateKey!)
 
-        #expect([UInt8](keys.secretKey) == [109, 13, 53, 177, 69, 45, 146, 184, 62, 55, 105, 133, 210, 89, 131, 218, 248, 101, 47, 64, 81, 56, 229, 25, 173, 154, 12, 41, 66, 143, 230, 117, 39, 247, 185, 4, 85, 137, 50, 166, 147, 184, 221, 75, 110, 103, 16, 222, 41, 94, 247, 132, 43, 62, 172, 243, 95, 204, 190, 143, 153, 16, 10, 197])
+        #expect(
+            [UInt8](keys.secretKey) == [109, 13, 53, 177, 69, 45, 146, 184, 62, 55, 105, 133, 210, 89, 131, 218, 248, 101, 47, 64, 81, 56, 229, 25, 173, 154, 12, 41, 66, 143, 230, 117, 39, 247, 185, 4, 85, 137, 50, 166, 147, 184, 221, 75, 110, 103, 16, 222, 41, 94, 247, 132, 43, 62, 172, 243, 95, 204, 190, 143, 153, 16, 10, 197]
+        )
     }
 }

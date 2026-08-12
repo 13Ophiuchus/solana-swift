@@ -1,27 +1,59 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// The abstract websocket task provider, default is URLSession
-public protocol WebSocketTaskProvider {
-    init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?)
+public protocol WebSocketTaskProvider: AnyObject {
     func createWebSocketTask(with url: URL) -> WebSocketTask
 }
 
+#if canImport(FoundationNetworking) || canImport(Darwin)
 extension URLSession: WebSocketTaskProvider {
     public func createWebSocketTask(with url: URL) -> WebSocketTask {
         webSocketTask(with: url)
     }
 }
+#endif
 
 /// Abstract websocket task, default is URLSessionWebSocketTask
-public protocol WebSocketTask {
+public enum WebSocketMessage {
+    case string(String)
+    case data(Data)
+}
+
+public protocol WebSocketTask: AnyObject {
     func resume()
     func cancel()
-    func send(_ message: URLSessionWebSocketTask.Message) async throws
-    func receive() async throws -> URLSessionWebSocketTask.Message
+    func send(_ message: WebSocketMessage) async throws
+    func receive() async throws -> WebSocketMessage
     func sendPing(pongReceiveHandler: @escaping @Sendable (Error?) -> Void)
 }
 
-extension URLSessionWebSocketTask: WebSocketTask {}
+#if canImport(FoundationNetworking) || canImport(Darwin)
+extension URLSessionWebSocketTask: WebSocketTask {
+    public func send(_ message: WebSocketMessage) async throws {
+        switch message {
+        case .string(let text):
+            let msg = URLSessionWebSocketTask.Message.string(text)
+            try await (self as URLSessionWebSocketTask).send(msg)
+        case .data(let data):
+            let msg = URLSessionWebSocketTask.Message.data(data)
+            try await (self as URLSessionWebSocketTask).send(msg)
+        }
+    }
+
+    public func receive() async throws -> WebSocketMessage {
+        let task = self as URLSessionWebSocketTask
+        let raw: URLSessionWebSocketTask.Message = try await task.receive()
+        switch raw {
+        case .string(let text): return .string(text)
+        case .data(let data):   return .data(data)
+        @unknown default:       throw URLError(.badServerResponse)
+        }
+    }
+}
+#endif
 
 /// Delegate for listening socket's events
 public protocol SolanaSocketEventsDelegate: AnyObject {

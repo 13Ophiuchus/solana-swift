@@ -1,10 +1,12 @@
 import SolanaSwift
 import Testing
 
+
 struct TokenSwapProgramTests {
     let publicKey: PublicKey = "11111111111111111111111111111111"
 
-    @Test func swapInstruction() throws {
+    @Test
+    func testSwapInstruction() throws {
         let instruction = TokenSwapProgram.swapInstruction(
             tokenSwap: publicKey,
             authority: publicKey,
@@ -38,7 +40,8 @@ struct TokenSwapProgramTests {
         #expect(Base58.decode("tSBHVn49GSCW4DNB1EYv9M") == instruction.data)
     }
 
-    @Test func depositInstruction() throws {
+    @Test
+    func testDepositInstruction() throws {
         let instruction = TokenSwapProgram.depositInstruction(
             tokenSwap: publicKey,
             authority: publicKey,
@@ -69,7 +72,8 @@ struct TokenSwapProgramTests {
         #expect(Base58.decode("22WQQtPPUknk68tx2dUGRL1Q4Vj2mkg6Hd") == instruction.data)
     }
 
-    @Test func withdrawInstruction() throws {
+    @Test
+    func testWithdrawInstruction() throws {
         let instruction = TokenSwapProgram.withdrawInstruction(
             tokenSwap: publicKey,
             authority: publicKey,

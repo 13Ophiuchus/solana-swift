@@ -1,4 +1,5 @@
 import Foundation
+import Testing
 import SolanaSwift
 
 extension KeyPair {
