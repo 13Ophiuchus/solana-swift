@@ -16,11 +16,9 @@ public class JSONRPCAPIClient: SolanaAPIClient {
         self.networkManager = networkManager
     }
 
-    #if canImport(Darwin)
     public convenience init(endpoint: APIEndPoint) {
         self.init(endpoint: endpoint, networkManager: URLSession(configuration: .default))
     }
-    #endif
 
     // MARK: -
 
