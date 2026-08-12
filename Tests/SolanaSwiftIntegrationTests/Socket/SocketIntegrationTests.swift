@@ -17,21 +17,22 @@ class SocketIntegrationTests: XCTestCase {
     func testSocketEvents() async throws {
         let expectation = XCTestExpectation()
         let delegate = MockSocketDelegate()
+        let socket = self.socket!
         delegate.onConected = {
             Task {
-                let _ = try await self.socket
+                let _ = try await socket
                     .accountSubscribe(publickey: "9xkso5sXmSEaEME7KDD7EumvYKyYRBJJ1ArQopnCGZrA") // native address
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                     Task {
-                        try await self.socket
+                        try await socket
                             .accountSubscribe(publickey: "2uTfDKywe5ZGqyztJ6KMEPrRTa9WD53ueviYoti8vdCX") // usdc address
                     }
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
                     Task {
-                        try await self.socket
+                        try await socket
                             .signatureSubscribe(
                                 signature: "2ctrG8WQWvbawgwY9mr7dv8LXXj4bridpD6b4sEJu7gFgvkrSgd6APu2Xnp6vq4oKEkvoSq9W1QzpVi9gZRrM6WR"
                             ) // signature status
@@ -40,13 +41,13 @@ class SocketIntegrationTests: XCTestCase {
 
 //                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
 //                    Task {
-//                        try await self.socket.logsSubscribeAll()
+//                        try await socket.logsSubscribeAll()
 //                    }
 //                }
 //
 //                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)) {
 //                    Task {
-//                        try await self.socket.programSubscribe(publickey: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") // token program
+//                        try await socket.programSubscribe(publickey: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") // token program
 //                    }
 //                }
             }
@@ -75,7 +76,7 @@ class SocketIntegrationTests: XCTestCase {
 
         socket.delegate = delegate
         socket.connect()
-        wait(for: [expectation], timeout: 2000.0)
+        await fulfillment(of: [expectation], timeout: 2000.0)
     }
 }
 
