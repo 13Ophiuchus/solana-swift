@@ -77,6 +77,8 @@ public extension SolanaSocket {
     }
 }
 
+
+#if canImport(Darwin) || canImport(FoundationNetworking)
 public final class Socket: NSObject, SolanaSocket {
     // MARK: - Properties
 
@@ -105,14 +107,14 @@ public final class Socket: NSObject, SolanaSocket {
 
     /// Primary initializer — builds URLSession with `self` as delegate so
     /// `didOpen`/`didClose` fire correctly. For tests, use `init(url:taskProvider:)`.
-    #if canImport(Darwin) || canImport(FoundationNetworking)
+
     public init(url: URL) {
         self.url = url
         super.init()
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
         task = session.createWebSocketTask(with: url)
     }
-    #endif
+
 
     /// Testability initializer — inject a mock `WebSocketTaskProvider`.
     public init(url: URL, taskProvider: WebSocketTaskProvider) {
@@ -346,4 +348,6 @@ extension Socket: URLSessionWebSocketDelegate {
         }
     }
 }
+
+#endif
 #endif
