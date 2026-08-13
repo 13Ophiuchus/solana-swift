@@ -78,7 +78,7 @@ public extension SolanaSocket {
 }
 
 
-#if canImport(Darwin) || canImport(FoundationNetworking)
+
 public final class Socket: NSObject, SolanaSocket {
     // MARK: - Properties
 
@@ -264,7 +264,7 @@ public final class Socket: NSObject, SolanaSocket {
     }
 }
 
-#if canImport(Darwin) || canImport(FoundationNetworking)
+
 extension Socket: URLSessionWebSocketDelegate {
     public func urlSession(_: URLSession, webSocketTask _: URLSessionWebSocketTask, didOpenWithProtocol _: String?) {
         isConnected = true
@@ -349,5 +349,5 @@ extension Socket: URLSessionWebSocketDelegate {
     }
 }
 
-#endif
-#endif
+
+

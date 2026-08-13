@@ -8,13 +8,13 @@ public protocol WebSocketTaskProvider: AnyObject {
     func createWebSocketTask(with url: URL) -> WebSocketTask
 }
 
-#if canImport(FoundationNetworking) || canImport(Darwin)
+
 extension URLSession: WebSocketTaskProvider {
     public func createWebSocketTask(with url: URL) -> WebSocketTask {
         webSocketTask(with: url)
     }
 }
-#endif
+
 
 /// Abstract websocket task, default is URLSessionWebSocketTask
 public enum WebSocketMessage {
@@ -30,7 +30,7 @@ public protocol WebSocketTask: AnyObject {
     func sendPing(pongReceiveHandler: @escaping @Sendable (Error?) -> Void)
 }
 
-#if canImport(FoundationNetworking) || canImport(Darwin)
+
 extension URLSessionWebSocketTask: WebSocketTask {
     public func send(_ message: WebSocketMessage) async throws {
         switch message {
@@ -53,7 +53,7 @@ extension URLSessionWebSocketTask: WebSocketTask {
         }
     }
 }
-#endif
+
 
 /// Delegate for listening socket's events
 public protocol SolanaSocketEventsDelegate: AnyObject {
