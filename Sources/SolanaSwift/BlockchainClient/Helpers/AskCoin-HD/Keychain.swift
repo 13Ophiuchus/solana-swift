@@ -94,7 +94,7 @@ public class Keychain: NSObject {
         guard let prvKey = self.privateKey else {
             return nil
         }
-        return CKSecp256k1.generatePublicKey(withPrivateKey: prvKey, compression: true)
+        return try? CKSecp256k1.generatePublicKey(withPrivateKey: prvKey, compression: true)
     }()
 
     // MARK: - Extended private key
