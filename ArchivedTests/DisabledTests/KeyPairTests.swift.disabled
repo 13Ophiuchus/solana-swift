@@ -1,23 +1,22 @@
 import SolanaSwift
-import TweetNacl
 import Testing
-
+import TweetNacl
 
 struct KeyPairTests {
     @Test
-    func testRestoreKeyPairFromSecretKey() throws {
+    func restoreKeyPairFromSecretKey() throws {
         let secretKey = Base58
             .decode("4Z7cXSyeFR8wNGMVXUE1TwtKn5D5Vu7FzEv69dokLv7KrQk7h6pu4LF8ZRR9yQBhc7uSM6RTTZtU1fmaxiNrxXrs")
         #expect(secretKey != nil)
 
         let account = try KeyPair(secretKey: Data(secretKey))
 
-        #expect("QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo" == account.publicKey.base58EncodedString)
-        #expect(64 == account.secretKey.count)
+        #expect(account.publicKey.base58EncodedString == "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo")
+        #expect(account.secretKey.count == 64)
     }
 
     @Test
-    func testRestoreKeyPairFromSeedPhrase() async throws {
+    func restoreKeyPairFromSeedPhrase() async throws {
         let phrase12 = "miracle pizza supply useful steak border same again youth silver access hundred"
             .components(separatedBy: " ")
         let account12 = try await KeyPair(phrase: phrase12, network: .mainnetBeta)
@@ -31,7 +30,7 @@ struct KeyPairTests {
     }
 
     @Test
-    func testRestoreKeyPairFromMnemonic() async throws {
+    func restoreKeyPairFromMnemonic() async throws {
         let mnemonic12 = try Mnemonic(phrase: "miracle pizza supply useful steak border same again youth silver access hundred"
             .components(separatedBy: " "))
         let account12 = try await KeyPair(mnemonic: mnemonic12, network: .mainnetBeta, derivablePath: .init(type: .deprecated, walletIndex: 0))
@@ -44,7 +43,7 @@ struct KeyPairTests {
     }
 
     @Test
-    func testRestoreKeyPairFromNonMnemonicSeedPhrase() async throws {
+    func restoreKeyPairFromNonMnemonicSeedPhrase() async throws {
         let account = try await KeyPair(seed: "y 5 H M p D ^ G 6 3 9 x a b ^ 8", salt: "mnemonic", passphrase: "", network: .mainnetBeta, derivablePath: .default)
         #expect(account.publicKey == "7TJ2AEYmkUYJ3ESQv5B7Z1HwrTG9hUdj3PpqZn7DCxfo")
 

@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct AssociatedTokenProgramTests {
     @Test
     func testAssociatedTokenAddress() throws {
@@ -48,6 +47,6 @@ struct AssociatedTokenProgramTests {
             instruction.keys[6] == .readonly(publicKey: "SysvarRent111111111111111111111111111111111", isSigner: false)
         )
         #expect(instruction.programId == "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
-        #expect("" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "")
     }
 }

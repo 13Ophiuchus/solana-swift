@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/apple/swift-crypto",
-            "1.0.0"..<"5.0.0"
+            "1.0.0" ..< "5.0.0"
         ),
         .package(
             url: "https://github.com/21-DOT-DEV/swift-secp256k1",
@@ -35,11 +35,11 @@ let package = Package(
         .target(
             name: "SolanaSwift",
             dependencies: [
-                .product(name: "Crypto",          package: "swift-crypto"),
-                .product(name: "P256K",           package: "swift-secp256k1"),
-                .product(name: "libsecp256k1",    package: "swift-secp256k1"),
-                .product(name: "TweetNacl",       package: "tweetnacl-swiftwrap"),
-                .product(name: "Task_retrying",   package: "task-retrying-swift"),
+                .product(name: "Crypto", package: "swift-crypto"),
+                .product(name: "P256K", package: "swift-secp256k1"),
+                .product(name: "libsecp256k1", package: "swift-secp256k1"),
+                .product(name: "TweetNacl", package: "tweetnacl-swiftwrap"),
+                .product(name: "Task_retrying", package: "task-retrying-swift"),
             ],
             path: "Sources/SolanaSwift"
         ),

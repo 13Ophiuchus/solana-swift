@@ -1,6 +1,6 @@
-import Testing
 import Foundation
 @testable import SolanaSwift
+import Testing
 
 @Suite(.serialized) struct ObserveTransactionStatusTests {
     enum CustomError: Error { case unknownNetworkError }
@@ -106,6 +106,7 @@ import Foundation
 }
 
 // MARK: - Mock
+
 private final class MultiResponseNetworkManagerMock: NetworkManager, @unchecked Sendable {
     private var count = 0
     private let results: [Result<String, Error>]

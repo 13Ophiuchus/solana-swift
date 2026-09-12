@@ -1,10 +1,9 @@
 import SolanaSwift
 import Testing
 
-
 struct SocketDecodingTests {
     @Test
-    func testDecodingSocketSubscription() throws {
+    func decodingSocketSubscription() throws {
         let string = SocketTestsHelper.emittingEvents["subscriptionNotification"]!
         let result = try JSONDecoder().decode(SocketSubscriptionResponse.self, from: string.data(using: .utf8)!)
 
@@ -13,7 +12,7 @@ struct SocketDecodingTests {
     }
 
     @Test
-    func testDecodingSocketUnsubscription() throws {
+    func decodingSocketUnsubscription() throws {
         let string = SocketTestsHelper.emittingEvents["unsubscriptionNotification"]!
         let result = try JSONDecoder().decode(SocketUnsubscriptionResponse.self, from: string.data(using: .utf8)!)
 
@@ -22,7 +21,7 @@ struct SocketDecodingTests {
     }
 
     @Test
-    func testDecodingSOLAccountNotification() throws {
+    func decodingSOLAccountNotification() throws {
         let string = SocketTestsHelper.emittingEvents["accountNotification#Native"]!
         let result = try JSONDecoder().decode(SocketNativeAccountNotification.self, from: string.data(using: .utf8)!)
 
@@ -31,7 +30,7 @@ struct SocketDecodingTests {
     }
 
     @Test
-    func testDecodingProgramNotification() throws {
+    func decodingProgramNotification() throws {
         let string = SocketTestsHelper.emittingEvents["programNotification"]!
         let result = try JSONDecoder().decode(SocketProgramAccountNotification.self, from: string.data(using: .utf8)!)
 
@@ -40,7 +39,7 @@ struct SocketDecodingTests {
     }
 
     @Test
-    func testDecodingTokenAccountNotification() throws {
+    func decodingTokenAccountNotification() throws {
         let string = SocketTestsHelper.emittingEvents["accountNotification#Token"]!
         let result = try JSONDecoder().decode(SocketTokenAccountNotification.self, from: string.data(using: .utf8)!)
 
@@ -49,7 +48,7 @@ struct SocketDecodingTests {
     }
 
     @Test
-    func testDecodingSignatureNotification() throws {
+    func decodingSignatureNotification() throws {
         let string = SocketTestsHelper.emittingEvents["signatureNotification"]!
         let result = try JSONDecoder().decode(SocketSignatureNotification.self, from: string.data(using: .utf8)!)
 
@@ -58,7 +57,7 @@ struct SocketDecodingTests {
     }
 
     @Test
-    func testDecodingLogsNotification() throws {
+    func decodingLogsNotification() throws {
         let string = SocketTestsHelper.emittingEvents["logsNotification"]!
         let result = try JSONDecoder().decode(SocketLogsNotification.self, from: string.data(using: .utf8)!)
 

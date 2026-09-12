@@ -1,12 +1,11 @@
-import Testing
 @testable import SolanaSwift
-
+import Testing
 
 struct BufferLayoutEncodingTests {
     // MARK: - Mint
 
     @Test
-    func testEncodingMint() throws {
+    func encodingMint() throws {
         let mintLayout = TokenMintState(
             mintAuthorityOption: 1,
             mintAuthority: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo",
@@ -28,7 +27,7 @@ struct BufferLayoutEncodingTests {
     // MARK: - VecU8
 
     @Test
-    func testEncodingVecU8() throws {
+    func encodingVecU8() throws {
         let length: UInt16 = 25
         let data = Data([
             167, 237, 210, 172, 25, 197,
@@ -46,7 +45,7 @@ struct BufferLayoutEncodingTests {
     // MARK: - Account info
 
     @Test
-    func testEncodingAccountInfo() throws {
+    func encodingAccountInfo() throws {
         #expect(TokenAccountState.BUFFER_LENGTH == 165)
 
         let accountInfo = TokenAccountState(
@@ -76,7 +75,7 @@ struct BufferLayoutEncodingTests {
     }
 
     @Test
-    func testEncodingAccountInfo2() throws {
+    func encodingAccountInfo2() throws {
         let accountInfo = TokenAccountState(
             mint: "11111111111111111111111111111111",
             owner: "11111111111111111111111111111111",
@@ -106,7 +105,7 @@ struct BufferLayoutEncodingTests {
     // MARK: - TokenSwapInfo
 
     @Test
-    func testEncodingTokenSwapInfo() throws {
+    func encodingTokenSwapInfo() throws {
         let swapInfo = TokenSwapInfo(
             version: 1,
             isInitialized: true,
@@ -141,7 +140,7 @@ struct BufferLayoutEncodingTests {
     // MARK: - EmptyInfo
 
     @Test
-    func testEncodingEmptyInfo() throws {
+    func encodingEmptyInfo() throws {
         let emptyInfo = EmptyInfo()
 
         var data = Data()
@@ -155,7 +154,7 @@ struct BufferLayoutEncodingTests {
     // MARK: - Token2022
 
     @Test
-    func testEncodingToken2022MintState() throws {
+    func encodingToken2022MintState() throws {
         // Create an instance of Token2022MintState with the same values as in the decoding test
         var state = Token2022MintState(
             mintAuthorityOption: 0,
@@ -203,7 +202,7 @@ struct BufferLayoutEncodingTests {
     }
 
     @Test
-    func testEncodingToken2022MintState2() throws {
+    func encodingToken2022MintState2() throws {
         // Mint FZYEgCWzzedxcmxYvGXSkMrj7TaA3bXoaEv6XMnwtLKh
         var state = Token2022MintState(
             mintAuthorityOption: 0,
@@ -261,7 +260,7 @@ struct BufferLayoutEncodingTests {
     }
 
     @Test
-    func testEncodingTokenAccountState() throws {
+    func encodingTokenAccountState() throws {
         let accountState = Token2022AccountState(
             mint: "8nxJnGJDyvehdEHw4PgRc7ccJ1Zi134PhM2USK3WE8mS",
             owner: "E8E6GvyCpbGu7YSFxfhTXGx6SW4VhzVmxWh3gbrgXZNd",

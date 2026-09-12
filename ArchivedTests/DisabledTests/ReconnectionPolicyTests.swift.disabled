@@ -1,9 +1,8 @@
-import Testing
 @testable import SolanaSwift
+import Testing
 
 @Suite("ReconnectionPolicy")
 struct ReconnectionPolicyTests {
-
     @Test("first delay equals base")
     func firstDelayEqualsBase() async throws {
         let policy = ReconnectionPolicy(maxAttempts: 5, baseSeconds: 0.1)

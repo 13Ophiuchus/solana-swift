@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 import SolanaSwift
+import Testing
 
 final class NetworkManagerMock: NetworkManager, @unchecked Sendable {
     private let json: String

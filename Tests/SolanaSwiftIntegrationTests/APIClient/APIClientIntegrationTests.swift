@@ -1,7 +1,7 @@
 import SolanaSwift
 import XCTest
 
-class APIClientTests: XCTestCase {
+class APIClientIntegrationTests: XCTestCase {
     private let apiClient = JSONRPCAPIClient(endpoint: .init(address: "https://api.devnet.solana.com", network: .devnet))
 
     func testGenericRequest() async throws {

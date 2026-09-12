@@ -34,7 +34,7 @@ public final class BlockchainClient: SolanaBlockchainClient, @unchecked Sendable
         if let fc = fc {
             feeCalculator = fc
         } else {
-            let (lps, minRentExemption) = try await(
+            let (lps, minRentExemption) = try await (
                 apiClient.getFees(commitment: nil).feeCalculator?.lamportsPerSignature,
                 apiClient.getMinimumBalanceForRentExemption(span: 165)
             )

@@ -14,7 +14,7 @@ func pbkdf2(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Dat
     let key = SymmetricKey(data: passwordData)
     var derivedKey = Data()
 
-    for blockIndex in 1...blockCount {
+    for blockIndex in 1 ... blockCount {
         var blockIndexBE = UInt32(blockIndex).bigEndian
         var saltWithIndex = salt
         withUnsafeBytes(of: &blockIndexBE) { saltWithIndex.append(contentsOf: $0) }
@@ -22,9 +22,9 @@ func pbkdf2(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Dat
         var u = Data(HMAC<SHA512>.authenticationCode(for: saltWithIndex, using: key))
         var t = u
 
-        for _ in 1..<rounds {
+        for _ in 1 ..< rounds {
             u = Data(HMAC<SHA512>.authenticationCode(for: u, using: key))
-            for i in 0..<t.count {
+            for i in 0 ..< t.count {
                 t[i] ^= u[i]
             }
         }

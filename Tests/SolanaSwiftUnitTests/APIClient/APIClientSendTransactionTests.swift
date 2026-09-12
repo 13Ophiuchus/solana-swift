@@ -1,6 +1,6 @@
-import Testing
 import Foundation
 @testable import SolanaSwift
+import Testing
 
 @Suite struct APIClientSendTransactionTests {
     let endpoint = APIEndPoint(

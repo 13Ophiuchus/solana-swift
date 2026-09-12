@@ -17,7 +17,7 @@ struct LookupTableMeta: BufferLayout {
         lastExtendedSlot = try .init(from: &reader)
         lastExtendedStartIndex = try .init(from: &reader)
         _ = try UInt8(from: &reader)
-        authority = [try PublicKey(from: &reader)]
+        authority = try [PublicKey(from: &reader)]
     }
 }
 

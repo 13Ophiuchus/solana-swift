@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct SystemProgramTests {
     @Test
     func testCreateAccountInstruction() throws {

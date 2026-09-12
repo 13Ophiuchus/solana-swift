@@ -50,7 +50,7 @@ public struct PublicKey: Codable, Equatable, CustomStringConvertible, Hashable, 
     public var description: String {
         base58EncodedString
     }
-    
+
     public var isOnCurve: Bool {
         Self.isOnCurve(publicKey: base58EncodedString).toBool()
     }

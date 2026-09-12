@@ -1,6 +1,6 @@
-import Testing
 import Foundation
 @testable import SolanaSwift
+import Testing
 
 @Suite struct APIClientTests {
     let endpoint = APIEndPoint(
@@ -8,7 +8,7 @@ import Foundation
         network: .mainnetBeta
     )
 
-    @Test func testGetBlock() async throws {
+    @Test func getBlock() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBlockHeight"]!)
         let apiClient = SolanaSwift.JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getBlockHeight()
@@ -25,7 +25,7 @@ import Foundation
         #expect(result?.rentEpoch == 304)
     }
 
-    @Test func testGetAccountInfoError() async throws {
+    @Test func getAccountInfoError() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getAccountInfo_2"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         do {
@@ -60,7 +60,7 @@ import Foundation
         #expect(response[1].result != nil)
     }
 
-    @Test func testBatch2Request() async throws {
+    @Test func batch2Request() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["batch2"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let req1: JSONRPCAPIClientRequest<AnyDecodable> = JSONRPCAPIClientRequest(method: "getAccountInfo", params: [])
@@ -71,7 +71,7 @@ import Foundation
         #expect(response[1].result != nil)
     }
 
-    @Test func testBatch3Request() async throws {
+    @Test func batch3Request() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["batch3"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [[], [], []])
@@ -81,7 +81,7 @@ import Foundation
         #expect(response[2]?.value == 3)
     }
 
-    @Test func testBatch4Request() async throws {
+    @Test func batch4Request() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["batch4"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [[], [], []])
@@ -91,7 +91,7 @@ import Foundation
         #expect(response[2]?.value == nil)
     }
 
-    @Test func testSingleBatchRequest() async throws {
+    @Test func singleBatchRequest() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["singleBatch"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [[]])
@@ -99,7 +99,7 @@ import Foundation
         #expect(response[0]?.value == 1)
     }
 
-    @Test func testEmptyBatchRequest() async throws {
+    @Test func emptyBatchRequest() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["emptySingleBatch"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let response: [Rpc<UInt64>?] = try await apiClient.batchRequest(method: "getBalance", params: [])
@@ -113,7 +113,7 @@ import Foundation
         #expect(result == 123_456)
     }
 
-    @Test func testGetBalanceSingle() async throws {
+    @Test func getBalanceSingle() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getBalance_1"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: UInt64 = try await apiClient.getBalance(account: "", commitment: "recent")
@@ -142,7 +142,7 @@ import Foundation
         #expect(result[0].pubkey == "57UtuDwoCurTTWySMeV5MiopvDWvK2QeLWu47biQjjLJ")
     }
 
-    @Test func testGetConfirmedBlock() async throws {
+    @Test func getConfirmedBlock() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getConfirmedBlock"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
 //        let result: ConfirmedBlock = try await apiClient.getConfirmedBlock(slot: 131647712, encoding: "json")
@@ -192,7 +192,7 @@ import Foundation
         #expect(result.feeCalculator?.lamportsPerSignature == 5000)
         #expect(result.blockhash == "7jvToPQ4ASj3xohjM117tMqmtppQDaWVADZyaLFnytFr")
     }
-    
+
     @Test func testGetFeeForMessage() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getFeeForMessage"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
@@ -219,7 +219,7 @@ import Foundation
         #expect(result != nil)
         #expect(result == "63ionHTAM94KaSujUCg23hfg7TLharchq5BYXdLGqia1")
     }
-    
+
     @Test func testGetLatestBlockhash() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getLatestBlockhash"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
@@ -228,7 +228,7 @@ import Foundation
         #expect(result == "63ionHTAM94KaSujUCg23hfg7TLharchq5BYXdLGqia1")
     }
 
-    @Test func testGetSignatureStatusses() async throws {
+    @Test func getSignatureStatusses() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getSignatureStatuses"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getSignatureStatuses(signatures: [])
@@ -284,11 +284,11 @@ import Foundation
         )
     }
 
-    @Test func testSimulateTx() async throws {
+    @Test func simulateTx() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["simulateTransaction"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         do {
-            let _ = try await apiClient.simulateTransaction(transaction: "")
+            _ = try await apiClient.simulateTransaction(transaction: "")
         } catch {
             #expect(error as? APIClientError == APIClientError.transactionSimulationError(logs: []))
         }
@@ -306,7 +306,7 @@ import Foundation
         #expect(result.first?.account.owner == TokenProgram.id.base58EncodedString)
     }
 
-    @Test func testGetToken2022AccountsByOwner() async throws {
+    @Test func getToken2022AccountsByOwner() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getToken2022AccountsByOwner"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result = try await apiClient.getTokenAccountsByOwner(
@@ -318,7 +318,7 @@ import Foundation
         #expect(result.first?.account.owner == Token2022Program.id.base58EncodedString)
         #expect(result.first?.pubkey == "43W7QvyKr5hJhFRhvteb7VbsLdwGQG3VZ2fRYVcw5yFN")
     }
-    
+
     @Test func testGetTokenLargestAccounts() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getTokenLargestAccounts"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
@@ -329,10 +329,9 @@ import Foundation
         #expect(result.first?.amount == "771")
         #expect(result.first?.decimals == 2)
         #expect(result.first?.uiAmount == 7.71)
-
     }
 
-    @Test func testSendTransactionError1() async throws {
+    @Test func sendTransactionError1() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["sendTransactionError1"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         do {
@@ -340,7 +339,7 @@ import Foundation
         } catch let APIClientError.responseError(errorDetail) {
             #expect(
                 errorDetail == .init(code: -32003, message: "Transaction precompile verification failure InvalidAccountIndex",
-                      data: nil)
+                                     data: nil)
             )
         } catch {
             Issue.record("Unexpected code path reached")
@@ -360,14 +359,14 @@ import Foundation
         #expect(result.uiAmountString == "491.717631607")
     }
 
-    @Test func testGenericRequest1() async throws {
+    @Test func genericRequest1() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getHealth"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         let result: String = try await apiClient.request(method: "getHealth")
         #expect(result == "ok")
     }
 
-    @Test func testGenericRequest2() async throws {
+    @Test func genericRequest2() async throws {
         let mock = NetworkManagerMock(NetworkManagerMockJSON["getHealthError"]!)
         let apiClient = JSONRPCAPIClient(endpoint: endpoint, networkManager: mock)
         do {
@@ -375,7 +374,7 @@ import Foundation
         } catch {
             #expect(
                 error as! APIClientError == .responseError(.init(code: -32005, message: "Node is unhealthy",
-                                     data: .init(logs: nil, numSlotsBehind: nil)))
+                                                                 data: .init(logs: nil, numSlotsBehind: nil)))
             )
         }
     }
@@ -383,7 +382,7 @@ import Foundation
 
 // MARK: - Mocks
 
-nonisolated(unsafe) private var NetworkManagerMockJSON = [
+private nonisolated(unsafe) var NetworkManagerMockJSON = [
     "getBlockHeight": "{\"jsonrpc\":\"2.0\",\"result\":119396901,\"id\":\"45ECD42F-D53C-4A02-8621-52D88840FFC1\"}\n",
     "getAccountInfo": "{\"jsonrpc\":\"2.0\",\"result\":{\"context\":{\"slot\":131421172},\"value\":{\"data\":[\"xvp6877brTo9ZfNqq8l0MbG75MLS9uDkfKYCA0UvXWF9P8kKbTPTsQZqMMzOan8jwyOl0jQaxrCPh8bU1ysTa96DDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"base64\"],\"executable\":false,\"lamports\":2039280,\"owner\":\"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA\",\"rentEpoch\":304}},\"id\":\"6B1C0860-44BE-4FA9-9F57-CB14BC7636BB\"}\n",
     "getAccountInfo_2": "{\"jsonrpc\":\"2.0\",\"result\":{\"context\":{\"slot\":132713905},\"value\":{\"data\":[\"\",\"base64\"],\"executable\":false,\"lamports\":14092740,\"owner\":\"11111111111111111111111111111111\",\"rentEpoch\":307}},\"id\":\"49220446-E30F-4EEA-9D90-7CFA2A620D9A\"}\n",

@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 import SolanaSwift
+import Testing
 
 extension KeyPair {
     enum StubFactory {

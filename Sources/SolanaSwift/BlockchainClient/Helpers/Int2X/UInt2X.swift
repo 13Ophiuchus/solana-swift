@@ -1,9 +1,9 @@
 #if canImport(Accelerate)
-import Accelerate.vecLib
+    import Accelerate.vecLib
 #endif
 import Foundation
 
-public typealias UInt1X = FixedWidthInteger & BinaryInteger & UnsignedInteger & Codable
+public typealias UInt1X = BinaryInteger & Codable & FixedWidthInteger & UnsignedInteger
 
 public struct UInt2X<Word: UInt1X>: Hashable, Codable {
     public typealias IntegerLiteralType = UInt64
@@ -690,13 +690,13 @@ extension UInt2X: ExpressibleByStringLiteral {
         }
     }
 
-    internal static func fromString(_ value: String) -> UInt2X? {
+    static func fromString(_ value: String) -> UInt2X? {
         let radix = UInt2X.radixFromString(value)
         let source = radix == 10 ? value : String(value.dropFirst(2))
         return UInt2X(source, radix: radix)
     }
 
-    internal static func radixFromString(_ string: String) -> Int {
+    static func radixFromString(_ string: String) -> Int {
         switch string.prefix(2) {
         case "0b": return 2
         case "0o": return 8

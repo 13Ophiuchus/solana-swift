@@ -36,7 +36,7 @@ public extension SolanaAPIClient {
 
         // get result
 
-        return try await(
+        return try await (
             oldTokenAccountsResult.resolved + token2022Accounts.resolved,
             oldTokenAccountsResult.unresolved + token2022Accounts.unresolved
         )

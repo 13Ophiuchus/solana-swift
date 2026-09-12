@@ -25,7 +25,7 @@ public extension SolanaAPIClient {
     func getRecentBlockhash() async throws -> String {
         try await getRecentBlockhash(commitment: nil)
     }
-    
+
     func getLatestBlockhash() async throws -> String {
         try await getLatestBlockhash(commitment: "processed")
     }

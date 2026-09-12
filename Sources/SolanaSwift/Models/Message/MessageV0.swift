@@ -150,11 +150,11 @@ public struct MessageV0: IMessage, Equatable {
         return message
     }
 
-    internal func serializeHeader() -> Data {
+    func serializeHeader() -> Data {
         Data(header.bytes)
     }
 
-    internal func serializeInstructions() -> Data {
+    func serializeInstructions() -> Data {
 //        var serializedInstructions: Data = .init()
 //
 //        for instruction in compiledInstructions {
@@ -172,7 +172,7 @@ public struct MessageV0: IMessage, Equatable {
         Data(compiledInstructions.map(\.serializedData).reduce([], +))
     }
 
-    internal func serializeAddressTableLookups() throws -> Data {
+    func serializeAddressTableLookups() throws -> Data {
         var serializedAddressTableLookups = Data()
 
         for lookup in addressTableLookups {
@@ -188,7 +188,7 @@ public struct MessageV0: IMessage, Equatable {
         return serializedAddressTableLookups
     }
 
-    internal func serializeRecentBlockhash() -> Data {
+    func serializeRecentBlockhash() -> Data {
         Data(Base58.decode(recentBlockhash))
     }
 

@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 /// JSON RPC
@@ -101,13 +101,13 @@ public final class JSONRPCAPIClient: SolanaAPIClient {
         let result: Rpc<Fee> = try await get(method: "getFees", params: [RequestConfiguration(commitment: commitment)])
         return result.value
     }
-    
+
     public func getFeeForMessage(message: String, commitment: Commitment? = nil) async throws -> Lamports {
-        let result: Rpc<Lamports> = try await self.request(
-          method: "getFeeForMessage",
-          params: [message, RequestConfiguration(commitment: commitment)]
+        let result: Rpc<Lamports> = try await request(
+            method: "getFeeForMessage",
+            params: [message, RequestConfiguration(commitment: commitment)]
         )
-        
+
         return result.value
     }
 
@@ -128,12 +128,13 @@ public final class JSONRPCAPIClient: SolanaAPIClient {
         }
         return blockhash
     }
-    
+
     public func getLatestBlockhash(commitment: Commitment? = nil) async throws -> String {
         let result: Rpc<LatestBlockhash> = try await get(
             method: "getLatestBlockhash",
-            params: [RequestConfiguration(commitment: commitment)])
-        
+            params: [RequestConfiguration(commitment: commitment)]
+        )
+
         return result.value.blockhash
     }
 
@@ -199,7 +200,7 @@ public final class JSONRPCAPIClient: SolanaAPIClient {
     }
 
     public func getTokenLargestAccounts(pubkey: String, commitment: Commitment? = nil) async throws -> [TokenAmount] {
-        let result: Rpc<[TokenAmount]> = try await get(method: "getTokenLargestAccounts", 
+        let result: Rpc<[TokenAmount]> = try await get(method: "getTokenLargestAccounts",
                                                        params: [pubkey, RequestConfiguration(commitment: commitment)])
         return result.value
     }

@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 public protocol SolanaSocket {
@@ -77,8 +77,6 @@ public extension SolanaSocket {
     }
 }
 
-
-
 public final class Socket: NSObject, SolanaSocket {
     // MARK: - Properties
 
@@ -114,7 +112,6 @@ public final class Socket: NSObject, SolanaSocket {
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
         task = session.createWebSocketTask(with: url)
     }
-
 
     /// Testability initializer — inject a mock `WebSocketTaskProvider`.
     public init(url: URL, taskProvider: WebSocketTaskProvider) {
@@ -208,7 +205,6 @@ public final class Socket: NSObject, SolanaSocket {
                             let notification = try JSONDecoder().decode(SocketTokenAccountNotification.self, from: data)
                             delegate?.tokenAccountNotification(notification: notification)
                         }
-
                     case .signature:
                         let notification = try JSONDecoder().decode(SocketSignatureNotification.self, from: data)
                         delegate?.signatureNotification(notification: notification)
@@ -263,7 +259,6 @@ public final class Socket: NSObject, SolanaSocket {
         }
     }
 }
-
 
 extension Socket: URLSessionWebSocketDelegate {
     public func urlSession(_: URLSession, webSocketTask _: URLSessionWebSocketTask, didOpenWithProtocol _: String?) {
@@ -348,6 +343,3 @@ extension Socket: URLSessionWebSocketDelegate {
         }
     }
 }
-
-
-

@@ -1,8 +1,8 @@
 import Foundation
-import P256K
 import libsecp256k1
+import P256K
 
-struct CKSecp256k1 {
+enum CKSecp256k1 {
     /*
      + (NSData *)generatePublicKeyWithPrivateKey:(NSData *)privateKeyData compression:(BOOL)isCompression
      {

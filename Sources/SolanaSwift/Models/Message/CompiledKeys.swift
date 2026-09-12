@@ -53,7 +53,7 @@ public struct CompiledKeys {
         )
     }
 
-    internal mutating func drainKeysFoundInLookupTable(
+    mutating func drainKeysFoundInLookupTable(
         lookupTableEntries: [PublicKey],
         keyMetaFilter: (CompiledKeyMeta) -> Bool
     ) throws -> ([UInt8], [PublicKey]) {

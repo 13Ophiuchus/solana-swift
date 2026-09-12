@@ -120,7 +120,7 @@ public protocol SolanaAPIClient: Sendable {
     /// - SeeAlso https://docs.solana.com/developing/clients/jsonrpc-api#getfees
     ///
     func getFees(commitment: Commitment?) async throws -> Fee
-    
+
     /// Get the fee the network will charge for a particular Message
     /// - Parameters:
     ///  -  message: Base-64 encoded Message
@@ -299,7 +299,7 @@ public protocol SolanaAPIClient: Sendable {
     /// - SeeAlso https://docs.solana.com/developing/clients/jsonrpc-api#getrecentblockhash
     ///
     func getRecentBlockhash(commitment: Commitment?) async throws -> String
-    
+
     /// Returns the latest blockhash
     /// - Parameters:
     ///  - commitment: (optional) Commitment

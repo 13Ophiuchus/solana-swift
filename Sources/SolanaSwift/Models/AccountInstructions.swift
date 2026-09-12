@@ -23,8 +23,8 @@ public struct AccountInstructions {
     public let signers: [KeyPair]
 
     // additionally return new wallet address
-    internal private(set) var newWalletPubkey: String?
+    private(set) var newWalletPubkey: String?
 
     // additionally return newAccount's secretkey
-    internal private(set) var secretKey: Data?
+    private(set) var secretKey: Data?
 }

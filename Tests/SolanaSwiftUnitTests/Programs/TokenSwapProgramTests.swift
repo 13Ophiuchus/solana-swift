@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct TokenSwapProgramTests {
     let publicKey: PublicKey = "11111111111111111111111111111111"
 

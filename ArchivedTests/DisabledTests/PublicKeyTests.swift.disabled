@@ -1,20 +1,19 @@
 @testable import SolanaSwift
 import Testing
 
-
 struct PublicKeyTests {
     @Test
-    func testPublicKeyFromString() throws {
+    func publicKeyFromString() throws {
         let fromPublicKey = try PublicKey(string: "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo")
         #expect(
             fromPublicKey.bytes == [6, 26, 217, 208, 83, 135, 21, 72, 83, 126, 222, 62, 38, 24, 73, 163, 223, 183, 253, 2, 250, 188, 117, 178,
-             35, 200, 228, 106, 219, 133, 61, 12]
+                                    35, 200, 228, 106, 219, 133, 61, 12]
         )
 
         let toPublicKey = try PublicKey(string: "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5")
         #expect(
             toPublicKey.bytes == [235, 122, 188, 208, 216, 117, 235, 194, 109, 161, 177, 129, 163, 51, 155, 62, 242, 163, 22, 149, 187, 122,
-             189, 188, 103, 130, 115, 188, 173, 205, 229, 170]
+                                  189, 188, 103, 130, 115, 188, 173, 205, 229, 170]
         )
 
         let programPubkey = try PublicKey(string: "11111111111111111111111111111111")
@@ -24,19 +23,19 @@ struct PublicKeyTests {
     }
 
     @Test
-    func testPublicKeyToString() throws {
+    func publicKeyToString() throws {
         let key =
             try PublicKey(
                 data: Data([3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0])
             )
-        #expect("CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3" == key.base58EncodedString)
+        #expect(key.base58EncodedString == "CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3")
 
         let key1 = try PublicKey(string: "CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3")
-        #expect("CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3" == key1.base58EncodedString)
+        #expect(key1.base58EncodedString == "CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3")
 
         let key2 = try PublicKey(string: "11111111111111111111111111111111")
-        #expect("11111111111111111111111111111111" == key2.base58EncodedString)
+        #expect(key2.base58EncodedString == "11111111111111111111111111111111")
 
         let key3 =
             try PublicKey(
@@ -50,7 +49,7 @@ struct PublicKeyTests {
     }
 
     @Test
-    func testCreateWithSeeds() throws {
+    func createWithSeeds() throws {
         let defaultPublicKey: PublicKey = "11111111111111111111111111111111"
         let derivedKey = try PublicKey.createWithSeed(
             fromPublicKey: defaultPublicKey,

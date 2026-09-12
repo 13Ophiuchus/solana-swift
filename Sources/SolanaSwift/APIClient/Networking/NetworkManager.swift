@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 public protocol NetworkManager: Sendable {
@@ -8,10 +8,10 @@ public protocol NetworkManager: Sendable {
 }
 
 #if canImport(Darwin)
-extension URLSession: @retroactive NetworkManager {
-    public func requestData(request: URLRequest) async throws -> Data {
-        let (data, _) = try await self.data(for: request)
-        return data
+    extension URLSession: NetworkManager {
+        public func requestData(request: URLRequest) async throws -> Data {
+            let (data, _) = try await self.data(for: request)
+            return data
+        }
     }
-}
 #endif

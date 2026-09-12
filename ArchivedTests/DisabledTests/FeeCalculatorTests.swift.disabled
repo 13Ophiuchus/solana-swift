@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct FeeCalculatorTests {
     var lamportsPerSignature: UInt64 { 5000 }
     var minRentExemption: UInt64 { 2_039_280 }
@@ -18,7 +17,7 @@ struct FeeCalculatorTests {
     // MARK: - Testcases
 
     @Test
-    func testTransactionFee() throws {
+    func transactionFee() throws {
         // owner is the fee payer
         let transaction = createTransaction(instructions: [
             SystemProgram.transferInstruction(
@@ -52,7 +51,7 @@ struct FeeCalculatorTests {
     }
 
     @Test
-    func testAccountCreationFee() throws {
+    func accountCreationFee() throws {
         // create and initialize
         let transaction = createTransaction(instructions: [
             SystemProgram.createAccountInstruction(

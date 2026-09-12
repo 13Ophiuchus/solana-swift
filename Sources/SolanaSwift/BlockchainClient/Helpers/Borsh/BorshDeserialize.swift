@@ -85,7 +85,7 @@ extension Array: BorshDeserializable where Element: BorshDeserializable {
 
 extension Set: BorshDeserializable where Element: BorshDeserializable & Equatable {
     public init(from reader: inout BinaryReader) throws {
-        self = try Set([Element].init(from: &reader))
+        self = try Set([Element](from: &reader))
     }
 }
 

@@ -1,4 +1,4 @@
-public typealias Int1X = FixedWidthInteger & BinaryInteger & SignedInteger & Codable
+public typealias Int1X = BinaryInteger & Codable & FixedWidthInteger & SignedInteger
 
 public struct Int2X<Word: UInt1X>: Hashable, Codable {
     public typealias IntegerLiteralType = UInt64
@@ -78,7 +78,7 @@ extension Int2X: ExpressibleByIntegerLiteral {
 }
 
 extension Int2X: Comparable {
-    internal var isNegative: Bool {
+    var isNegative: Bool {
         Int2X.max.rawValue < rawValue
     }
 
@@ -269,7 +269,7 @@ extension Int2X: ExpressibleByStringLiteral {
         }
     }
 
-    internal static func fromString(_ value: String) -> Int2X? {
+    static func fromString(_ value: String) -> Int2X? {
         var source = value
         var sign = "+"
         if source.first == "-" || source.first == "+" {

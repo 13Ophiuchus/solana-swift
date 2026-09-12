@@ -1,6 +1,6 @@
 import Foundation
 
-public typealias BorshCodable = BorshSerializable & BorshDeserializable
+public typealias BorshCodable = BorshDeserializable & BorshSerializable
 
 public enum BorshCodableError: Error {
     case invalidData

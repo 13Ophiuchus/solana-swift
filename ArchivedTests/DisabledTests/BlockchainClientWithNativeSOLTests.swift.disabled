@@ -1,6 +1,6 @@
-import Testing
 import Foundation
 @testable import SolanaSwift
+import Testing
 
 @Suite struct BlockchainClientWithNativeSOLTests {
     let account: KeyPair
@@ -39,7 +39,7 @@ import Foundation
         )
     }
 
-    @Test func testPrepareSendingNativeSOLToNewlyCreatedAccount() async throws {
+    @Test func prepareSendingNativeSOLToNewlyCreatedAccount() async throws {
         let toPublicKey = "6QuXb6mB6WmRASP2y8AavXh6aabBXEH5ZzrSH5xRrgSm"
         let apiClient = MockAPIClient(testCase: #function)
         let blockchain = BlockchainClient(apiClient: apiClient)
@@ -165,7 +165,6 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
         case "testPrepareSendingSPLTokens()#5":
             blockhash = "7GhCDV2MK7RVhYzD3iNZAVkCd9hYCgyqkgXdFbEFj9PD"
             lastValidSlot = 133_461_991
-
         default:
             fatalError()
         }
@@ -176,7 +175,7 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
             lastValidSlot: lastValidSlot
         )
     }
-    
+
     func getFeeForMessage(message _: String, commitment _: Commitment?) async throws -> Lamports {
         return 1337
     }
@@ -201,7 +200,7 @@ private final class MockAPIClient: SolanaAPIClient, @unchecked Sendable {
             fatalError()
         }
     }
-    
+
     func getLatestBlockhash(commitment _: Commitment?) async throws -> String {
         return "Bc11qGhSE3Vham6cBWEUxhRVVSNtzkyisdGGXwh6hvnT"
     }

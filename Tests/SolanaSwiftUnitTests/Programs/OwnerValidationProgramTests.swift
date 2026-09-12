@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct OwnerValidationProgramTests {
     @Test
     func testAssertOwnerInstruction() throws {

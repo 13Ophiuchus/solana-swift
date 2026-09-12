@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct MemoProgramTests {
     @Test
     func testCreateMemoInstruction() throws {

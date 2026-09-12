@@ -152,8 +152,8 @@ public struct ProgramAccounts<T: BufferLayout>: Decodable {
         let throwables = try container.decode([Throwable<ProgramAccount<T>>].self)
 
         var accounts = [ProgramAccount<T>]()
-        throwables.forEach {
-            switch $0.result {
+        for throwable in throwables {
+            switch throwable.result {
             case let .success(account):
                 accounts.append(account)
             case let .failure(error):

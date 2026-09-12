@@ -1,12 +1,11 @@
 import SolanaSwift
 import Testing
 
-
 struct BufferLayoutDecodingTests {
     // MARK: - Raw data
 
     @Test
-    func testDecodingRawData() throws {
+    func decodingRawData() throws {
         let string =
             "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 
@@ -29,7 +28,7 @@ struct BufferLayoutDecodingTests {
     // MARK: - VecU8
 
     @Test
-    func testDecodingVecU8() throws {
+    func decodingVecU8() throws {
         let string = "GQCn7dKsGcVAJhtFRDDBcRgD8i3I/WDk4Z2y"
         let data = Data(base64Encoded: string)!
         var binaryReader = BinaryReader(bytes: data.bytes)
@@ -47,7 +46,7 @@ struct BufferLayoutDecodingTests {
     // MARK: - Mint
 
     @Test
-    func testDecodingMint() throws {
+    func decodingMint() throws {
         #expect(TokenMintState.BUFFER_LENGTH == 82)
 
         let string =
@@ -70,7 +69,7 @@ struct BufferLayoutDecodingTests {
     // MARK: - Account info
 
     @Test
-    func testDecodingAccountInfo() throws {
+    func decodingAccountInfo() throws {
         #expect(TokenAccountState.BUFFER_LENGTH == 165)
 
         let string =
@@ -81,11 +80,11 @@ struct BufferLayoutDecodingTests {
         var binaryReader = BinaryReader(bytes: data.bytes)
         let accountInfo = try TokenAccountState(from: &binaryReader)
 
-        #expect("QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo" == accountInfo.mint.base58EncodedString)
-        #expect("BQWWFhzBdw2vKKBUX17NHeFbCoFQHfRARpdztPE2tDJ" == accountInfo.owner.base58EncodedString)
+        #expect(accountInfo.mint.base58EncodedString == "QqCCvshxtqMAL2CVALqiJB7uEeE5mjSPsseQdDzsRUo")
+        #expect(accountInfo.owner.base58EncodedString == "BQWWFhzBdw2vKKBUX17NHeFbCoFQHfRARpdztPE2tDJ")
         #expect(accountInfo.lamports == 100_000)
         #expect(accountInfo.delegateOption == 1)
-        #expect("GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5" == accountInfo.delegate?.base58EncodedString)
+        #expect(accountInfo.delegate?.base58EncodedString == "GrDMoeqMLFjeXQ24H56S1RLgT4R76jsuWCd6SvXyGPQ5")
         #expect(accountInfo.isInitialized == true)
         #expect(accountInfo.isFrozen == false)
         #expect(accountInfo.state == 1)
@@ -99,7 +98,7 @@ struct BufferLayoutDecodingTests {
     }
 
     @Test
-    func testDecodingAccountInfo2() throws {
+    func decodingAccountInfo2() throws {
         let string =
             "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAOt6vNDYdevCbaGxgaMzmz7yoxaVu3q9vGeCc7ytzeWq"
 
@@ -108,8 +107,8 @@ struct BufferLayoutDecodingTests {
         var binaryReader = BinaryReader(bytes: data.bytes)
         let accountInfo = try TokenAccountState(from: &binaryReader)
 
-        #expect("11111111111111111111111111111111" == accountInfo.mint.base58EncodedString)
-        #expect("11111111111111111111111111111111" == accountInfo.owner.base58EncodedString)
+        #expect(accountInfo.mint.base58EncodedString == "11111111111111111111111111111111")
+        #expect(accountInfo.owner.base58EncodedString == "11111111111111111111111111111111")
         #expect(accountInfo.lamports == 0)
         #expect(accountInfo.delegateOption == 0)
         #expect(accountInfo.delegate == nil)
@@ -131,8 +130,8 @@ struct BufferLayoutDecodingTests {
         var binaryReader2 = BinaryReader(bytes: data2.bytes)
         let accountInfo2 = try TokenAccountState(from: &binaryReader2)
 
-        #expect("11111111111111111111111111111111" == accountInfo2.mint.base58EncodedString)
-        #expect("11111111111111111111111111111111" == accountInfo2.owner.base58EncodedString)
+        #expect(accountInfo2.mint.base58EncodedString == "11111111111111111111111111111111")
+        #expect(accountInfo2.owner.base58EncodedString == "11111111111111111111111111111111")
         #expect(accountInfo2.lamports == 0)
         #expect(accountInfo2.delegateOption == 0)
         #expect(accountInfo2.delegate == nil)
@@ -151,7 +150,7 @@ struct BufferLayoutDecodingTests {
     // MARK: - TokenSwapInfo
 
     @Test
-    func testDecodingTokenSwapInfo() throws {
+    func decodingTokenSwapInfo() throws {
         #expect(TokenSwapInfo.BUFFER_LENGTH == 324)
 
         let string =
@@ -185,18 +184,18 @@ struct BufferLayoutDecodingTests {
     // MARK: - EmptyInfo
 
     @Test
-    func testDecodingEmptyInfo() throws {
+    func decodingEmptyInfo() throws {
         let string =
             "AQAAAAYa2dBThxVIU37ePiYYSaPft/0C+rx1siPI5GrbhT0MABCl1OgAAAAGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
         let data = Data(base64Encoded: string)!
         var binaryReader = BinaryReader(bytes: data.bytes)
-        let _ = try EmptyInfo(from: &binaryReader)
+        _ = try EmptyInfo(from: &binaryReader)
     }
 
     // MARK: - Token2022
 
     @Test
-    func testDecodingToken2022MintState() throws {
+    func decodingToken2022MintState() throws {
         let string =
             "AAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6XUTVg3ktAAAFAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT3LznRbp1toHmr0Mjv1bBjc6oSrtihgQu/PG0Sunz6N5bilgAAAAASAgAAAAAAAAAgPYh5LQAALAESAgAAAAAAAAAgPYh5LQAALAE="
         let data = Data(base64Encoded: string)!
@@ -229,7 +228,7 @@ struct BufferLayoutDecodingTests {
     }
 
     @Test
-    func testDecodingToken2022MintState2() throws {
+    func decodingToken2022MintState2() throws {
         // Mint FZYEgCWzzedxcmxYvGXSkMrj7TaA3bXoaEv6XMnwtLKh
         let string =
             "AAAAABdZNqd8UPqRoeBHXdhoEwzZNLf6UnDQ1UDsr4oXimfhquOLA1BVIXECAQAAAAAXWTanfFD6kaHgR13YaBMM2TS3+lJw0NVA7K+KF4pn4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoDKJKHBCRLpAQAAAAAAAACQI15ZrVt7LAHpAQAAAAAAAACQI15ZrVt7LAEKADQAF1k2p3xQ+pGh4Edd2GgTDNk0t/pScNDVQOyviheKZ+EN9NlkAAAAAAAADfTZZAAAAAAAAAYAAQAB"
@@ -267,7 +266,7 @@ struct BufferLayoutDecodingTests {
     }
 
     @Test
-    func testDecodingToken2022AccountState() throws {
+    func decodingToken2022AccountState() throws {
         let string =
             "c8d675Tc8/enuGEbVogbaWoW6iY9JFkJIswLnf/gvCXDAcw04n4gWtOj5P12Rb7RAxY9RRwFQOwFWCWPS3OnJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcAAAA="
         let data = Data(base64Encoded: string)!

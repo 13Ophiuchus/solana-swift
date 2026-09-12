@@ -150,7 +150,6 @@ public extension RIPEMD {
                     } else {
                         return [12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11][index - 64]
                     }
-
                 default:
                     assertionFailure("Invalid j")
                     return 0

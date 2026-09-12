@@ -6,8 +6,8 @@ public enum BinaryReaderError: Error {
 }
 
 public struct BinaryReader {
-    internal var cursor: Int
-    internal let bytes: [UInt8]
+    var cursor: Int
+    let bytes: [UInt8]
 
     public init(bytes: [UInt8]) {
         cursor = 0

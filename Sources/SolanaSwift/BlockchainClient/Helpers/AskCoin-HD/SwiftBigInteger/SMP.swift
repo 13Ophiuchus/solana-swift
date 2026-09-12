@@ -105,12 +105,12 @@
 import Foundation
 
 #if canImport(Glibc)
-import Glibc
+    import Glibc
 
-func arc4random_uniform(_ upperBound: UInt32) -> UInt32 {
-    if upperBound == 0 { return 0 }
-    return UInt32.random(in: 0..<upperBound)
-}
+    func arc4random_uniform(_ upperBound: UInt32) -> UInt32 {
+        if upperBound == 0 { return 0 }
+        return UInt32.random(in: 0 ..< upperBound)
+    }
 #endif
 
 //	MARK: - Typealiases
@@ -192,8 +192,8 @@ public struct BInt:
     //
     //
 
-    internal var sign = false
-    internal var limbs = Limbs()
+    var sign = false
+    var limbs = Limbs()
 
     // Required by protocol Numeric
     public typealias Magnitude = UInt64
@@ -225,13 +225,13 @@ public struct BInt:
 
     ///	Root initializer for all other initializers. Because no sign is provided, the new
     ///	instance is positive by definition.
-    internal init(limbs: Limbs) {
+    init(limbs: Limbs) {
         precondition(limbs != [], "BInt can't be initialized with limbs == []")
         self.limbs = limbs
     }
 
     /// Create an instance initialized with a sign and a limbs array.
-    internal init(sign: Bool, limbs: Limbs) {
+    init(sign: Bool, limbs: Limbs) {
         self.init(limbs: limbs)
         self.sign = sign
     }
@@ -389,7 +389,7 @@ public struct BInt:
     }
 
     var rawValue: (sign: Bool, limbs: [UInt64]) {
-        (self.sign, self.limbs)
+        (sign, limbs)
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -580,7 +580,9 @@ public struct BInt:
             res.setBit(at: i, to: !res.getBit(at: i))
         }
 
-        while res.last! == 0, res.count > 1 { res.removeLast() }
+        while res.last! == 0, res.count > 1 {
+            res.removeLast()
+        }
 
         return BInt(sign: !x.sign, limbs: res)
     }
@@ -1147,7 +1149,9 @@ private extension Array where Element == Limb {
 
         let bitIndex = Limb(i) & 0b111111
 
-        while limbIndex >= count { append(0) }
+        while limbIndex >= count {
+            append(0)
+        }
 
         if bit {
             self[limbIndex] |= (1 << bitIndex)
@@ -1463,7 +1467,9 @@ private extension Array where Element == Limb {
         var i = 0
 
         // skip first zeros
-        while i < rhc, subtrahend[i] == 0 { i += 1 }
+        while i < rhc, subtrahend[i] == 0 {
+            i += 1
+        }
 
         while i < rhc {
             if ovfl {
@@ -1491,7 +1497,9 @@ private extension Array where Element == Limb {
         if count > 1, last! == 0 // cut excess zeros if required
         {
             var j = count - 2
-            while j >= 1, self[j] == 0 { j -= 1 }
+            while j >= 1, self[j] == 0 {
+                j -= 1
+            }
 
             removeSubrange((j + 1) ..< count)
         }

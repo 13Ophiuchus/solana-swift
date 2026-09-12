@@ -206,7 +206,7 @@ public struct Transaction: Encodable, Equatable, Sendable {
 
         // Cull duplicate account metas
         var uniqueMetas: [AccountMeta] = []
-        accountMetas.forEach { accountMeta in
+        for accountMeta in accountMetas {
             let pubkey = accountMeta.publicKey.base58EncodedString
             let uniqueIndex = uniqueMetas.firstIndex { x in x.publicKey.base58EncodedString == pubkey }
             if let uniqueIndex = uniqueIndex {
@@ -262,7 +262,7 @@ public struct Transaction: Encodable, Equatable, Sendable {
         var signedKeys = [AccountMeta]()
         var unsignedKeys = [AccountMeta]()
 
-        uniqueMetas.forEach { accountMeta in
+        for accountMeta in uniqueMetas {
             // signed keys
             if accountMeta.isSigner {
                 signedKeys.append(accountMeta)
@@ -373,7 +373,7 @@ public struct Transaction: Encodable, Equatable, Sendable {
         if message.header.numRequiredSignatures > 0 {
             transaction.feePayer = message.accountKeys[0]
         }
-        signatures.enumerated().forEach { index, signature in
+        for (index, signature) in signatures.enumerated() {
             let sigPubkeyPair = Signature(
                 signature: signature == Base58
                     .encode(Constants.defaultSignature) ? nil : Data(Base58.decode(signature)),
@@ -382,7 +382,7 @@ public struct Transaction: Encodable, Equatable, Sendable {
             transaction.signatures.append(sigPubkeyPair)
         }
 
-        message.instructions.forEach { instruction in
+        for instruction in message.instructions {
             let keys: [AccountMeta] = instruction.accounts.map { account in
                 let pubkey = message.accountKeys[account]
                 return AccountMeta(

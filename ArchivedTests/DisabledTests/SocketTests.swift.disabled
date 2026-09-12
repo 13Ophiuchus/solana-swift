@@ -1,7 +1,7 @@
 import Combine
+import Foundation
 import SolanaSwift
 import Testing
-import Foundation
 
 @Suite(.serialized) struct SocketTests {
     var socket: Socket
@@ -10,7 +10,7 @@ import Foundation
         socket = Socket(url: SocketTestsHelper.url)
     }
 
-    @Test func testSocketEvents() async throws {
+    @Test func socketEvents() async throws {
         let delegate = MockSocketDelegate()
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
@@ -40,7 +40,7 @@ import Foundation
             }
 
             delegate.onSubscribed = { _, id in
-                #expect("ADFB8971-4473-4B16-A8BC-63EFD2F1FC8E" == id)
+                #expect(id == "ADFB8971-4473-4B16-A8BC-63EFD2F1FC8E")
             }
             delegate.onNativeAccountNotification = { notification in
                 #expect(notification.lamports == 41_083_620)
@@ -99,7 +99,7 @@ private final class MockSocketTask: WebSocketTask, @unchecked Sendable {
         }
         switch message {
         case .string: break
-        case .data(let data):
+        case let .data(data):
             let requestAPI = try JSONDecoder().decode(RequestAPI.self, from: data)
             let method = SocketMethod(rawValue: requestAPI.method)!
             switch method {
@@ -109,7 +109,7 @@ private final class MockSocketTask: WebSocketTask, @unchecked Sendable {
                     self.keySubject.send("accountNotification#\(self.nativeEmitted ? "Token" : "Native")")
                     self.nativeEmitted = true
                 }
-            case .init(.account, .unsubscribe):   keySubject.send("unsubscriptionNotification")
+            case .init(.account, .unsubscribe): keySubject.send("unsubscriptionNotification")
             case .init(.signature, .subscribe):
                 keySubject.send("subscriptionNotification")
                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [self] in
@@ -121,19 +121,19 @@ private final class MockSocketTask: WebSocketTask, @unchecked Sendable {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [self] in
                     self.keySubject.send("logsNotification")
                 }
-            case .init(.logs, .unsubscribe):      keySubject.send("unsubscriptionNotification")
+            case .init(.logs, .unsubscribe): keySubject.send("unsubscriptionNotification")
             case .init(.program, .subscribe):
                 keySubject.send("subscriptionNotification")
                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [self] in
                     self.keySubject.send("programNotification")
                 }
-            case .init(.program, .unsubscribe):   keySubject.send("unsubscriptionNotification")
+            case .init(.program, .unsubscribe): keySubject.send("unsubscriptionNotification")
             case .init(.slot, .subscribe):
                 keySubject.send("subscriptionNotification")
                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [self] in
                     self.keySubject.send("slotNotification")
                 }
-            case .init(.slot, .unsubscribe):      keySubject.send("unsubscriptionNotification")
+            case .init(.slot, .unsubscribe): keySubject.send("unsubscriptionNotification")
             default: break
             }
         @unknown default: fatalError()

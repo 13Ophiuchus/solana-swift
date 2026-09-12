@@ -8,7 +8,7 @@ extension WebSocketTask {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             let box = OnceBox<Result<Void, Error>>()
             self.sendPing { error in
-                guard box.trySet() else { return }   // drop any subsequent call
+                guard box.trySet() else { return } // drop any subsequent call
                 if let error {
                     continuation.resume(throwing: WebSocketError.connectionFailed(underlying: error))
                 } else {

@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 @testable import SolanaSwift
+import Testing
 
 final class TestableSolanaTokenListSource: SolanaTokenListSource, @unchecked Sendable {
     var downloadCalled: Int = 0

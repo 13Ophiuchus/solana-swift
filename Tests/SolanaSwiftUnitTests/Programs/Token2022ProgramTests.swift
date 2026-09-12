@@ -1,7 +1,6 @@
 import SolanaSwift
 import Testing
 
-
 struct Token2022ProgramTests {
     @Test
     func testInitializeMintInstruction() throws {
@@ -68,7 +67,7 @@ struct Token2022ProgramTests {
             instruction.keys[2] == .writable(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
         #expect(instruction.programId == Token2022Program.id)
-        #expect("3WBgs5fm8oDy" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "3WBgs5fm8oDy")
     }
 
     @Test
@@ -97,7 +96,7 @@ struct Token2022ProgramTests {
             instruction.keys[3] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
         #expect(instruction.programId == Token2022Program.id)
-        #expect("hNmtbNYibdzwf" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "hNmtbNYibdzwf")
     }
 
     @Test
@@ -121,7 +120,7 @@ struct Token2022ProgramTests {
             instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
         #expect(instruction.programId == Token2022Program.id)
-        #expect("s9m8UUrvs3fBT" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "s9m8UUrvs3fBT")
     }
 
     @Test
@@ -145,7 +144,7 @@ struct Token2022ProgramTests {
             instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
         #expect(instruction.programId == Token2022Program.id)
-        #expect("4d5tSvUuzUVM" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "4d5tSvUuzUVM")
     }
 
     @Test
@@ -168,7 +167,7 @@ struct Token2022ProgramTests {
             instruction.keys[2] == .writable(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: true)
         )
         #expect(instruction.programId == Token2022Program.id)
-        #expect("6AsKhot84V8s" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "6AsKhot84V8s")
     }
 
     @Test
@@ -190,6 +189,6 @@ struct Token2022ProgramTests {
             instruction.keys[2] == .readonly(publicKey: "3h1zGmCwsRJnVk5BuRNMLsPaQu1y2aqXqXDWYCgrp5UG", isSigner: false)
         )
         #expect(instruction.programId == Token2022Program.id)
-        #expect("A" == Base58.encode(instruction.data))
+        #expect(Base58.encode(instruction.data) == "A")
     }
 }

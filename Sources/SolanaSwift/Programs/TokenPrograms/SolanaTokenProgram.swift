@@ -87,7 +87,7 @@ public extension SolanaTokenProgram {
             keys.append(.init(publicKey: owner, isSigner: true, isWritable: false))
         } else {
             keys.append(.init(publicKey: owner, isSigner: false, isWritable: false))
-            multiSigners.forEach { signer in
+            for signer in multiSigners {
                 keys.append(.init(publicKey: signer, isSigner: true, isWritable: false))
             }
         }

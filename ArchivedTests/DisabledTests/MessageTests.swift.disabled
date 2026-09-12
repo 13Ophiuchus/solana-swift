@@ -1,6 +1,5 @@
 @testable import SolanaSwift
 
-
 struct MessageTests {
     @Test
     func test_givenRawMessage_whenFrom_thenReturnsExpectedMessage() throws {

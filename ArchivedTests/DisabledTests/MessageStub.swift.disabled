@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 @testable import SolanaSwift
+import Testing
 
 extension Message {
     enum StubFactory {

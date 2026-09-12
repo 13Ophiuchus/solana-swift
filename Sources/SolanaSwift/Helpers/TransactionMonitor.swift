@@ -80,5 +80,4 @@ actor TransactionMonitor<SolanaAPIClient: SolanaSwift.SolanaAPIClient> {
         currentStatus = transactionStatus
         responseHandler(transactionStatus)
     }
-
 }

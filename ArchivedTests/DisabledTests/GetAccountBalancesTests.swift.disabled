@@ -2,7 +2,6 @@ import OSLog
 import SolanaSwift
 import Testing
 
-
 struct GetAccountBalancesTests {
     var rpcClient: SolanaAPIClient!
     var tokensRepository: TokenRepository!
@@ -64,7 +63,7 @@ struct GetAccountBalancesTests {
     }
 
     @Test
-    func testGetAccountBalancesWithToken2022() async throws {
+    func getAccountBalancesWithToken2022() async throws {
         let result = try await rpcClient.getAccountBalances(
             for: "abctest",
             withToken2022: true,
