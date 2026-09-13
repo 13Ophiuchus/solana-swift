@@ -24,16 +24,20 @@ public extension FixedWidthInteger {
 extension Float32: BorshSerializable {
     public func serialize(to writer: inout Data) throws {
         assert(!isNaN, "For portability reasons we do not allow to serialize NaNs.")
-        var start = bitPattern.littleEndian
-        writer.append(Data(buffer: UnsafeBufferPointer(start: &start, count: 1)))
+        var le = bitPattern.littleEndian
+        withUnsafeBytes(of: &le) { rawBuf in
+            writer.append(contentsOf: rawBuf)
+        }
     }
 }
 
 extension Float64: BorshSerializable {
     public func serialize(to writer: inout Data) throws {
         assert(!isNaN, "For portability reasons we do not allow to serialize NaNs.")
-        var start = bitPattern.littleEndian
-        writer.append(Data(buffer: UnsafeBufferPointer(start: &start, count: 1)))
+        var le = bitPattern.littleEndian
+        withUnsafeBytes(of: &le) { rawBuf in
+            writer.append(contentsOf: rawBuf)
+        }
     }
 }
 
@@ -93,3 +97,4 @@ extension Dictionary: BorshSerializable where Key: BorshSerializable & Comparabl
         }
     }
 }
+

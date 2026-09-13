@@ -43,7 +43,7 @@ public struct AddressLookupTableState: Equatable, Codable, BufferLayout {
         _ = try UInt8(from: &reader)
         authority = try PublicKey(bytes: reader.read(count: PublicKey.numberOfBytes))
 
-        try readerForAddresses.read(count: AddressLookupTableAccount.lookUpTableMetaSize)
+        _ = try readerForAddresses.read(count: AddressLookupTableAccount.lookUpTableMetaSize)
         var addresses: [PublicKey] = []
         while readerForAddresses.remainBytes > PublicKey.numberOfBytes {
             try addresses.append(PublicKey(bytes: readerForAddresses.read(count: PublicKey.numberOfBytes)))

@@ -109,7 +109,7 @@ public struct CompiledKeys {
 
     static func compile(instructions: [TransactionInstruction], payer: PublicKey) -> Self {
         var keyMetaMap: KeyMetaMap = .init()
-        var getOrInsertDefault: (PublicKey, (inout CompiledKeyMeta) -> Void) -> CompiledKeyMeta = { pubKey, callback in
+        let getOrInsertDefault: (PublicKey, (inout CompiledKeyMeta) -> Void) -> CompiledKeyMeta = { pubKey, callback in
             let address = pubKey.base58EncodedString
             if var keyMeta = keyMetaMap[address] {
                 callback(&keyMeta)

@@ -126,7 +126,7 @@ public extension SolanaAPIClient {
         var address: String
         var accountInfo: BufferInfo<TokenAccountState>?
         do {
-            accountInfo = try await getAccountInfoThrowable(account: destinationAddress)
+			accountInfo = try await getAccountInfo(account: destinationAddress)
             let toTokenMint = accountInfo?.data.mint.base58EncodedString
             // detect if destination address is already a SPLToken address
             if mintAddress == toTokenMint {
@@ -165,7 +165,7 @@ public extension SolanaAPIClient {
             // check if associated address is already registered
             let info: BufferInfo<TokenAccountState>?
             do {
-                info = try await getAccountInfoThrowable(account: toPublicKey.base58EncodedString)
+                info = try await getAccountInfo(account: toPublicKey.base58EncodedString)
             } catch {
                 info = nil
             }

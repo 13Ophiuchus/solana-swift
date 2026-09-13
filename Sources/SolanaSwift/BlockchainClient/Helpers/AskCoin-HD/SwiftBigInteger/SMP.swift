@@ -2085,42 +2085,63 @@ public struct BDouble:
         self.init(z, over: 1)
     }
 
-    public init(_ d: Double) {
-        let nStr = String(d)
+	public init(_ d: Double) {
+			// String representation of the value
+		let raw = String(d)
 
-        if let exp = nStr.firstIndex(of: "e")?.encodedOffset {
-            let beforeExp = String(Array(nStr)[..<exp].filter { $0 != "." })
-            var afterExp = String(Array(nStr)[(exp + 1)...])
-            var sign = false
+			// Track sign and work with absolute string
+		let isNegative = d < 0
+		let absStr = isNegative ? String(raw.dropFirst()) : raw
 
-            if let neg = afterExp.firstIndex(of: "-")?.encodedOffset {
-                afterExp = String(Array(afterExp)[(neg + 1)...])
-                sign = true
-            }
+			// Split into mantissa and exponent if scientific notation is used
+		let mantissa: String
+		let exponentValue: Int
 
-            if sign {
-                let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
-                self.init(beforeExp, over: String(den))
-                return
-            } else {
-                let num = beforeExp + String([Character](repeating: "0", count: Int(afterExp)!))
-                self.init(num, over: "1")
-                return
-            }
-        }
+		if let expIndex = absStr.firstIndex(where: { $0 == "e" || $0 == "E" }) {
+			mantissa = String(absStr[..<expIndex])
+			let expPart = String(absStr[absStr.index(after: expIndex)...])
+			exponentValue = Int(expPart) ?? 0
+		} else {
+			mantissa = absStr
+			exponentValue = 0
+		}
 
-        let i = nStr.firstIndex(of: ".")!.encodedOffset
+			// Split mantissa into integer and fractional parts
+		var integerPart = mantissa
+		var fractionalDigitsCount = 0
 
-        let beforePoint = String(Array(nStr)[..<i])
-        let afterPoint = String(Array(nStr)[(i + 1)...])
+		if let dotIndex = mantissa.firstIndex(of: ".") {
+			let beforeDot = String(mantissa[..<dotIndex])
+			let afterDot = String(mantissa[mantissa.index(after: dotIndex)...])
 
-        if afterPoint == "0" {
-            self.init(beforePoint, over: "1")
-        } else {
-            let den = ["1"] + [Character](repeating: "0", count: afterPoint.count)
-            self.init(beforePoint + afterPoint, over: String(den))
-        }
-    }
+			integerPart = beforeDot + afterDot
+			fractionalDigitsCount = afterDot.count
+		}
+
+			// Build BInt from the mantissa digits
+		let baseInt = BInt(integerPart.isEmpty ? "0" : integerPart)
+
+			// Adjust exponent to account for decimal digits
+		let exponentAdjustment = exponentValue - fractionalDigitsCount
+
+			// Construct numerator/denominator as BInt
+		if exponentAdjustment >= 0 {
+				// value = baseInt * 10^exponentAdjustment
+			let power = BInt(String(repeating: "0", count: exponentAdjustment))
+			numerator = baseInt.limbs.multiplyingBy(power.limbs)
+			denominator = [1]
+		} else {
+				// value = baseInt / 10^(-exponentAdjustment)
+			let digits = -exponentAdjustment
+			let power = BInt(String(repeating: "0", count: digits))
+			numerator = baseInt.limbs
+			denominator = power.limbs
+		}
+
+		sign = isNegative
+		minimize()
+	}
+
 
     public init(integerLiteral value: Int) {
         self.init(value)
@@ -2150,7 +2171,10 @@ public struct BDouble:
         var res = BInt(limbs: rawRes).description
 
         if digits > 0 {
-            res.insert(".", at: String.Index(encodedOffset: res.count - digits))
+			let insertOffset = res.count - digits
+			let insertIndex = res.index(res.startIndex, offsetBy: insertOffset)
+			res.insert(".", at: insertIndex)
+
         }
 
         return res

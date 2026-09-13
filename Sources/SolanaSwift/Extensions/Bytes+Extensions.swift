@@ -1,22 +1,21 @@
 import Foundation
 
-public extension Array where Element == UInt8 {
-    func toUInt32() -> UInt32? {
-        let data = Data(self)
-        return UInt32(littleEndian: data.withUnsafeBytes { $0.pointee })
-    }
+extension Array where Element == UInt8 {
+	func toUInt32() -> UInt32? {
+		let data = Data(self)
+		return data.withUnsafeBytes { rawBuffer in
+			guard rawBuffer.count >= MemoryLayout<UInt32>.size else { return nil }
+			let value = rawBuffer.load(as: UInt32.self)
+			return UInt32(littleEndian: value)
+		}
+	}
 
-    func toUInt64() -> UInt64? {
-        let data = Data(self)
-        return UInt64(littleEndian: data.withUnsafeBytes { $0.pointee })
-    }
-
-    func toInt() -> Int {
-        var value = 0
-        for byte in self {
-            value = value << 8
-            value = value | Int(byte)
-        }
-        return value
-    }
+	func toUInt64() -> UInt64? {
+		let data = Data(self)
+		return data.withUnsafeBytes { rawBuffer in
+			guard rawBuffer.count >= MemoryLayout<UInt64>.size else { return nil }
+			let value = rawBuffer.load(as: UInt64.self)
+			return UInt64(littleEndian: value)
+		}
+	}
 }
