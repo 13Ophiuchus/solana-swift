@@ -362,7 +362,6 @@ public struct Transaction: Encodable, Equatable, Sendable {
             signatures.append(Base58.encode(signatureData))
         }
 
-        print(data.base64EncodedString())
         return try populate(Message.from(data: data), signatures)
     }
 
